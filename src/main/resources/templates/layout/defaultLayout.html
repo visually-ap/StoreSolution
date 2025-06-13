@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="setContent(content)">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+            <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+            <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+            <link rel="shortcut icon" th:href="@{/favicon.ico}">
+
+            <title>Bespoke Suit Manager</title>
+
+            <!-- jquery -->
+            <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+
+            <!-- moment.js -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+            <!-- 공통 스크립트 -->
+            <script th:src="@{/js/common/ajax.js}"></script>
+            <script th:src="@{/js/common/cookie.js}"></script>
+            <script th:src="@{/js/common/date.js}"></script>
+            <script th:src="@{/js/common/doubleClick.js}"></script>
+            <script th:src="@{/js/common/form.js}"></script>
+            <script th:src="@{/js/common/json.js}"></script>
+            <script th:src="@{/js/common/regexp.js}"></script>
+            <script th:src="@{/js/common/string.js}"></script>
+            <script th:src="@{/js/common/url.js}"></script>
+
+            <!-- ajax 로딩 바 -->
+            <script th:src="@{/plugins/loading/js/loading.js}"></script>
+            <link rel="stylesheet" th:href="@{/plugins/loading/css/loading.css}">
+
+            <!-- datepicker -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <link rel="stylesheet" th:href="@{/plugins/flatpickr/css/dark.css}">
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+
+            <!-- font -->
+            <link rel="stylesheet" th:href="@{/css/font.css}">
+        </head>
+        <body>
+            <th:block th:replace="~{/layout/fragment/header :: headerFragment}"></th:block>
+            <div class="wrapper">
+                <th:block th:replace="~{/layout/fragment/left :: leftFragment}"></th:block>
+
+                <div class="container">
+                    <th:block th:replace="${content}"></th:block>
+                </div>
+            </div>
+        </body>
+    </th:block>
+</html>

@@ -1,0 +1,83 @@
+.pagination {
+    margin: 30px auto 0;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    position: relative;
+    width: 26px;
+    height: 26px;
+    line-height: 25px;
+    border: 1px solid #ccc;
+    margin: 0 2px;
+    vertical-align: middle;
+    transition: all 0.3s ease 0s;
+}
+
+.pagination a.page_active {
+    color: #3069b6;
+    border: 1px solid #3069b6;
+    font-weight: 800;
+    cursor: default;
+}
+
+.pagination a span {
+    display: block;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 26px;
+}
+
+.pagination a:hover {
+    border: 1px solid #3069b6;
+    box-shadow:0 0 5px rgba(48, 105, 182, 0.5);
+}
+
+.pagination .pagination_arrow span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 11px;
+    height: 9px;
+    text-indent: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.pagination .pagination_arrow.button_first span {
+    background: url(../images/pagination/first_arrow_icon.png) no-repeat;
+}
+
+.pagination .pagination_arrow.button_last span {
+    background: url(../images/pagination/last_arrow_icon.png) no-repeat;
+}
+
+.pagination .pagination_arrow.button_prev span {
+    background: url(../images/pagination/prev_arrow_icon.png) no-repeat;
+    left: 60%;
+}
+
+.pagination .pagination_arrow.button_next span {
+    background: url(../images/pagination/next_arrow_icon.png) no-repeat;
+    left: 65%;
+}
+
+
+.pagination .button_first:hover span {
+    background: url(../images/pagination/first_arrow_icon_active.png) no-repeat;
+}
+
+.pagination .button_last:hover span {
+    background: url(../images/pagination/last_arrow_icon_active.png) no-repeat;
+}
+
+.pagination .button_prev:hover span {
+    background: url(../images/pagination/prev_arrow_icon_active.png) no-repeat;
+}
+
+.pagination .button_next:hover span {
+    background: url(../images/pagination/next_arrow_icon_active.png) no-repeat;
+}

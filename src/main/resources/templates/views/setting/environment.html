@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <link rel="stylesheet" th:href="@{/css/component/switch.css}">
+
+        <h2>환경설정</h2>
+
+        <form id="envForm">
+            <h3>1. 디자인 노출 여부</h3>
+
+            <div class="option-group">
+                <h4>상의 디자인 항목</h4>
+                <div class="toggle-wrapper"><span class="option-label">스타일</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketStyle" value="true" th:checked="${dto.jacketStyle}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">단추갯수</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketButtonCount" value="true" th:checked="${dto.jacketButtonCount}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">가슴포켓</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketChestPocket" value="true" th:checked="${dto.jacketChestPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">어깨</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketShoulder" value="true" th:checked="${dto.jacketShoulder}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">앞주머니</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketFrontPocket" value="true" th:checked="${dto.jacketFrontPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">패드(좌)</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketLeftPad" value="true" th:checked="${dto.jacketLeftPad}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">패드(우)</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketRightPad" value="true" th:checked="${dto.jacketRightPad}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">뒷트임</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketBackSlit" value="true" th:checked="${dto.jacketBackSlit}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">소매단추</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketSleeveButton" value="true" th:checked="${dto.jacketSleeveButton}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">라펠너비</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketLapel" value="true" th:checked="${dto.jacketLapel}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">소매디자인</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketSleeve" value="true" th:checked="${dto.jacketSleeve}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">턱시도</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketTuxedo" value="true" th:checked="${dto.jacketTuxedo}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">(AMF)호시</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketAmf" value="true" th:checked="${dto.jacketAmf}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">라펠디자인</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketLapelQ" value="true" th:checked="${dto.jacketLapelQ}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">안감</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketLining" value="true" th:checked="${dto.jacketLining}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">원단무늬</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketCheckFabric" value="true" th:checked="${dto.jacketCheckFabric}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="jacketAddOption" value="true" th:checked="${dto.jacketAddOption}"><span class="real-slider"></span></label><span>보임</span></div>
+            </div>
+
+            <div class="option-group">
+                <h4>하의 디자인 항목</h4>
+                <div class="toggle-wrapper"><span class="option-label">주머니</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsPocket" value="true" th:checked="${dto.pantsPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">원단무늬</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsCheckFabric" value="true" th:checked="${dto.pantsCheckFabric}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">벨트고리</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsBeltLoop" value="true" th:checked="${dto.pantsBeltLoop}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">비죠</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsFlap" value="true" th:checked="${dto.pantsFlap}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">비죠길이</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsFlapLength" value="true" th:checked="${dto.pantsFlapLength}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">밑단모양</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsHemShape" value="true" th:checked="${dto.pantsHemShape}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">밑단두께</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsHemThickness" value="true" th:checked="${dto.pantsHemThickness}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션1</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsAddOption1" value="true" th:checked="${dto.pantsAddOption1}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션2</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsAddOption2" value="true" th:checked="${dto.pantsAddOption2}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션3</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="pantsAddOption3" value="true" th:checked="${dto.pantsAddOption3}"><span class="real-slider"></span></label><span>보임</span></div>
+            </div>
+
+            <div class="option-group">
+                <h4>조끼 디자인 항목</h4>
+                <div class="toggle-wrapper"><span class="option-label">앞주머니</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="vestFrontPocket" value="true" th:checked="${dto.vestFrontPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">가슴포켓</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="vestChestPocket" value="true" th:checked="${dto.vestChestPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">뒷판</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="vestBack" value="true" th:checked="${dto.vestBack}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">호시</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="vestAmf" value="true" th:checked="${dto.vestAmf}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">라펠</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="vestLapel" value="true" th:checked="${dto.vestLapel}"><span class="real-slider"></span></label><span>보임</span></div>
+            </div>
+
+            <div class="option-group">
+                <h4>코트 디자인 항목</h4>
+                <div class="toggle-wrapper"><span class="option-label">스타일</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatStyle" value="true" th:checked="${dto.coatStyle}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">단추갯수</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatButtonCount" value="true" th:checked="${dto.coatButtonCount}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">가슴포켓</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatChestPocket" value="true" th:checked="${dto.coatChestPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">어깨</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatShoulder" value="true" th:checked="${dto.coatShoulder}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">앞주머니</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatFrontPocket" value="true" th:checked="${dto.coatFrontPocket}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">패드(좌)</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatLeftPad" value="true" th:checked="${dto.coatLeftPad}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">패드(우)</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatRightPad" value="true" th:checked="${dto.coatRightPad}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">뒷트임</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatBackSlit" value="true" th:checked="${dto.coatBackSlit}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">소매단추</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatSleeveButton" value="true" th:checked="${dto.coatSleeveButton}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">라펠너비</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatLapel" value="true" th:checked="${dto.coatLapel}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">소매디자인</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatSleeve" value="true" th:checked="${dto.coatSleeve}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">(AMF)호시</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatAmf" value="true" th:checked="${dto.coatAmf}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">라펠디자인</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatLapelQ" value="true" th:checked="${dto.coatLapelQ}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">안감</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatLining" value="true" th:checked="${dto.coatLining}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">원단무늬</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatCheckFabric" value="true" th:checked="${dto.coatCheckFabric}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션1</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatAddOption1" value="true" th:checked="${dto.coatAddOption1}"><span class="real-slider"></span></label><span>보임</span></div>
+                <div class="toggle-wrapper"><span class="option-label">추가옵션2</span><span>숨김</span><label class="real-switch"><input type="checkbox" name="coatAddOption2" value="true" th:checked="${dto.coatAddOption2}"><span class="real-slider"></span></label><span>보임</span></div>
+            </div>
+
+            <hr>
+            <h3>항목별 색상 및 시간 설정</h3>
+            <table>
+                <tr>
+                    <th>항목1 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor1}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime1}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>항목2 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor2}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime2}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>항목3 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor3}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime3}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>항목4 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor4}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime4}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>항목5 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor5}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime5}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>항목6 색상</th>
+                    <td><input type="color" th:field="${dto.typeColor6}"></td>
+                    <th>시간</th>
+                    <td>
+                        <select th:field="${dto.typeTime6}">
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                            <option value="60">60분</option>
+                            <option value="70">70분</option>
+                            <option value="80">80분</option>
+                            <option value="90">90분</option>
+                            <option value="100">100분</option>
+                            <option value="110">110분</option>
+                            <option value="120">120분</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <button type="button" id="saveButton">저장</button>
+                <button type="button" id="cancelButton">취소</button>
+            </div>
+        </form>
+
+        <script th:inline="javascript">
+            $(document).on('click', '#saveButton', function () {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm("환경설정을 저장하시겠습니까?")) {
+                    doubleClick.initFlag(); // 사용자가 취소했을 때도 flag 초기화
+                    return;
+                }
+
+                showLoadingImage();
+                callService(
+                    "POST"
+                    , "/setting/environment/update"
+                    , JSON.stringify(convertFormToJSON($('#envForm')))
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.reload();
+                        }
+                    }
+                );
+            });
+
+            $(document).on('click', '#cancelButton', function () {
+                location.href = '/';
+            });
+        </script>
+    </th:block>
+</th:block>
+</html>

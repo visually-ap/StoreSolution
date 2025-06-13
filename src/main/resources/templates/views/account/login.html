@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <title>Bespoke Suit Manager</title>
+
+    <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+
+    <!-- 공통 스크립트 -->
+    <script th:src="@{/js/doubleClick.js}"></script>
+
+</head>
+<script th:inline="javascript">
+    let msg = [[${message}]];
+    if (msg) {
+        alert(msg);
+    } else {
+        $('#loginId').focus();
+    }
+
+    function login() {
+        if (doubleClick.isDouble()) {
+            return false;
+        }
+
+        if (!$('#loginId').val()) {
+            alert([[#{login.message.input.check.id}]]);
+            doubleClick.initFlag();
+            $('#loginId').focus();
+            return false;
+        }
+
+        if (!$('#password').val()) {
+            alert([[#{login.message.input.check.password}]]);
+            doubleClick.initFlag();
+            $('#password').focus();
+            return false;
+        }
+
+        $("#loginForm").attr("action", "/login");
+        return true;
+    }
+</script>
+<body>
+<form method="post" onsubmit="return login()">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <div>
+        아이디
+        <input type="text" id="loginId" name="loginId">
+    </div>
+    <div>
+        비밀번호
+        <input type="password" id="password" name="password">
+    </div>
+    <div>
+        <button type="submit">로그인</button>
+    </div>
+</form>
+</body>
+</html>

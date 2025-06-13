@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <h1>정보 수정을 원할 경우 관리자에게 문의하시기 바랍니다.</h1>
+        <h2>매장 정보</h2>
+
+        <table>
+            <tr>
+                <th>매장명</th>
+                <td th:text="${item.storeName}"></td>
+            </tr>
+            <tr>
+                <th>대표자명</th>
+                <td th:text="${item.ceoName}"></td>
+            </tr>
+        </table>
+
+        <h2 style="margin-top:30px;">사업자 등록 정보</h2>
+        <table>
+            <tr>
+                <th>사업자명</th>
+                <td th:text="${item.buyerCompanyName}"></td>
+            </tr>
+            <tr>
+                <th>사업자등록번호</th>
+                <td th:text="${@stringParser.addDashToBRN(item.businessRegistrationNumber)}"></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td th:text="${item.address}"></td>
+            </tr>
+            <tr>
+                <th>대표자명</th>
+                <td th:text="${item.buyerCeoName}"></td>
+            </tr>
+            <tr>
+                <th>업종</th>
+                <td th:text="${item.buyerBusinessType}"></td>
+            </tr>
+            <tr>
+                <th>업태</th>
+                <td th:text="${item.buyerBusinessItem}"></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td th:text="${item.buyerEmail}"></td>
+            </tr>
+        </table>
+    </th:block>
+</th:block>
+</html>

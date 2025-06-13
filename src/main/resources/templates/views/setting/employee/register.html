@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!-- jquery-validation -->
+        <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+        <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+        <script th:src="@{/js/common/validator.js}"></script>
+
+        <h2>직원 등록 (* 항목은 필수 입력 항목입니다.)</h2>
+
+        <form id="dataForm">
+            <table>
+                <tr>
+                    <th>* 아이디</th>
+                    <td>
+                        <input type="text" id="loginId" name="loginId" maxlength="12" placeholder="4~12자의 영어소문자, 숫자">
+                        <input type="hidden" id="loginIdCheck" value="N">
+                        <button type="button" id="loginIdCheckButton">중복확인</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>* 비밀번호</th>
+                    <td><input type="password" id="password" name="password" maxlength="20" placeholder="4~20자의 영어, 숫자, 특수기호(!,@,#,$,%,^,&,*)"></td>
+                </tr>
+                <tr>
+                    <th>* 비밀번호확인</th>
+                    <td><input type="password" id="confirmPassword" name="confirmPassword" maxlength="20" placeholder="비밀번호와 동일하게 입력"></td>
+                </tr>
+                <tr>
+                    <th>* 이름</th>
+                    <td><input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력"></td>
+                </tr>
+                <tr>
+                    <th>* 휴대전화번호</th>
+                    <td><input inputmode="numeric" pattern="[0-9]*" id="mobileNumber" name="mobileNumber" maxlength="11" placeholder="숫자만 입력"></td>
+                </tr>
+                <tr>
+                    <th>* 직책</th>
+                    <td>
+                        <select id="position" name="position">
+                            <option value="" selected>선택</option>
+                            <option value="20300">점장</option>
+                            <option value="20301">팀장</option>
+                            <option value="20302">팀원</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <button type="button" id="registerButton">등록</button>
+                <button type="button" id="cancelButton">취소</button>
+            </div>
+        </form>
+
+        <script>
+            const gotoList = function () {
+                document.location.href = ("[[${ session['gotoList_/setting/employee/list'] != null ?  session['gotoList_/setting/employee/list'] : '/setting/employee/list' }]]").replace(/&amp;/g, '&');
+            }
+        </script>
+
+        <script th:inline="javascript">
+            $(function () {
+                callValidationFormService(
+                    $('#dataForm')
+                    , {
+                        loginId: validationObject.loginId.rules
+                        , password: validationObject.password.rules
+                        , confirmPassword: validationObject.confirmPassword.rules
+                        , name: validationObject.name.rules
+                        , mobileNumber: validationObject.mobileNumber.rules
+                        , position: validationObject.position.rules
+                    }
+                    , {
+                        loginId: validationObject.loginId.message
+                        , password: validationObject.password.message
+                        , confirmPassword: validationObject.confirmPassword.message
+                        , name: validationObject.name.message
+                        , mobileNumber: validationObject.mobileNumber.message
+                        , position: validationObject.position.message
+                    }
+                    , function (form) {
+                        if (doubleClick.isDouble()) {
+                            return false;
+                        }
+
+                        if (!confirm("직원을 등록하시겠습니까?")) {
+                            doubleClick.initFlag();
+                            return;
+                        }
+
+                        showLoadingImage();
+
+                        callService(
+                            "POST"
+                            , "/setting/employee/register"
+                            , JSON.stringify(convertFormToJSON(form))
+                            , function (response) {
+                                alert(response.message);
+                                if (response.success) {
+                                    location.replace('/setting/employee/list');
+                                }
+                            }
+                        );
+                    }
+                );
+            });
+
+            $(document).ready(function () {
+                let oldVal = "";
+                $(document).on('propertychange change keyup paste input', '#loginId', function () {
+                    let currentVal = $(this).val();
+                    if (currentVal == oldVal) {
+                        return;
+                    }
+                    oldVal = currentVal;
+                    $("#loginIdCheck").val("N");
+                });
+            });
+
+            $(document).on('click', '#loginIdCheckButton', function () {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                let loginId = $('#loginId').val();
+
+                if (!loginId) {
+                    alert('아이디를 입력해 주세요.');
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                if (!isValid('^[0-9a-z]{4,12}$', loginId)) {
+                    alert('아이디는 4~12자의 영어소문자, 숫자로 입력해 주세요.');
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                callService(
+                    'post'
+                    , `/setting/id/check?loginId=${loginId}`
+                    , {}
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            $("#loginIdCheck").val("Y");
+                        } else {
+                            $("#loginIdCheck").val("N");
+                        }
+                    }
+                );
+            });
+
+            $(document).on('click', '#cancelButton', function () {
+                gotoList();
+            });
+
+            $(document).on('click', '#registerButton', function () {
+                // 아이디 중복 확인 검사
+                if ($('#loginIdCheck').val() == 'N') {
+                    alert('아이디 중복확인을 진행해 주세요.');
+                    return false;
+                }
+                $('#dataForm').submit();
+            });
+        </script>
+    </th:block>
+</th:block>
+</html>

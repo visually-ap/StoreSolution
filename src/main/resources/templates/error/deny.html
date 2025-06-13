@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+
+    <title>AP Factory - Admin</title>
+
+    <!-- jquery -->
+    <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+    <script>
+        alert('접근 권한이 없습니다.');
+        location.replace('/');
+    </script>
+</head>
+<body>
+</body>
+</html>

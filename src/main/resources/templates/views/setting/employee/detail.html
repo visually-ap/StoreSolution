@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!-- jquery-validation -->
+        <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+        <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+        <script th:src="@{/js/common/validator.js}"></script>
+
+        <h2>직원 상세 (* 항목은 필수 입력 항목입니다.)</h2>
+
+        <form id="dataForm">
+            <input type="hidden" name="userId" th:value="${item.userId}"/>
+            <table>
+                <tr>
+                    <th>* 아이디</th>
+                    <td th:text="${item.loginId}"></td>
+                </tr>
+                <tr>
+                    <th>비밀번호</th>
+                    <td>
+                        <button type="button" id="resetPasswordButton">비밀번호초기화</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>* 이름</th>
+                    <td><input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}"></td>
+                </tr>
+                <tr>
+                    <th>* 휴대전화번호</th>
+                    <td><input inputmode="numeric" pattern="[0-9]*" id="mobileNumber" name="mobileNumber" maxlength="11" placeholder="숫자만 입력" th:value="${item.mobileNumber}"></td>
+                </tr>
+                <tr>
+                    <th>* 직책</th>
+                    <td>
+                        <select id="position" name="position" required>
+                            <option value="" th:selected="${item.position == null}">선택</option>
+                            <option value="20300" th:selected="${item.position == 20300}">점장</option>
+                            <option value="20301" th:selected="${item.position == 20301}">팀장</option>
+                            <option value="20302" th:selected="${item.position == 20302}">팀원</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <button type="button" id="deleteButton">삭제</button>
+                <button type="button" id="updateButton">수정</button>
+                <button type="button" id="cancelButton">목록</button>
+            </div>
+        </form>
+
+        <script>
+            const gotoList = function () {
+                document.location.href = ("[[${ session['gotoList_/setting/employee/list'] != null ?  session['gotoList_/setting/employee/list'] : '/setting/employee/list' }]]").replace(/&amp;/g, '&');
+            }
+        </script>
+
+        <script th:inline="javascript">
+            $(function () {
+                callValidationFormService(
+                    $('#dataForm')
+                    , {
+                        name: validationObject.name.rules
+                        , mobileNumber: validationObject.mobileNumber.rules
+                        , position: validationObject.position.rules
+                    }
+                    , {
+                        name: validationObject.name.message
+                        , mobileNumber: validationObject.mobileNumber.message
+                        , position: validationObject.position.message
+                    }
+                    , function (form) {
+                        if (doubleClick.isDouble()) {
+                            return false;
+                        }
+
+                        if (!confirm("직원 정보를 수정하시겠습니까?")) {
+                            doubleClick.initFlag();
+                            return;
+                        }
+
+                        showLoadingImage();
+
+                        callService(
+                            "POST"
+                            , "/setting/employee/update"
+                            , JSON.stringify(convertFormToJSON(form))
+                            , function (response) {
+                                alert(response.message);
+                                if (response.success) {
+                                    location.reload();
+                                }
+                            }
+                        );
+                    }
+                );
+            });
+
+            $(document).ready(function () {
+
+            });
+
+            $(document).on('click', '#deleteButton', function () {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm("직원 정보를 삭제하시겠습니까?")) {
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                showLoadingImage();
+
+                callService(
+                    "POST"
+                    , `/setting/employee/delete/${getParamValue('userId')}`
+                    , {}
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            gotoList();
+                        }
+                    }
+                );
+            });
+
+            $(document).on('click', '#resetPasswordButton', function () {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm('비밀번호를 휴대전화번호로 초기화하시겠습니까?')) {
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                showLoadingImage();
+
+                callService(
+                    'POST'
+                    , `/setting/employee/password/reset/${getParamValue('userId')}`
+                    , {}
+                    , function (response) {
+                        alert(response.message);
+                    }
+                );
+            });
+
+            $(document).on('click', '#cancelButton', function () {
+                gotoList();
+            });
+
+            $(document).on('click', '#updateButton', function () {
+                $('#dataForm').submit();
+            });
+        </script>
+    </th:block>
+</th:block>
+</html>

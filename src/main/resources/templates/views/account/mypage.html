@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!-- modal -->
+        <script th:src="@{/js/modal.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/modal.css}">
+        <!-- jquery-validation -->
+        <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+        <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+        <script th:src="@{/js/common/validator.js}"></script>
+
+        <h2>마이 페이지</h2>
+
+        <h5>정보 수정이 필요하다면 관리자에게 요청바랍니다.</h5>
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td th:text="${item.loginId}"></td>
+            </tr>
+            <tr>
+                <th>아이디</th>
+                <td>
+                    <button class="openModalWindow" data-label="#passwordUpdateModal" onclick="openModal($(this).data('label'), initModal)">비밀번호 변경</button>
+                </td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td th:text="${item.name}"></td>
+            </tr>
+            <tr>
+                <th>휴대전화번호</th>
+                <td th:text="${@stringParser.addDashToMobileNumber(item.mobileNumber)}"></td>
+            </tr>
+            <tr>
+                <th>직책</th>
+                <td th:text="${item.position}"></td>
+            </tr>
+        </table>
+
+
+<!--        모달창으로 움직여야 함 -->
+        <div class="modal_window" id="passwordUpdateModal">
+            <form id="dataForm">
+                <h1>비밀번호 변경 (* 항목은 필수 입력 항목입니다.)</h1>
+                <div>
+                    *현재비밀번호 <input type="password" id="nowPassword" name="nowPassword" placeholder="현재 비밀번호 입력">
+                </div>
+                <div>
+                    비밀번호 <input type="password" id="password" name="password" placeholder="4~20자의 영어, 숫자, 특수기호(!,@,#,$,%,^,&,*)">
+                </div>
+                <div>
+                    비밀번호확인 <input type="password" id="confirmPassword" name="confirmPassword" placeholder="새로운비밀번호와 동일하게 입력">
+                </div>
+            </form>
+            <div>
+                <button id="updatePasswordButton">변경</button>
+                <button class="closeModalButton" data-label="#passwordUpdateModal" onclick="closeModal($(this).data('label'), initModal)">닫기</button>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                callValidationFormService(
+                    $('#dataForm')
+                    , {
+                        nowPassword: validationObject.nowPassword.rules
+                        , password: validationObject.password.rules
+                        , confirmPassword: validationObject.confirmPassword.rules
+                    }
+                    , {
+                        nowPassword: validationObject.nowPassword.message
+                        , password: validationObject.password.message
+                        , confirmPassword: validationObject.confirmPassword.message
+                    }
+                    , function (form) {
+                        if (doubleClick.isDouble()) {
+                            return false;
+                        }
+
+                        if (!confirm("비밀번호를 변경하시겠습니까?")) {
+                            doubleClick.initFlag();
+                            return;
+                        }
+
+                        showLoadingImage();
+
+                        callService(
+                            "POST"
+                            , "/password/update"
+                            , JSON.stringify(convertFormToJSON(form))
+                            , function (response) {
+                                alert(response.message);
+                                if (response.success) {
+                                    location.href = '/logout';
+                                }
+                            }
+                        );
+                    }
+                );
+            });
+
+            function initModal() {
+                $('#password').val('');
+                $('#newPassword').val('');
+                $('#confirmPassword').val('');
+            }
+
+            $(document).on('click', '#updatePasswordButton', function() {
+                $('#dataForm').submit();
+            });
+        </script>
+    </th:block>
+</th:block>
+</html>

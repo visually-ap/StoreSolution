@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="pagination(pagedObject)">
+    <link rel="stylesheet" th:href="@{/css/pagination.css}">
+
+    <div class="pagination" th:with="start=${(T(java.lang.Math).floor(pagedObject.number / pagedObject.size) * pagedObject.size + 1 ) - 1}, last=(${start + pagedObject.size < pagedObject.totalPages ? start + pagedObject.size : pagedObject.totalPages})">
+        <!-- 첫페이지 -->
+        <a class="pagination_arrow button_first elements_disabled" th:if="${pagedObject.isFirst()}">
+            <span>첫페이지</span>
+        </a>
+        <a class="pagination_arrow button_first" th:unless="${pagedObject.isFirst()}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=0)}">
+            <span>첫페이지</span>
+        </a>
+
+        <!-- 이전 페이지 그룹 -->
+        <a class="pagination_arrow button_prev elements_disabled" th:if="${start == 0}">
+            <span>이전페이지그룹</span>
+        </a>
+        <a class="pagination_arrow button_prev" th:unless="${start == 0}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=${#numbers.formatInteger(start - pagedObject.size, 1)})}">
+            <span>이전페이지그룹</span>
+        </a>
+
+        <a th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:if="${pagedObject.totalPages > 0}" th:each="page : ${#numbers.sequence(start, last - 1)}" th:classappend="${pagedObject.number == page} ? 'page_active'" th:href="@{${currentUrl}(page=${page})}">
+            <span th:text="${page + 1}"></span>
+        </a>
+
+        <!-- 다음 페이지 그룹 -->
+        <a class="pagination_arrow button_next elements_disabled" th:if="${last == pagedObject.totalPages}">
+            <span>다음페이지</span>
+        </a>
+        <a class="pagination_arrow button_next" th:unless="${last == pagedObject.totalPages}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=${#numbers.formatInteger(start + pagedObject.size, 1)})}">
+            <span>다음페이지</span>
+        </a>
+
+        <!-- 마지막페이지 -->
+        <a class="pagination_arrow button_last elements_disabled" th:if="${pagedObject.isLast()}">
+            <span>마지막페이지</span>
+        </a>
+        <a class="pagination_arrow button_last" th:unless="${pagedObject.isLast()}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=${pagedObject.totalPages - 1})}">
+            <span>마지막페이지</span>
+        </a>
+    </div>
+</th:block>
+
+<th:block th:fragment="layerPagination(pagedObject,formid)">
+    <div class="pagination" id="layerPage" >
+        <a th:if="${pagedObject.number != 0}" class="pagination_arrow button_first" th:onclick='layerPage(this,[[${pagedObject.size}]],0)' href="javascript:void();"   th:data-formid="${formid}"   ><span>첫페이지</span></a>
+        <a th:if="${pagedObject.number != 0}" class="pagination_arrow button_prev" th:onclick='layerPage(this,[[${pagedObject.size}]],[[${pagedObject.number - 1}]])' href="javascript:void();" th:data-formid="${formid}" ><span>이전페이지</span></a>
+        <a th:if="${pagedObject.totalPages > 0}" th:each="page : ${#numbers.sequence(0, pagedObject.totalPages -1)}"   th:onclick='layerPage(this,[[${pagedObject.size}]],[[${page}]])'    th:classappend="${pagedObject.number == (page)} ? 'pagination_a pagination_active'"  th:text="${page + 1}" href="javascript:void();" th:data-formid="${formid}"></a>
+        <a th:if="${pagedObject.number + 1 < pagedObject.totalPages}" class="pagination_arrow button_next" href="javascript:void();" th:onclick='layerPage(this,[[${pagedObject.size}]],[[${pagedObject.number + 1}]])'   th:data-formid="${formid}" ><span>다음페이지</span></a>
+        <a th:if="${pagedObject.number + 1 < pagedObject.totalPages}" class="pagination_arrow button_last" href="javascript:void();" th:onclick='layerPage(this,[[${pagedObject.size}]],[[${pagedObject.totalPages - 1}]])'  th:data-formid="${formid}" ><span>마지막페이지</span></a>
+    </div>
+</th:block>
+
+</html>

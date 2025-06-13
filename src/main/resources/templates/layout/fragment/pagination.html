@@ -34,7 +34,7 @@
 
         <!-- 마지막페이지 -->
         <a class="pagination_arrow button_last elements_disabled" th:if="${pagedObject.isLast()}">
-            <span>마지막페이지</span>
+            <span>마지막페이지1</span>
         </a>
         <a class="pagination_arrow button_last" th:unless="${pagedObject.isLast()}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=${pagedObject.totalPages - 1})}">
             <span>마지막페이지</span>

@@ -3,14 +3,14 @@
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <style>
-            .upload-box {
+            .upload_box {
                 border: 1px solid #eee;
                 padding: 20px;
                 border-radius: 16px;
                 margin-bottom: 30px;
             }
 
-            .upload-label {
+            .upload_label {
                 display: block;
                 font-weight: bold;
                 font-size: 18px;
@@ -18,25 +18,13 @@
                 margin-bottom: 8px;
             }
 
-            .upload-button {
-                height: 40px;
-                padding: 0 20px;
-                border-radius: 20px;
-                background-color: #eee;
-                color: #555;
-                font-weight: bold;
-                border: none;
-                cursor: pointer;
-                margin-right: 10px;
-            }
-
-            .upload-desc {
+            .desc_text {
                 margin-top: 10px;
                 font-size: 13px;
                 color: #999;
             }
 
-            .preview-box {
+            .preview_box {
                 width: 120px;
                 height: 120px;
                 margin: 12px 0;
@@ -48,7 +36,7 @@
                 overflow: hidden; /* 넘치는 이미지 방지 (선택) */
             }
 
-            .preview-box img {
+            .preview_box img {
                 max-width: 120px;
                 max-height: 120px;
                 width: auto;
@@ -63,9 +51,9 @@
         </style>
 
         <!-- 메인 홈 화면 이미지 -->
-        <div class="upload-box">
-            <label class="upload-label">메인 홈 화면 이미지</label>
-            <div class="preview-box">
+        <div class="upload_box">
+            <label class="upload_label">메인 홈 화면 이미지</label>
+            <div class="preview_box">
                 <th:block th:if="${dto.homeImageList != null and !#lists.isEmpty(dto.homeImageList)}">
                     <img id="homeImagePreview" th:src="@{${dto.homeImageList[0].savedPathFile}}" />
                 </th:block>
@@ -74,18 +62,18 @@
                 </th:block>
             </div>
             <div>
-                <button type="button" class="upload-button select-image-button" data-where="homeImage">이미지선택</button>
-                <button type="button" class="upload-button">업로드</button>
+                <button type="button" class="selectImageButton" data-where="homeImage">이미지선택</button>
+                <button type="button" id="homeImageSaveButton">저장</button>
             </div>
-            <p class="upload-desc">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="upload-desc">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
+            <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+            <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
             <input type="file" id="homeImage" name="homeImage" accept="image/jpeg,image/png" onchange="previewImage(this, 'homeImagePreview')" />
         </div>
 
         <!-- 로고 이미지 -->
-        <div class="upload-box">
-            <label class="upload-label">로고 이미지</label>
-            <div class="preview-box">
+        <div class="upload_box">
+            <label class="upload_label">로고 이미지</label>
+            <div class="preview_box">
                 <th:block th:if="${dto.logoImage != null}">
                     <img id="logoImagePreview" th:src="@{${dto.logoImage.savedPathFile}}" />
                 </th:block>
@@ -94,18 +82,18 @@
                 </th:block>
             </div>
             <div>
-                <button type="button" class="upload-button select-image-button" data-where="logoImage">이미지선택</button>
-                <button type="button" class="upload-button">업로드</button>
+                <button type="button" class=" selectImageButton" data-where="logoImage">이미지선택</button>
+                <button type="button" id="logoImageSaveButton">저장</button>
             </div>
-            <p class="upload-desc">* 확장자가 PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="upload-desc">* 사이즈는 000×000px에 최적화되어 있으며, 배경이 투명한 이미지를 사용하시기 바랍니다.</p>
+            <p class="desc_text">* 확장자가 PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+            <p class="desc_text">* 사이즈는 000×000px에 최적화되어 있으며, 배경이 투명한 이미지를 사용하시기 바랍니다.</p>
             <input type="file" id="logoImage" name="logoImage" accept="image/png" onchange="previewImage(this, 'logoImagePreview')" />
         </div>
 
         <!-- 상담판 이미지 -->
-        <div class="upload-box">
-            <label class="upload-label">상담판 이미지</label>
-            <div class="preview-box">
+        <div class="upload_box">
+            <label class="upload_label">상담판 이미지</label>
+            <div class="preview_box">
                 <th:block th:if="${dto.consultingImageList != null and !#lists.isEmpty(dto.consultingImageList)}">
                     <img id="consultingImagePreview" th:src="@{${dto.consultingImageList[0].savedPathFile}}" />
                 </th:block>
@@ -114,12 +102,12 @@
                 </th:block>
             </div>
             <div>
-                <button type="button" class="upload-button select-image-button" data-where="consultingImage">이미지선택</button>
-                <button type="button" class="upload-button">업로드</button>
+                <button type="button" class="selectImageButton" data-where="consultingImage">이미지선택</button>
+                <button type="button" id="consultingImageSaveButton">저장</button>
             </div>
-            <p class="upload-desc">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="upload-desc">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
-            <p class="upload-desc">* 20개 이하의 이미지를 첨부할 수 있습니다.</p>
+            <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+            <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
+            <p class="desc_text">* 20개 이하의 이미지를 첨부할 수 있습니다.</p>
             <input type="file" id="consultingImage" name="consultingImage" accept="image/jpeg,image/png" onchange="previewMultipleImages(this, 'consultingImagePreview')" multiple/>
         </div>
 
@@ -194,8 +182,23 @@
             }
 
             // 이미지 선택 버튼이 파일 input을 트리거
-            $(document).on('click', '.select-image-button', function () {
+            $(document).on('click', '.selectImageButton', function () {
                 $(`#${$(this).data('where')}`).trigger('click');
+            });
+
+            //
+            $(document).on('click', '#homeImageSaveButton', function () {
+
+            });
+
+            //
+            $(document).on('click', '#logoImageSaveButton', function () {
+
+            });
+
+            //
+            $(document).on('click', '#consultingImageSaveButton', function () {
+
             });
         </script>
     </th:block>

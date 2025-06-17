@@ -6,7 +6,7 @@
     <div class="pagination" th:with="start=${(T(java.lang.Math).floor(pagedObject.number / pagedObject.size) * pagedObject.size + 1 ) - 1}, last=(${start + pagedObject.size < pagedObject.totalPages ? start + pagedObject.size : pagedObject.totalPages})">
         <!-- 첫페이지 -->
         <a class="pagination_arrow button_first elements_disabled" th:if="${pagedObject.isFirst()}">
-            <span>첫페이지1</span>
+            <span>첫페이지</span>
         </a>
         <a class="pagination_arrow button_first" th:unless="${pagedObject.isFirst()}" th:with="currentUrl=(${@currentUrlWithoutParam.apply('page')})" th:href="@{${currentUrl}(page=0)}">
             <span>첫페이지</span>

@@ -16,6 +16,8 @@ body {
     min-width: 800px;
     min-height: 100vh;
     height: 100%;
+    padding-top: 25px;
+    box-sizing: border-box;
 }
 
 ul, ol, li {
@@ -182,8 +184,8 @@ template {
 /*작성 css*/
 .body_line {
     position: absolute;
-    width: 97%;
-    height: 95%;
+    width: 97.5%;
+    height: 95.5%;
     border: 1px solid #ddd;
     background: transparent;
     top: 50%;

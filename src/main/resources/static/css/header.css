@@ -1,15 +1,23 @@
 @charset "utf-8";
 
 .main_header {
-    width: 97%;
+    width: 96.5%;
+    height: 70px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
-    padding: 30px 0;
+    background: rgba(255, 255, 255, .7);
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .main_header img {
-    height: 35px;
+    height: 30px;
+}
+
+.main_header .right_area img {
+    height: 25px;
 }
 
 .subNav {
@@ -19,11 +27,70 @@
 .main_header .nav {
     display: flex;
     text-transform: uppercase;
-    gap: 20px;
+    gap: 30px;
 }
 
-.main_header .nav li .mainNav {
+.main_header .nav li .navMain {
     color: #00264b;
     font-weight: 700;
     font-size: 20px;
+}
+
+.main_header .nav li .navMain.on {
+    color: #1e6ceb;
+}
+
+.main_header .right_area {
+    display: flex;
+    gap: 20px;
+}
+
+/*left css*/
+.left_nav {
+    position: absolute;
+    top: 50%;
+    left: 70px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.left_nav li {
+    border: 1px solid #d1d3d4;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 5px 1px rgba(0,0,0,0.1);
+    background: #fff;
+}
+
+/*.left_nav li.on {*/
+/*    background: url(../images/icon/about.png) no-repeat center / 100% 100%;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    z-index: -2;*/
+/*    background-size: cover;*/
+/*}*/
+
+.left_nav li a {
+    font-size: 20px;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.left_nav li a img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 18px;
+    box-sizing: border-box;
 }

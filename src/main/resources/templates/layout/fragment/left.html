@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="leftFragment">
-    <ul class="left_nav">
-        <li class="on"><a href=""><img th:src="@{/images/icon/about.png}" alt="about 아이콘" class="about_icon"></a></li>
-        <li><a href=""><img th:src="@{/images/icon/customer.png}" alt="customer 아이콘" class="customer_icon"></a></li>
-        <li><a href=""><img th:src="@{/images/icon/fabricItem.png}" alt="fabricItem 아이콘" class="fabricItem_icon"></a></li>
-        <li><a href=""><img th:src="@{/images/icon/design.png}" alt="design 아이콘" class="design_icon"></a></li>
-        <li><a href=""><img th:src="@{/images/icon/size.png}" alt="size 아이콘" class="size_icon"></a></li>
-    </ul>
+    <div class="leftNav_wrap">
+        <ul class="left_nav">
+            <li class="on">
+                <a href="">
+                    <img th:src="@{/images/icon/about.png}" alt="about 아이콘" class="">
+                    <img th:src="@{/images/icon/about_on.png}" alt="about 아이콘" class="change">
+                </a>
+            </li>
+            <li><a href=""><img th:src="@{/images/icon/customer.png}" alt="customer 아이콘" class="customer_icon"></a></li>
+            <li><a href=""><img th:src="@{/images/icon/fabricItem.png}" alt="fabricItem 아이콘" class="fabricItem_icon"></a></li>
+            <li><a href=""><img th:src="@{/images/icon/design.png}" alt="design 아이콘" class="design_icon"></a></li>
+            <li><a href=""><img th:src="@{/images/icon/size.png}" alt="size 아이콘" class="size_icon"></a></li>
+        </ul>
+    </div>
 </th:block>
 </html>

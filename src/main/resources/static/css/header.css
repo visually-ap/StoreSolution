@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+.main_header {
+    width: 97%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+.main_header img {
+    height: 35px;
+}
+
+.subNav {
+    display: none;
+}
+
+.main_header .nav {
+    display: flex;
+    text-transform: uppercase;
+    gap: 20px;
+}
+
+.main_header .nav li .mainNav {
+    color: #00264b;
+    font-weight: 700;
+    font-size: 20px;
+}

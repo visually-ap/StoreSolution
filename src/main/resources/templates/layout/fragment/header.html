@@ -1,21 +1,45 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="headerFragment">
-    <ul class="nav">
-        <li><a th:href="@{/}">Home</a></li>
-        <li sec:authorize="hasRole('ROLE_USER')">
-            <a href="#">Store Management</a>
-            <ul>
-                <li><a th:href="@{/setting/store/info}">매장정보</a></li>
-                <li><a th:href="@{/setting/employee/list}">직원목록</a></li>
-                <li><a th:href="@{/setting/environment}">환경설정</a></li>
-                <li><a th:href="@{/setting/images}">이미지설정</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="/mypage">My Page</a>
-        </li>
-    </ul>
-    <a th:href="@{/logout}">로그아웃</a>
+    <div class="main_header">
+        <h2 class="logo_wrap">
+            <a th:href="@{/}">
+                <img th:src="@{/images/logo.png}" alt="ap logo" class="main_logo">
+            </a>
+        </h2>
+        <ul class="nav">
+            <li>
+                <a href="#" class="mainNav">counseling</a>
+                <ul class="subNav">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Customer</a></li>
+                    <li><a href="">Fabric&Item</a></li>
+                    <li><a href="">Design</a></li>
+                    <li><a href="">Size</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="mainNav">reservation</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_USER')">
+                <a href="#" class="mainNav">Store Management</a>
+                <ul class="subNav">
+                    <li><a th:href="@{/setting/store/info}">매장정보</a></li>
+                    <li><a th:href="@{/setting/employee/list}">직원목록</a></li>
+                    <li><a th:href="@{/setting/environment}">환경설정</a></li>
+                    <li><a th:href="@{/setting/images}">이미지설정</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="right_area">
+            <a href="">
+                <img th:src="@{/images/icon/search.png}" alt="검색 아이콘" class="search_icon">
+            </a>
+            <a href="/mypage">
+                <img th:src="@{/images/icon/mypage.png}" alt="마이페이지 아이콘" class="mypage_icon">
+            </a>
+            <a th:href="@{/logout}">로그아웃</a>
+        </div>
+    </div>
 </th:block>
 </html>

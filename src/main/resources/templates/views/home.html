@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 css-->
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        홈
+        <div class="body_line"></div>
+        <div class="about_wrap">
+
+        </div>
     </th:block>
 </th:block>
 </html>

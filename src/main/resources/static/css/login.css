@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    z-index: 0;
 }
 
 .login_page::before {
@@ -18,7 +19,7 @@
     background-color: #00264b;
     display: block;
     opacity: 0.6;
-    z-index: 1;
+    z-index: -2;
 }
 
 .loginForm_wrap {
@@ -97,7 +98,6 @@
 }
 
 .guide_inner_wrap .text_2:hover {
-    width: 150px;
     border: 1px solid #ffffff;
     background: #00264b;
     color: #fff;
@@ -146,7 +146,7 @@
 .input_box input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-transition: background-color 9999s ease-out;
-    -webkit-box-shadow: 0 0 0px 1000px #00264b inset !important;
+    -webkit-box-shadow: 0 0 0 1000px #00264b inset !important;
     -webkit-text-fill-color: #fff !important;
 }
 

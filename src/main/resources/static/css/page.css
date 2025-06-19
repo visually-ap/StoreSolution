@@ -521,3 +521,51 @@
         margin-top: 2px;
     }
 }
+
+/* reservation */
+.tabBox {
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+}
+
+.tabMenu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+}
+
+.tabItem {
+    cursor: pointer;
+    border: 1px solid #d1d3d4;
+    background: #fff;
+    color: #939598;
+    font-weight: 700;
+
+    display: inline-block;
+    padding: 0 50px;
+    border-radius: 7px;
+    transition: all .3s;
+    box-sizing: border-box;
+    height: 50px;
+    line-height: 50px;
+}
+
+.tabItem.active {
+    font-weight: bold;
+    background-color: #1e6ceb;
+    color: #fff;
+    border: 1px solid #1e6ceb;
+}
+
+.tabContent {
+    display: none;
+    padding: 20px;
+    /*border: 1px solid #ccc;*/
+}
+
+.tabContent.active {
+    display: block;
+}

@@ -523,8 +523,19 @@
 }
 
 /* reservation */
-.left_area {
-    width: 450px;
+.info_calendar {
+    display: flex;
+    gap: 30px;
+}
+
+.info_calendar .left_area {
+    min-width: 400px;
+    width: 30%;
+}
+
+.info_calendar .right_area {
+    width: 70%;
+    overflow-X: scroll;
 }
 
 .customer_search_wrap {
@@ -596,7 +607,7 @@
 }
 
 .form_search input {
-    width: 260px;
+    /*width: 260px;*/
 }
 
 .form_search .search_btn {
@@ -611,4 +622,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/*구글 캘린더*/
+.calendar {
+    min-width: 700px;
+}
+/* 날짜 숫자만 가운데 정렬 */
+ .fc .fc-daygrid-day-number {
+     display: block;
+     text-align: center;
+     float: none;
+     margin: 0 auto;
+ }
+
+/* 필요하면 셀 높이 맞추기 */
+.fc-scrollgrid.fc-scrollgrid-liquid th { height: 35px; }
+
+.fc .fc-daygrid-day-frame {
+    height: 100%;
+}
+
+/* 요일 셀 높이 */
+.fc .fc-col-header-cell {
+    height: 35px;  /* 원하는 높이 */
+    vertical-align: middle; /* 가운데 정렬 */
+}
+
+/* 안쪽 div 높이랑 라인 맞추기 */
+.fc .fc-col-header-cell .fc-scrollgrid-sync-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;   /* 세로 가운데 */
+    justify-content: center; /* 가로 가운데 (필요하면) */
 }

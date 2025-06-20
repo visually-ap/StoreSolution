@@ -8,35 +8,72 @@
 <!-- 개별 css-->
 <link rel="stylesheet" th:href="@{/css/page.css}">
 
-<style>
-    .container {
-        /*left: 0 !important;*/
-        background: #f9f9f9;
-    }
-</style>
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        <div class="left_area">
-            <div class="customer_info_btn">
-                <a href="#" class="page_btn active">기존 고객 정보</a>
-                <a href="#" class="page_btn">신규 고객 정보</a>
-            </div>
+        <div class="info_calendar">
+            <div class="left_area">
+                <div class="customer_info_btn">
+                    <a href="#" class="page_btn active">기존 고객 정보</a>
+                    <a href="#" class="page_btn">신규 고객 정보</a>
+                </div>
 
-            <div class="">
-                <div class="customer_search_wrap">
-                    <h3 class="title">고객 검색</h3>
-                    <form class="form_search">
-                        <h4 class="inner_title">고객명</h4>
-                        <input type="text">
-                        <button class="search_btn" style="background:#1e6ceb">
-                            <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
-                        </button>
-                    </form>
+                <div class="">
+                    <div class="customer_search_wrap">
+                        <h3 class="title">고객 검색</h3>
+                        <form class="form_search">
+                            <h4 class="inner_title">고객명</h4>
+                            <input type="text">
+                            <button class="search_btn" style="background:#1e6ceb">
+                                <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <div class="right_area">
+                <div id="calendar" class="calendar"></div>
+            </div>
         </div>
-        <div class="right_area">달력</div>
     </th:block>
 </th:block>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<!-- (선택) 한국어 locale 지원 -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.min.js"></script>
+
+<!-- Google Calendar 플러그인 -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko', // 한국어
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'dayGridMonth,timeGridDay'
+            },
+            // ✅ 날짜 셀 내용 가공하기
+            dayCellContent: function(arg) {
+                var numberOnly = arg.dayNumberText.replace(/[^0-9]/g, '');
+                return { html: numberOnly };
+            }
+        });
+
+        calendar.render();
+    });
+</script>
+
 </html>

@@ -50,10 +50,6 @@ a {
     text-decoration: none;
 }
 
-a:visited {
-    color: inherit;
-}
-
 abbr[title] {
     border-bottom: none;
     text-decoration: underline;

@@ -10,7 +10,7 @@
 
 <style>
     .container {
-        left: 0 !important;
+        /*left: 0 !important;*/
         background: #f9f9f9;
     }
 </style>
@@ -18,46 +18,25 @@
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <div class="left_area">
-            <div class="tabBox">
-                <ul class="tabMenu">
-                    <li class="tabItem active">기존 고객 정보</li>
-                    <li class="tabItem">신규 고객 정보</li>
-                </ul>
+            <div class="customer_info_btn">
+                <a href="#" class="page_btn active">기존 고객 정보</a>
+                <a href="#" class="page_btn">신규 고객 정보</a>
+            </div>
 
-                <div class="tabContent active">
-                    <div>
-                        <h3>고객 검색</h3>
-                        <form style="background-color: #eff1f7;">
-                            <h4>고객명</h4>
-                            <input type="text">
-                            <button style="background:#1e6ceb">
-                                <img th:src="@{/images/icon/search_w.png}" style="width: 100%;height: 100%;display: block;object-fit: contain;" alt="검색 아이콘" class="search_icon">
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="tabContent">
-                    <div>2</div>
+            <div class="">
+                <div class="customer_search_wrap">
+                    <h3 class="title">고객 검색</h3>
+                    <form class="form_search">
+                        <h4 class="inner_title">고객명</h4>
+                        <input type="text">
+                        <button class="search_btn" style="background:#1e6ceb">
+                            <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="right_area"></div>
+        <div class="right_area">달력</div>
     </th:block>
 </th:block>
-
-<script>
-    $(document).ready(function() {
-        $('.tabItem').click(function() {
-            var idx = $(this).index();
-
-            // 탭 메뉴 active
-            $('.tabItem').removeClass('active');
-            $(this).addClass('active');
-
-            // 탭 내용 active
-            $('.tabContent').removeClass('active');
-            $('.tabContent').eq(idx).addClass('active');
-        });
-    });
-</script>
 </html>

@@ -523,13 +523,28 @@
 }
 
 /* reservation */
-.tabBox {
-    width: 100%;
-    max-width: 500px;
+.left_area {
+    width: 450px;
+}
+
+.customer_search_wrap {
+    border: 1px solid #d1d3d4;
+    padding: 25px 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-top: 50px;
     background: #fff;
 }
 
-.tabMenu {
+.customer_search_wrap .title {
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+.customer_info_btn {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
     display: flex;
     list-style: none;
     padding: 0;
@@ -537,7 +552,8 @@
     gap: 10px;
 }
 
-.tabItem {
+.page_btn {
+    width: 50%;
     cursor: pointer;
     border: 1px solid #d1d3d4;
     background: #fff;
@@ -545,27 +561,54 @@
     font-weight: 700;
 
     display: inline-block;
-    padding: 0 50px;
     border-radius: 7px;
     transition: all .3s;
     box-sizing: border-box;
     height: 50px;
     line-height: 50px;
+    text-align: center;
+    font-size: 20px;
 }
 
-.tabItem.active {
+.page_btn:hover {
+    background: #b5b5b5;
+    color: #fff;
+}
+
+.page_btn.active {
     font-weight: bold;
     background-color: #1e6ceb;
     color: #fff;
     border: 1px solid #1e6ceb;
 }
 
-.tabContent {
-    display: none;
-    padding: 20px;
-    /*border: 1px solid #ccc;*/
+.form_search {
+    background-color: #eff1f7;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    justify-content: space-between;
 }
 
-.tabContent.active {
-    display: block;
+.form_search .inner_title {
+    font-size: 17px;
+}
+
+.form_search input {
+    width: 260px;
+}
+
+.form_search .search_btn {
+    min-width: 45px;
+    padding: 10px;
+}
+
+.form_search .search_btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

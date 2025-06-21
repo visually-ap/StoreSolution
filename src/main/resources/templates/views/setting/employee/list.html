@@ -1,80 +1,109 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 css-->
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        <h2>직원 목록</h2>
+        <div class="section_wrap">
 
-        <!-- 검색 폼 -->
-        <form id="searchForm" method="get" th:action="@{/setting/employee/list}" onsubmit="return checkDateInputForSearch()">
-            <select th:field="*{searchDTO.searchCondition}">
-                <option value="all" selected>전체</option>
-                <option value="name">이름</option>
-                <option value="position">직책</option>
-            </select>
-            <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
+            <h2 class="title">직원 목록</h2>
 
-            <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
-            ~
-            <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+            <!-- 검색 폼 -->
+            <form id="searchForm" class="" method="get" th:action="@{/setting/employee/list}" onsubmit="return checkDateInputForSearch()">
+                <div class="search_wrap">
+                    <select class="select_box" th:field="*{searchDTO.searchCondition}">
+                        <option value="all" selected>전체</option>
+                        <option value="name">이름</option>
+                        <option value="position">직책</option>
+                    </select>
+                    <div class="input_box">
+                        <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
 
-            <button type="submit">검색</button>
-            <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
+                        <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
+                        ~
+                        <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+                    </div>
+                    <div class="button_box">
+                        <button type="submit" class="submitBtn">검색</button>
+                        <button type="button" onclick="resetSearchForm()" class="resetBtn"><span>초기화</span></button>
+                    </div>
+                </div>
 
+                <div class="number_lists result">
+                    <h5 class="total">
+                        <span th:text="${'총 '}"></span>
+                        <span class="people" th:text="${itemList.totalElements} + '명'"></span>
+                        <span th:text="${'의 직원이 존재합니다.'}"></span>
+                    </h5>
+                    <select id="sort" name="sort" onchange="searchForm.submit();" th:with="sort=${itemList.sort.toString()}">
+                        <option value="regDate,desc" th:selected="${sort == 'regDate: DESC'}">등록일시 최신순</option>
+                        <option value="regDate,asc" th:selected="${sort == 'regDate: ASC'}">등록일시 오래된순</option>
+                    </select>
+                </div>
+            </form>
+
+            <script>
+                periodPicker(document.getElementById('dateFrom'), document.getElementById('dateTo'));
+            </script>
+
+            <!-- 목록 테이블 -->
             <div>
-                <h5 th:text="${'총 ' + itemList.totalElements + '명의 직원이 존재합니다.'}"></h5>
-                <select id="sort" name="sort" onchange="searchForm.submit();" th:with="sort=${itemList.sort.toString()}">
-                    <option value="regDate,desc" th:selected="${sort == 'regDate: DESC'}">등록일시 최신순</option>
-                    <option value="regDate,asc" th:selected="${sort == 'regDate: ASC'}">등록일시 오래된순</option>
-                </select>
+                <table class="tableStyle listT">
+                    <thead>
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 20%">
+                        <col style="width: 15%">
+                        <col style="width: 20%">
+                        <col style="width: 10%">
+                        <col style="width: 25%">
+                    </colgroup>
+                    <tr class="title_tr">
+                        <th>순번</th>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>휴대전화번호</th>
+                        <th>직책</th>
+                        <th>등록일시</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gotoDetail" th:each="item, stat : ${itemList}" th:data-id="${item.userId}">
+                        <td th:text="${stat.count}"></td>
+                        <td th:text="${item.loginId}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${@stringParser.addDashToMobileNumber(item.mobileNumber)}"></td>
+                        <td th:text="${item.position}"></td>
+                        <td th:text="${#temporals.format(item.insertDatetime, 'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 페이징 -->
+                <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
             </div>
-        </form>
+            <div class="button_box">
+                <button id="registerButton" class="registerBtn">등록</button>
+            </div>
 
-        <script>
-            periodPicker(document.getElementById('dateFrom'), document.getElementById('dateTo'));
-        </script>
+            <script>
+                $(document).on('click', '#registerButton', function () {
+                    location.href = `/setting/employee/register`;
+                });
 
-        <!-- 목록 테이블 -->
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>순번</th>
-                    <th>아이디</th>
-                    <th>이름</th>
-                    <th>휴대전화번호</th>
-                    <th>직책</th>
-                    <th>등록일시</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="gotoDetail" th:each="item, stat : ${itemList}" th:data-id="${item.userId}">
-                    <td th:text="${stat.count}"></td>
-                    <td th:text="${item.loginId}"></td>
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${@stringParser.addDashToMobileNumber(item.mobileNumber)}"></td>
-                    <td th:text="${item.position}"></td>
-                    <td th:text="${#temporals.format(item.insertDatetime, 'yyyy-MM-dd HH:mm')}"></td>
-                </tr>
-                </tbody>
-            </table>
+                $(document).on('click', '.gotoDetail', function () {
+                    const userId = $(this).data('id');
+                    location.href = `/setting/employee/detail?userId=${userId}`;
+                });
+            </script>
 
-            <!-- 페이징 -->
-            <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
         </div>
-        <div>
-            <button id="registerButton">등록</button>
-        </div>
-
-        <script>
-            $(document).on('click', '#registerButton', function () {
-                location.href = `/setting/employee/register`;
-            });
-
-            $(document).on('click', '.gotoDetail', function () {
-                const userId = $(this).data('id');
-                location.href = `/setting/employee/detail?userId=${userId}`;
-            });
-        </script>
     </th:block>
 </th:block>
 </html>

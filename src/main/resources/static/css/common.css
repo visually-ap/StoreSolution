@@ -99,12 +99,33 @@ button, input, optgroup, select, textarea {
 }
 
 button, input {
-    overflow: visible
+    overflow: visible;
+    border: 1px solid #ddd;
 }
 
 button, select {
     text-transform: none;
     cursor: pointer;
+}
+
+button {
+    box-shadow: 3px 3px 7px 2px rgba(0,0,0,.025);
+    min-width: 60px;
+    height: 40px;
+    background: #fff;
+    border-radius: 3px;
+    outline: none;
+    transition: all .3s;
+}
+
+select {
+    border: 1px solid #ddd;
+    min-width: 100px;
+    border-radius: 3px;
+    padding: 0 10px;
+    outline: none;
+    height: 40px;
+    box-shadow: 3px 3px 7px 2px rgba(0,0,0,.025);
 }
 
 [type=button], [type=reset], [type=submit], button {
@@ -139,6 +160,15 @@ progress {
 
 textarea {
     overflow: auto
+}
+
+table th {
+    height: 50px;
+}
+
+table td {
+    text-align: center;
+    height: 40px;
 }
 
 [type=checkbox], [type=radio] {
@@ -181,10 +211,20 @@ template {
 }
 
 /*작성 css*/
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    background-size: cover;
+    position: relative;
+}
+
 .body_line {
     position: absolute;
     width: 97.5%;
     height: 95.5%;
+    min-width: 850px;
+    max-width: 1800px;
     border: 1px solid #ddd;
     background: transparent;
     top: 50%;
@@ -193,27 +233,69 @@ template {
     z-index: 0;
 }
 
+.container {
+    position: absolute;
+    top: 110px;
+    left: 18%;
+    width: 80%;
+    max-width: 1440px;
+    min-width: 650px;
+}
+
+.section_wrap {
+    border: 1px solid #ddd;
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.section_wrap .title {
+    padding-bottom: 15px;
+    font-size: 22px;
+}
+
 input {
     outline: none;
     border: 1px solid #ddd;
     padding: 0 7px;
     box-sizing: border-box;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 3px;
+    box-shadow: 3px 3px 7px 2px rgba(0,0,0,.025);
 }
 
 input::placeholder {
     color: #ddd;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-transition: background-color 9999s ease-out;
-    -webkit-box-shadow: 0 0 0 1000px white inset !important;
-    -webkit-text-fill-color: #fff !important;
-}
+/*input:-webkit-autofill,*/
+/*input:-webkit-autofill:hover,*/
+/*input:-webkit-autofill:focus,*/
+/*input:-webkit-autofill:active {*/
+/*    transition: background-color 5000s ease-in-out 0s;*/
+/*    -webkit-transition: background-color 9999s ease-out;*/
+/*    -webkit-box-shadow: 0 0 0 1000px white inset !important;*/
+/*    -webkit-text-fill-color: #fff !important;*/
+/*}*/
 
 .hidden_txt {
     display: none;
+}
+
+@media all and (max-width: 900px) {
+    .main_header {
+        left: 5px;
+        transform: translateX(0);
+    }
+    .body_line {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        top: 0;
+        left: 0;
+        transform: translate(0%, 0%);
+    }
+    .section_wrap {
+        padding: 25px 20px;
+    }
 }

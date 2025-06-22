@@ -530,26 +530,40 @@
 
 .info_calendar .left_area {
     min-width: 400px;
-    width: 30%;
+    max-width: 500px;
+    width: 35%;
 }
 
 .info_calendar .right_area {
-    width: 70%;
-    overflow-X: scroll;
+    width: 65%;
+    min-width: 500px;
 }
 
-.customer_search_wrap {
+.search_style_1 {
     border: 1px solid #d1d3d4;
-    padding: 25px 20px;
+    padding: 20px 15px;
     box-sizing: border-box;
     border-radius: 10px;
-    margin-top: 50px;
     background: #fff;
 }
 
-.customer_search_wrap .title {
+.search_style_1 .title {
     font-size: 20px;
-    margin-bottom: 7px;
+    margin-bottom: 10px;
+}
+
+.search_style_1 .top_line .title {
+    margin-bottom: 0
+}
+
+.search_style_1 .top_line {
+    margin-bottom: 10px;
+    align-items: flex-end;
+}
+
+.search_style_1 .top_line button {
+    width: 80px;
+    height: 30px;
 }
 
 .customer_info_btn {
@@ -561,20 +575,6 @@
     padding: 0;
     margin: 0;
     gap: 10px;
-}
-
-.customer_search_result_wrap {
-    border: 1px solid #d1d3d4;
-    padding: 25px 20px;
-    box-sizing: border-box;
-    border-radius: 10px;
-    margin-top: 50px;
-    background: #fff;
-}
-
-.customer_search_result_wrap .title {
-    font-size: 20px;
-    margin-bottom: 7px;
 }
 
 .page_btn {
@@ -593,6 +593,7 @@
     line-height: 50px;
     text-align: center;
     font-size: 20px;
+    box-shadow: 3px 3px 11px 1px rgba(0,0,0,.09);
 }
 
 .page_btn:hover {
@@ -607,29 +608,30 @@
     border: 1px solid #1e6ceb;
 }
 
-.form_search {
-    background-color: #eff1f7;
+.inner_style_1 {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 15px 15px 15px 10px;
     border-radius: 10px;
     justify-content: space-between;
 }
 
-.form_search .inner_title {
+.inner_style_1 .inner_title {
     font-size: 17px;
+    width: 70px;
+    text-align: center;
 }
 
-.form_search input {
-    /*width: 260px;*/
+.inner_bg input {
+    width: 70%;
 }
 
-.form_search .search_btn {
+.inner_style_1 .search_btn {
     min-width: 45px;
     padding: 10px;
 }
 
-.form_search .search_btn img {
+.inner_style_1 .search_btn img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -638,28 +640,31 @@
     align-items: center;
 }
 
-.customer_search_result_wrap .form_search {
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
+.one-line {
+    display: flex;
 }
 
-.customer_search_result_wrap .form_search .one-line {
+.half-line {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    margin-bottom: 10px;
+    justify-content: space-between;
 }
 
-.customer_search_result_wrap .form_search .one-line .inner_title {
-    width: 60px;
+.half-line input {
+    width: 150px;
 }
 
-    /*구글 캘린더*/
-.calendar {
-    min-width: 700px;
+.inner_style_2 {
+    padding: 15px 15px 15px 10px;
+    border-radius: 10px;
+    border: 1px solid #1e6ceb;
 }
+
+.inner_style_2 .name {
+    border-bottom: 1px solid #555;
+    display: inline-block;
+}
+
 /* 날짜 숫자만 가운데 정렬 */
  .fc .fc-daygrid-day-number {
      display: block;
@@ -669,6 +674,11 @@
  }
 
 /* 필요하면 셀 높이 맞추기 */
+#calendar {
+    overflow: auto;
+    width: 100%;
+}
+
 .fc-scrollgrid.fc-scrollgrid-liquid th { height: 35px; }
 
 .fc .fc-daygrid-day-frame {

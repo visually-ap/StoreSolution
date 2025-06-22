@@ -245,6 +245,10 @@ button:hover {
     gap: 10px;
 }
 
+.inner_bg {
+    background-color: #eff1f7;
+}
+
 .btn_1 {
     display: inline-block;
     padding: 0 13px;
@@ -301,6 +305,10 @@ button:hover {
 /*넓이*/
 .w-150 {
     width: 150px !important;
+}
+
+.w_100 {
+    width: 100% !important;
 }
 
 /*작성 css*/
@@ -368,6 +376,18 @@ input::placeholder {
     display: none;
 }
 
+.flex {
+    display: flex;
+}
+
+.between {
+    justify-content: space-between;
+}
+
+.column {
+    flex-direction: column;
+}
+
 /* 공통 색상 */
 .pointColor_1 {
     color: #fd5252;
@@ -375,12 +395,24 @@ input::placeholder {
 }
 
 /* margin */
+.mt-20px {
+    margin-top: 20px !important;
+}
+
 .mt-30px {
     margin-top: 30px !important;
 }
 
 .mt-40px {
     margin-top: 40px !important;
+}
+
+.mt-50px {
+    margin-top: 50px !important;
+}
+
+.mb-5px {
+    margin-bottom: 5px !important;
 }
 
 .mb-20px {

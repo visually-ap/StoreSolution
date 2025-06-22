@@ -529,7 +529,7 @@
 }
 
 .info_calendar .left_area {
-    min-width: 400px;
+    min-width: 450px;
     max-width: 500px;
     width: 35%;
 }
@@ -616,6 +616,11 @@
     justify-content: space-between;
 }
 
+.scroll-box {
+    height: 55vh;
+    overflow: auto;
+}
+
 .inner_style_1 .inner_title {
     font-size: 17px;
     width: 70px;
@@ -660,9 +665,33 @@
     border: 1px solid #1e6ceb;
 }
 
-.inner_style_2 .name {
+.inner_style_2 li {
+    padding: 2px 0;
+}
+
+.inner_style_3 {
+    border: 1px solid #eff1f7;
+    box-shadow: 3px 3px 11px 1px rgba(0,0,0,.09);
+    border-radius: 10px;
+}
+
+.inner_style_3 .textarea {
+    border: 0;
+    padding: 15px 15px 15px 10px;
+    display: block;
+    width: 100%;
+    outline: 0;
+    resize: none;
+    box-sizing: border-box;
+    border-radius: 20px;
+    height: 100px;
+}
+
+.border-bottom {
     border-bottom: 1px solid #555;
     display: inline-block;
+    font-weight: 700;
+    color: #1e6ceb;
 }
 
 /* 날짜 숫자만 가운데 정렬 */
@@ -697,4 +726,26 @@
     display: flex;
     align-items: center;   /* 세로 가운데 */
     justify-content: center; /* 가로 가운데 (필요하면) */
+}
+
+@media all and (max-width: 1500px) {
+    .half-line input {
+        width: 140px;
+    }
+}
+@media all and (max-width: 1400px) {
+    .inner_bg input {
+        width: 65%;
+    }
+    .half-line input {
+        width: 130px;
+    }
+}
+@media all and (max-width: 1300px) {
+    .inner_bg input {
+        width: 60%;
+    }
+    .half-line input {
+        width: 120px;
+    }
 }

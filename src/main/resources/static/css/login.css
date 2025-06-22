@@ -83,18 +83,12 @@
     font-size: 22px;
 }
 .guide_inner_wrap .text_2 {
-    display: block;
     color: #00264b;
     border: 1px solid #00264b;
     font-weight: 900;
     background: #fff;
-    padding: 13px;
     font-size: 24px;
-    width: 180px;
     margin: 35px auto 50px;
-    border-radius: 50px;
-    transition: all .3s;
-    box-sizing: border-box;
 }
 
 .guide_inner_wrap .text_2:hover {
@@ -160,12 +154,7 @@
     border: 1px solid #00264b;
     color: #fff;
     font-weight: 900;
-    padding: 13px;
     font-size: 24px;
-    border-radius: 50px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: all .3s;
 }
 
 .login_btn button:hover {

@@ -10,7 +10,7 @@
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        <div class="section_wrap">
+        <div class="section_wrap listPage">
 
             <h2 class="title">직원 목록</h2>
 
@@ -30,8 +30,8 @@
                         <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
                     </div>
                     <div class="button_box">
-                        <button type="submit" class="submitBtn">검색</button>
-                        <button type="button" onclick="resetSearchForm()" class="resetBtn"><span>초기화</span></button>
+                        <button type="submit" class="btnColor_1">검색</button>
+                        <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
                     </div>
                 </div>
 
@@ -88,11 +88,14 @@
                 <!-- 페이징 -->
                 <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
             </div>
-            <div class="button_box">
-                <button id="registerButton" class="registerBtn">등록</button>
-            </div>
+        </div>
 
-            <script>
+        <div class="listPage_btn btn_wrap right">
+            <button id="registerButton" class="btn_2 btnColor_1 registerBtn">등록</button>
+
+        </div>
+
+        <script>
                 $(document).on('click', '#registerButton', function () {
                     location.href = `/setting/employee/register`;
                 });
@@ -103,7 +106,6 @@
                 });
             </script>
 
-        </div>
     </th:block>
 </th:block>
 </html>

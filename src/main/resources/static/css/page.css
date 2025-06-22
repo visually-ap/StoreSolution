@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-/*검색창*/
+/* 검색창 */
 .search_wrap {
     background: #eff1f7;
     padding: 25px;
@@ -27,42 +27,29 @@
     width: 100%;
 }
 
-.button_box {
+.listPage .button_box {
     display: flex;
     gap: 7px;
     align-items: center;
     width: 20%;
 }
 
-.button_box button {
+.listPage .button_box button {
     width: 100%;
 }
 
-.button_box button:hover {
-    background-color: #eee;
-    color: #111;
-}
-
-.button_box .submitBtn {
-    background-color: #1e6ceb;
-    color: #fff;
-}
-
-.button_box .submitBtn:hover {
-    background-color: #80baff;
-    color: #fff;
-}
-
-.button_box .resetBtn:hover {
-    background-color: #111;
-    color: #fff;
-}
-
-.button_box .registerBtn {
+.listPage .button_box .registerBtn {
     width: 100px;
 }
 
-    /*직원 목록 수*/
+.listPage_btn.btn_wrap {
+    gap: 10px;
+    position: absolute;
+    bottom: -80px;
+    right: 0;
+}
+
+/*직원 목록 수*/
 .number_lists.result {
     display: flex;
     padding: 15px 0;
@@ -85,7 +72,7 @@
     color: #1e6ceb;
 }
 
-/*테이블*/
+/* 테이블 */
 .tableStyle.listT {
     width: 100%;
     table-layout: fixed;
@@ -103,36 +90,80 @@
     border-bottom: 1px solid #ddd;
 }
 
-.tableStyle.registerT {
-    width: 100%;
-    border-radius: 10px;
+.tableStyle.listT .gotoDetail:hover {
+    transition: all .3s;
+    background-color: #dae8ff;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.tableStyle.registerT th {
+.tableStyle.registerT,
+.tableStyle.detailT {
+    width: 100%;
+    border-radius: 10px;
+    border-collapse: separate;
+}
+
+.tableStyle.registerT th,
+.tableStyle.detailT th {
     width: 200px;
     text-align: left;
     padding: 0 10px;
     box-sizing: border-box;
 }
 
-.tableStyle.registerT td {
+.tableStyle.registerT td,
+.tableStyle.detailT td {
     background: #eff1f7;
     padding: 10px 20px;
     text-align: left;
     border-radius: 10px
 }
 
-.tableStyle.registerT td input {
+.tableStyle.registerT td input,
+.tableStyle.detailT td input {
     width: 300px;
 }
 
-.tableStyle.registerT td select {
+.tableStyle.registerT td select,
+.tableStyle.detailT td select {
     width: 300px;
 }
 
-.tableStyle.registerT td button {
+.tableStyle.registerT td button,
+.tableStyle.detailT td button {
     margin-left: 5px;
     width: 100px;
+}
+
+/* 등록페이지 */
+.registerPage {
+    position: relative;
+}
+
+.registerPage .btn_wrap {
+    gap: 10px;
+    position: absolute;
+    bottom: -80px;
+    right: 0;
+}
+
+/* 상세페이지 */
+.tableStyle.detailT .resetBtn {
+    width: 150px;
+}
+
+.detailPage .btn_wrap {
+    gap: 10px;
+    position: absolute;
+    bottom: -80px;
+    right: 0;
+}
+
+@media all and (max-width: 992px) {
+    .tableStyle.registerT td button {
+        width: 70px;
+    }
 }
 
 @media all and (max-width: 900px) {

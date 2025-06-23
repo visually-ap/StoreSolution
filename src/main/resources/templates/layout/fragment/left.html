@@ -1,22 +1,51 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="leftFragment">
-    <div class="leftNav_wrap">
-        <ul class="left_nav">
-            <li class="on">
-                <a th:href="@{/setting/store/info}">
-                    <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: none;">
-                    <img th:src="@{/images/icon/info_on.png}" alt="about 아이콘" style="display: block;">
-                    <span>Information</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/setting/employee/list}">
-                    <img th:src="@{/images/icon/staff.png}" alt="customer 아이콘" style="display: block;">
-                    <img th:src="@{/images/icon/staff_on.png}" alt="customer 아이콘" style="display: none;">
-                    <span>Staff</span>
-                </a>
-            </li>
+    <div class="leftNav_wrap" th:with="pathname=${#httpServletRequest.requestURI}">
+
+        <!-- Store Management -->
+        <ul class="left_nav" th:if="${pathname.startsWith('/setting')}">
+            <!-- Information -->
+            <th:block th:if="${pathname == ('/setting/store/info')}">
+                <li class="on">
+                    <a th:href="@{/setting/store/info}">
+                        <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: none;">
+                        <img th:src="@{/images/icon/info_on.png}" alt="about 아이콘" style="display: block;">
+                        <span>Information</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == ('/setting/store/info')}">
+                <li>
+                    <a th:href="@{/setting/store/info}">
+                        <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: block;">
+                        <img th:src="@{/images/icon/info_on.png}" alt="about 아이콘" style="display: none;">
+                        <span>Information</span>
+                    </a>
+                </li>
+            </th:block>
+
+            <!-- Staff -->
+            <th:block th:if="${pathname.startsWith('/setting/employee')}">
+                <li class="on">
+                    <a th:href="@{/setting/employee/list}">
+                        <img th:src="@{/images/icon/staff.png}" alt="customer 아이콘" style="display: none;">
+                        <img th:src="@{/images/icon/staff_on.png}" alt="customer 아이콘" style="display: block;">
+                        <span>Staff</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname.startsWith('/setting/employee')}">
+                <li>
+                    <a th:href="@{/setting/employee/list}">
+                        <img th:src="@{/images/icon/staff.png}" alt="customer 아이콘" style="display: block;">
+                        <img th:src="@{/images/icon/staff_on.png}" alt="customer 아이콘" style="display: none;">
+                        <span>Staff</span>
+                    </a>
+                </li>
+            </th:block>
+
+
             <li>
                 <a href="">
                     <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: block;">

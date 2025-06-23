@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block th:fragment="headerFragment">
-    <div class="main_header">
+    <div class="main_header" th:with="pathname=${#httpServletRequest.requestURI}">
         <h2 class="logo_wrap">
             <a th:href="@{/}">
                 <img th:src="@{/images/logo.png}" alt="ap logo" class="main_logo">
@@ -22,7 +22,7 @@
                 <a href="#" class="navMain">reservation</a>
             </li>
             <li sec:authorize="hasRole('ROLE_USER')">
-                <a  th:href="@{/setting/store/info}" class="navMain on">Store Management</a>
+                <a th:href="@{/setting/store/info}" class="navMain" th:classappend="${pathname.startsWith('/setting')} ? 'on'">Store Management</a>
                 <ul class="subNav">
                     <li><a th:href="@{/setting/store/info}">매장정보</a></li>
                     <li><a th:href="@{/setting/employee/list}">직원목록</a></li>

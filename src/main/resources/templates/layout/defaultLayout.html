@@ -46,12 +46,10 @@
         <body>
             <th:block th:replace="~{/layout/fragment/header :: headerFragment}"></th:block>
             <div class="wrapper">
-                <div class="body_line">
-                    <th:block th:replace="~{/layout/fragment/left :: leftFragment}"></th:block>
+                <th:block th:replace="~{/layout/fragment/left :: leftFragment}"></th:block>
 
-                    <div class="container">
-                        <th:block th:replace="${content}"></th:block>
-                    </div>
+                <div class="container">
+                    <th:block th:replace="${content}"></th:block>
                 </div>
             </div>
         </body>

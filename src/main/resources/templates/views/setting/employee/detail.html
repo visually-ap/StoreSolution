@@ -19,38 +19,87 @@
             <h2 class="title">직원 상세 <span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
 
             <form id="dataForm">
+                <div class="boxStyle_1">
+                    <div class="line mb-20px">
+                        <div class="box other_box">
+                            <h2 class="name">아이디<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+<!--                                <input type="hidden" name="userId" th:text="${item.loginId}"/>-->
+                                <div th:text="${item.loginId}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line mb-20px">
+                        <div class="box other_box">
+                            <h2 class="name">비밀번호</h2>
+                            <div class="value">
+                                <button type="button" id="resetPasswordButton" class="resetBtn btnColor_2">비밀번호초기화</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line mb-20px">
+                        <div class="box">
+                            <h2 class="name">이름<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+                                <input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line mb-20px">
+                        <div class="box">
+                            <h2 class="name">휴대전화번호<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+                                <input inputmode="numeric" pattern="[0-9]*" id="mobileNumber" name="mobileNumber" maxlength="11" placeholder="숫자만 입력" th:value="${item.mobileNumber}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="box">
+                            <h2 class="name">휴대전화번호<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+                                <select id="position" name="position" required>
+                                    <option value="" th:selected="${item.position == null}">선택</option>
+                                    <option value="20300" th:selected="${item.position == 20300}">점장</option>
+                                    <option value="20301" th:selected="${item.position == 20301}">팀장</option>
+                                    <option value="20302" th:selected="${item.position == 20302}">팀원</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <input type="hidden" name="userId" th:value="${item.userId}"/>
-                <table class="tableStyle detailT">
-                    <tr>
-                        <th><span class="pointColor_1">*</span> 아이디</th>
-                        <td th:text="${item.loginId}"></td>
-                    </tr>
-                    <tr>
-                        <th>비밀번호</th>
-                        <td>
-                            <button type="button" id="resetPasswordButton" class="resetBtn btnColor_2">비밀번호초기화</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><span class="pointColor_1">*</span> 이름</th>
-                        <td><input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}"></td>
-                    </tr>
-                    <tr>
-                        <th><span class="pointColor_1">*</span> 휴대전화번호</th>
-                        <td><input inputmode="numeric" pattern="[0-9]*" id="mobileNumber" name="mobileNumber" maxlength="11" placeholder="숫자만 입력" th:value="${item.mobileNumber}"></td>
-                    </tr>
-                    <tr>
-                        <th><span class="pointColor_1">*</span> 직책</th>
-                        <td>
-                            <select id="position" name="position" required>
-                                <option value="" th:selected="${item.position == null}">선택</option>
-                                <option value="20300" th:selected="${item.position == 20300}">점장</option>
-                                <option value="20301" th:selected="${item.position == 20301}">팀장</option>
-                                <option value="20302" th:selected="${item.position == 20302}">팀원</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
+<!--                <table class="tableStyle detailT">-->
+<!--                    <tr>-->
+<!--                        <th><span class="pointColor_1">*</span> 아이디</th>-->
+<!--                        <td th:text="${item.loginId}"></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>비밀번호</th>-->
+<!--                        <td>-->
+<!--                            <button type="button" id="resetPasswordButton" class="resetBtn btnColor_2">비밀번호초기화</button>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th><span class="pointColor_1">*</span> 이름</th>-->
+<!--                        <td><input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}"></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th><span class="pointColor_1">*</span> 휴대전화번호</th>-->
+<!--                        <td><input inputmode="numeric" pattern="[0-9]*" id="mobileNumber" name="mobileNumber" maxlength="11" placeholder="숫자만 입력" th:value="${item.mobileNumber}"></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th><span class="pointColor_1">*</span> 직책</th>-->
+<!--                        <td>-->
+<!--                            <select id="position" name="position" required>-->
+<!--                                <option value="" th:selected="${item.position == null}">선택</option>-->
+<!--                                <option value="20300" th:selected="${item.position == 20300}">점장</option>-->
+<!--                                <option value="20301" th:selected="${item.position == 20301}">팀장</option>-->
+<!--                                <option value="20302" th:selected="${item.position == 20302}">팀원</option>-->
+<!--                            </select>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
 
                 <div class="btn_wrap between">
                     <div class="innerBtn_box">

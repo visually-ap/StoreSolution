@@ -1,9 +1,9 @@
 @charset "utf-8";
 
 .settingInfo_wrap .main_title {
-    font-size: 20px;
+    font-size: 19px;
     margin: 0 auto 25px;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
     padding: 15px 0;
     background: #eff1f7;
@@ -22,7 +22,7 @@
 
 .boxStyle_1 .box {
     display: flex;
-    width: 50%;
+    width: 70%;
     align-items: center;
     padding: 15px 25px;
 }
@@ -74,10 +74,6 @@
 
 .boxStyle_1 .box .value select {
     border: 0;
-    width: 100%;
-}
-
-.boxStyle_1 .box.box-only {
     width: 100%;
 }
 
@@ -245,22 +241,15 @@
     .boxStyle_1 .box .name {
         width: 35%;
     }
-    .boxStyle_1 .box .value {
-        width: 55%;
-    }
 }
 
 @media all and (max-width: 1280px) {
     .boxStyle_1 .box {
         padding: 15px 20px;
     }
-    .boxStyle_1 .box.only-box .name {
-        width: 15%;
-    }
     .boxStyle_1 .box.only-box .value {
         width: 77%;
     }
-
     .boxStyle_1 .line .box:nth-child(1) {
         padding-right: 0;
     }
@@ -273,21 +262,6 @@
 @media all and (max-width: 1080px) {
     .boxStyle_1 .box .name {
         width: 40%;
-    }
-    .boxStyle_1 .box .value {
-        width: 50%;
-        padding: 0 14px;
-        height: auto;
-        min-height: 40px;
-    }
-    .boxStyle_1 .box.only-box .name {
-        width: 18%;
-    }
-}
-
-@media all and (max-width: 992px) {
-    .tableStyle.registerT td button {
-        width: 70px;
     }
 }
 

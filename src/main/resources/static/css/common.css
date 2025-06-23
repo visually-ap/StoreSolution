@@ -386,6 +386,12 @@ input::placeholder {
     margin-bottom: 20px !important;
 }
 
+@media all and (max-width: 992px) {
+    .section_wrap {
+        padding: 35px 30px;
+    }
+}
+
 @media all and (max-width: 900px) {
     .main_header {
         left: 5px;

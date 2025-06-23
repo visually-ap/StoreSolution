@@ -23,7 +23,7 @@
 }
 
 .loginForm_wrap {
-    width: 700px;
+    width: 550px;
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
@@ -65,11 +65,13 @@
 }
 
 .login_logo {
-    width: 80%;
     margin: 0 auto;
+    display: block;
+    width: 280px;
 }
 
 .guide_inner_wrap {
+    width: 100%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -80,15 +82,17 @@
 }
 
 .guide_inner_wrap .text_1 {
-    font-size: 22px;
+    font-size: 17px;
+    line-height: 20px;
 }
 .guide_inner_wrap .text_2 {
     color: #00264b;
     border: 1px solid #00264b;
     font-weight: 900;
     background: #fff;
-    font-size: 24px;
-    margin: 35px auto 50px;
+    font-size: 19px;
+    margin: 25px auto 40px;
+    width: 140px;
 }
 
 .guide_inner_wrap .text_2:hover {
@@ -99,14 +103,14 @@
 
 .login_box {
     background: #fff;
-    padding: 50px;
+    padding: 50px 70px;
 }
 
 .input_box {
     background: #00264b;
     height: 60px;
     border-radius: 10px;
-    width: 450px;
+    width: 100%;
     margin: 0 auto 20px;
     display: flex;
     align-items: center;
@@ -145,8 +149,8 @@
 }
 
 .login_btn {
-    margin: 40px auto 20px;
-    width: 180px;
+    margin: 40px auto 10px;
+    width: 140px;
 }
 
 .login_btn button {
@@ -154,7 +158,8 @@
     border: 1px solid #00264b;
     color: #fff;
     font-weight: 900;
-    font-size: 24px;
+    font-size: 19px;
+    width: 100%;
 }
 
 .login_btn button:hover {

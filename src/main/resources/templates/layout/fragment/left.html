@@ -3,10 +3,14 @@
 <th:block th:fragment="leftFragment">
     <div class="leftNav_wrap" th:with="pathname=${#httpServletRequest.requestURI}">
 
+
+
+
+
         <!-- Store Management -->
         <ul class="left_nav" th:if="${pathname.startsWith('/setting')}">
-            <!-- Information -->
-            <th:block th:if="${pathname == ('/setting/store/info')}">
+            <!-- 매장 정보 -->
+            <th:block th:if="${pathname == '/setting/store/info'}">
                 <li class="on">
                     <a th:href="@{/setting/store/info}">
                         <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: none;">
@@ -15,7 +19,7 @@
                     </a>
                 </li>
             </th:block>
-            <th:block th:unless="${pathname == ('/setting/store/info')}">
+            <th:block th:unless="${pathname == '/setting/store/info'}">
                 <li>
                     <a th:href="@{/setting/store/info}">
                         <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: block;">
@@ -25,7 +29,7 @@
                 </li>
             </th:block>
 
-            <!-- Staff -->
+            <!-- 직원관리 -->
             <th:block th:if="${pathname.startsWith('/setting/employee')}">
                 <li class="on">
                     <a th:href="@{/setting/employee/list}">
@@ -45,28 +49,55 @@
                 </li>
             </th:block>
 
+            <!-- 환경설정 -->
+            <th:block th:if="${pathname == '/setting/environment'}">
+                <li class="on">
+                    <a th:href="@{/setting/environment}">
+                        <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: none;">
+                        <img th:src="@{/images/icon/template_on.png}" alt="fabricItem 아이콘" style="display: block;">
+                        <span>Environment Setup</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/setting/environment'}">
+                <li>
+                    <a th:href="@{/setting/environment}">
+                        <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: block;">
+                        <img th:src="@{/images/icon/template_on.png}" alt="fabricItem 아이콘" style="display: none;">
+                        <span>Environment Setup</span>
+                    </a>
+                </li>
+            </th:block>
 
-            <li>
-                <a href="">
-                    <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: block;">
-                    <img th:src="@{/images/icon/template_on.png}" alt="fabricItem 아이콘" style="display: none;">
-                    <span>template</span>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <img th:src="@{/images/icon/design.png}" alt="design 아이콘" style="display: block;">
-                    <img th:src="@{/images/icon/design_on.png}" alt="design 아이콘" style="display: none;">
-                    <span>Design</span>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <img th:src="@{/images/icon/size.png}" alt="size 아이콘" style="display: block;">
-                    <img th:src="@{/images/icon/size_on.png}" alt="size 아이콘" style="display: none;">
-                    <span>Size</span>
-                </a>
-            </li>
+            <!-- 이미지설정 -->
+            <th:block th:if="${pathname == '/setting/environment'}">
+                <li>
+                    <a th:href="@{/setting/images}">
+                        <img th:src="@{/images/icon/design.png}" alt="design 아이콘" style="display: none;">
+                        <img th:src="@{/images/icon/design_on.png}" alt="design 아이콘" style="display: block;">
+                        <span>Image Setup</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/setting/images'}">
+                <li>
+                    <a th:href="@{/setting/images}">
+                        <img th:src="@{/images/icon/design.png}" alt="design 아이콘" style="display: block;">
+                        <img th:src="@{/images/icon/design_on.png}" alt="design 아이콘" style="display: none;">
+                        <span>Image Setup</span>
+                    </a>
+                </li>
+            </th:block>
+
+
+
+<!--            <li>-->
+<!--                <a href="">-->
+<!--                    <img th:src="@{/images/icon/size.png}" alt="size 아이콘" style="display: block;">-->
+<!--                    <img th:src="@{/images/icon/size_on.png}" alt="size 아이콘" style="display: none;">-->
+<!--                    <span>Size</span>-->
+<!--                </a>-->
+<!--            </li>-->
         </ul>
     </div>
 </th:block>

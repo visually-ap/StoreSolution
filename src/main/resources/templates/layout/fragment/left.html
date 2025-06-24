@@ -12,18 +12,14 @@
             <!-- 매장 정보 -->
             <th:block th:if="${pathname == '/setting/store/info'}">
                 <li class="on">
-                    <a th:href="@{/setting/store/info}">
-                        <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: none;">
-                        <img th:src="@{/images/icon/info_on.png}" alt="about 아이콘" style="display: block;">
+                    <a th:href="@{/setting/store/info}" class="info">
                         <span>Information</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/setting/store/info'}">
                 <li>
-                    <a th:href="@{/setting/store/info}">
-                        <img th:src="@{/images/icon/info.png}" alt="about 아이콘" style="display: block;">
-                        <img th:src="@{/images/icon/info_on.png}" alt="about 아이콘" style="display: none;">
+                    <a th:href="@{/setting/store/info}" class="info">
                         <span>Information</span>
                     </a>
                 </li>
@@ -32,18 +28,14 @@
             <!-- 직원관리 -->
             <th:block th:if="${pathname.startsWith('/setting/employee')}">
                 <li class="on">
-                    <a th:href="@{/setting/employee/list}">
-                        <img th:src="@{/images/icon/staff.png}" alt="customer 아이콘" style="display: none;">
-                        <img th:src="@{/images/icon/staff_on.png}" alt="customer 아이콘" style="display: block;">
+                    <a th:href="@{/setting/employee/list}" class="staff">
                         <span>Staff</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname.startsWith('/setting/employee')}">
                 <li>
-                    <a th:href="@{/setting/employee/list}">
-                        <img th:src="@{/images/icon/staff.png}" alt="customer 아이콘" style="display: block;">
-                        <img th:src="@{/images/icon/staff_on.png}" alt="customer 아이콘" style="display: none;">
+                    <a th:href="@{/setting/employee/list}" class="staff">
                         <span>Staff</span>
                     </a>
                 </li>
@@ -52,18 +44,14 @@
             <!-- 환경설정 -->
             <th:block th:if="${pathname == '/setting/environment'}">
                 <li class="on">
-                    <a th:href="@{/setting/environment}">
-                        <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: none;">
-                        <img th:src="@{/images/icon/template_on.png}" alt="fabricItem 아이콘" style="display: block;">
+                    <a th:href="@{/setting/environment}" class="template">
                         <span>Environment Setup</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/setting/environment'}">
                 <li>
-                    <a th:href="@{/setting/environment}">
-                        <img th:src="@{/images/icon/template.png}" alt="fabricItem 아이콘" style="display: block;">
-                        <img th:src="@{/images/icon/template_on.png}" alt="fabricItem 아이콘" style="display: none;">
+                    <a th:href="@{/setting/environment}" class="template">
                         <span>Environment Setup</span>
                     </a>
                 </li>
@@ -72,18 +60,14 @@
             <!-- 이미지설정 -->
             <th:block th:if="${pathname == '/setting/environment'}">
                 <li>
-                    <a th:href="@{/setting/images}">
-                        <img th:src="@{/images/icon/design.png}" alt="design 아이콘" style="display: none;">
-                        <img th:src="@{/images/icon/design_on.png}" alt="design 아이콘" style="display: block;">
+                    <a th:href="@{/setting/images}" class="design">
                         <span>Image Setup</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/setting/images'}">
                 <li>
-                    <a th:href="@{/setting/images}">
-                        <img th:src="@{/images/icon/design.png}" alt="design 아이콘" style="display: block;">
-                        <img th:src="@{/images/icon/design_on.png}" alt="design 아이콘" style="display: none;">
+                    <a th:href="@{/setting/images}" class="design">
                         <span>Image Setup</span>
                     </a>
                 </li>

@@ -81,44 +81,14 @@
     transition: all .5s;
 }
 
-.left_nav li:hover {
-    width: 250px;
-    color: #00264b;
-    font-weight: 600;
-}
-
-.left_nav li a span {
-    display: none;
-    color: #00264b;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 19px;
-}
-
-.left_nav li:hover span {
-    display: inline-block;
-}
-
 .left_nav li:last-child {
     margin-bottom: 0;
 }
 
-.left_nav li a {
-    font-size: 20px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.left_nav li a img {
-    display: inline-block;
-    /*width: 60px;*/
-    height: 100%;
-    object-fit: contain;
-    padding: 18px;
-    box-sizing: border-box;
+.left_nav li:hover {
+    width: 250px;
+    color: #00264b;
+    font-weight: 600;
 }
 
 .left_nav li.on {
@@ -132,9 +102,65 @@
     width: 250px;
 }
 
+.left_nav li a {
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.left_nav li .info {
+    background: url(../images/icon/info.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .info {
+    background: url(../images/icon/info_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li .staff {
+    background: url(../images/icon/staff.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .staff {
+    background: url(../images/icon/staff_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li .template {
+    background: url(../images/icon/template.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .template {
+    background: url(../images/icon/template_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li .design {
+    background: url(../images/icon/design.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .design {
+    background: url(../images/icon/design_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li a span {
+    display: none;
+    color: #00264b;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 19px;
+    padding-left: 60px;
+}
+
+.left_nav li:hover a span {
+    display: inline-block;
+}
+
 .left_nav li.on a span {
     display: inline-block;
     color: #fff;
-    padding-left: 10px;
+    padding-left: 60px;
     font-weight: 700;
 }
+
+

@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 css-->
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <link rel="stylesheet" th:href="@{/css/component/switch.css}">

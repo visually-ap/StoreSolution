@@ -78,7 +78,7 @@
     margin-bottom: 15px;
 
     border-radius: 50px;
-    transition: all .5s;
+    transition: all .3s;
 }
 
 .left_nav li:last-child {
@@ -95,7 +95,7 @@
     border: 1px solid #1e6ceb;
     background: #1e6ceb;
     border-radius: 50px;
-    transition: all .5s;
+    transition: all .3s;
 }
 
 .left_nav li.on:hover {

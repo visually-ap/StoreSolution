@@ -240,6 +240,10 @@ button:hover {
     justify-content: space-between;
 }
 
+.btn_wrap.center {
+    justify-content: center;
+}
+
 .innerBtn_box {
     display: flex;
     gap: 10px;
@@ -363,6 +367,10 @@ input::placeholder {
 /* margin */
 .mt-30px {
     margin-top: 30px !important;
+}
+
+.mt-40px {
+    margin-top: 40px !important;
 }
 
 .mb-20px {

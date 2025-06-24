@@ -87,36 +87,46 @@
     padding: 25px;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     width: 100%;
     box-sizing: border-box;
 }
 
-.search_wrap .select_box {
-    width: 15%;
-}
-
-.search_wrap .input_box {
+.search_wrap .filter_wrap {
     display: flex;
-    gap: 5px;
     align-items: center;
-    width: 65%;
 }
 
-.search_wrap .input_box input {
-    width: 100%;
+.search_wrap .filter_wrap .filter {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /*width: 50%;*/
+}
+
+.search_wrap .filter_wrap .filter .title {
+    font-size: 18px;
+    font-weight: 700;
+    padding-bottom: 0;
+    width: 100px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.search_wrap .filter_wrap .filter_2 .title {
+    padding-left: 10px;
 }
 
 .listPage .button_box {
     display: flex;
     gap: 7px;
     align-items: center;
-    width: 20%;
+    justify-content: flex-end;
 }
 
 .listPage .button_box button {
-    width: 100%;
+    width: 100px;
 }
 
 .listPage .button_box .registerBtn {
@@ -128,6 +138,62 @@
     position: absolute;
     bottom: -80px;
     right: 0;
+}
+
+@media all and (max-width: 1600px) {
+    .search_wrap {
+        flex-direction: column;
+    }
+    .search_wrap .filter_wrap .filter {
+        width: 50%;
+    }
+    .search_wrap .filter_wrap .filter .title {
+        min-width: 100px;
+        width: 20%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .search_wrap .filter_wrap .filter .filter__ select {
+        width: 40%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ input {
+        width: 60%;
+    }
+    .listPage .button_box {
+        padding-top: 10px;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .search_wrap {
+        flex-direction: row;
+    }
+    .search_wrap .filter_wrap {
+        flex-direction: column;
+        width: 80%;
+        gap: 7px;
+    }
+    .search_wrap .filter_wrap .filter {
+        width: 100%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ {
+        width: 100%;
+    }
+    .search_wrap .filter_wrap .filter_2 .title {
+        width: 100px;
+        padding-left: 0;
+    }
+    .listPage .button_box {
+        padding-top: 0;
+        flex-direction: column;
+    }
+    .listPage .button_box button {
+        width: 120px;
+    }
 }
 
 /* 직원 목록 수 */

@@ -17,18 +17,28 @@
             <!-- 검색 폼 -->
             <form id="searchForm" class="" method="get" th:action="@{/setting/employee/list}" onsubmit="return checkDateInputForSearch()">
                 <div class="search_wrap">
-                    <select class="select_box" th:field="*{searchDTO.searchCondition}">
-                        <option value="all" selected>전체</option>
-                        <option value="name">이름</option>
-                        <option value="position">직책</option>
-                    </select>
-                    <div class="input_box">
-                        <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
-
-                        <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
-                        ~
-                        <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+                    <div class="filter_wrap">
+                        <div class="filter filter_1">
+                            <div class="title">상세검색</div>
+                            <div class="filter__">
+                                <select class="select_box" th:field="*{searchDTO.searchCondition}">
+                                    <option value="all" selected>전체</option>
+                                    <option value="name">이름</option>
+                                    <option value="position">직책</option>
+                                </select>
+                                <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
+                            </div>
+                        </div>
+                        <div class="filter filter_2">
+                            <div class="title">기간검색</div>
+                            <div class="filter__">
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
+                                ~
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="button_box">
                         <button type="submit" class="btnColor_1">검색</button>
                         <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>

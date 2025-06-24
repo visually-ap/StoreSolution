@@ -301,8 +301,8 @@ button:hover {
 .container {
     position: absolute;
     top: 110px;
-    left: 18%;
-    width: 80%;
+    left: 10%;
+    width: 88%;
     max-width: 1440px;
     min-width: 650px;
 }

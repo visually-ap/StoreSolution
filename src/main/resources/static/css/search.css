@@ -10,7 +10,8 @@
 }
 
 .inner_modal {
-    width: 500px;
+    width: 50%;
+    min-width: 500px;
     position: absolute;
     top: 40%;
     left: 50%;
@@ -67,7 +68,38 @@
 }
 
 .search_form .search_btn {
-    padding: 0 30px;
+    padding: 0;
+    min-width: 45px;
+    transition: all .3s;
 }
 
-.search_icon {}
+.search_form .search_btn span {
+    display: inline-block;
+    width: 45px;
+    padding: 12px;
+    box-sizing: border-box;
+    transition: all .3s;
+}
+
+.search_form .search_btn span img {
+    width: 100%;
+    transition: all .3s;
+}
+
+.search_btn .h-search.hover {
+    display: none;
+}
+
+.search_btn:hover .h-search {
+    display: none;
+    transition: all .3s;
+}
+
+.search_btn:hover .h-search.hover {
+    display: block;
+    background-color: #1e6ceb;
+    border-radius: 50%;
+    height: 45px;
+    border: 1px solid #1e6ceb;
+    box-sizing: border-box;
+}

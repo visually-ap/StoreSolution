@@ -40,6 +40,11 @@
     color: #00264b;
     font-weight: 700;
     font-size: 20px;
+    transition: all .3s;
+}
+
+.main_header .nav li .navMain:hover {
+    color: #1e6ceb;
 }
 
 .main_header .nav li .navMain.on {
@@ -51,7 +56,43 @@
     gap: 20px;
 }
 
-/*left css*/
+.main_header .right_area .h-search .search_icon.active {
+    display: none;
+}
+
+.main_header .right_area .h-search:hover .search_icon {
+    display: none;
+}
+
+.main_header .right_area .h-search:hover .search_icon.active {
+    display: block;
+}
+
+.main_header .right_area .h-mypage .mypage_icon.active {
+    display: none;
+}
+
+.main_header .right_area .h-mypage:hover .mypage_icon {
+    display: none;
+}
+
+.main_header .right_area .h-mypage:hover .mypage_icon.active {
+    display: block;
+}
+
+.main_header .right_area .h-logout .logout_icon.active {
+    display: none;
+}
+
+.main_header .right_area .h-logout:hover .logout_icon {
+    display: none;
+}
+
+.main_header .right_area .h-logout:hover .logout_icon.active {
+    display: block;
+}
+
+    /*left css*/
 .leftNav_wrap {
     height: 100%;
     overflow: auto;

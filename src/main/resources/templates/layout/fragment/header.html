@@ -32,14 +32,17 @@
             </li>
         </ul>
         <div class="right_area">
-            <a href="javascript:void(0)">
+            <a href="javascript:void(0)" class="h-search">
                 <img th:src="@{/images/icon/search.png}" alt="검색 아이콘" class="search_icon">
+                <img th:src="@{/images/icon/search2.png}" alt="검색 아이콘" class="search_icon active">
             </a>
-            <a href="/mypage">
+            <a href="/mypage" class="h-mypage">
                 <img th:src="@{/images/icon/mypage.png}" alt="마이페이지 아이콘" class="mypage_icon">
+                <img th:src="@{/images/icon/mypage2.png}" alt="마이페이지 아이콘" class="mypage_icon active">
             </a>
-            <a th:href="@{/logout}">
+            <a th:href="@{/logout}" class="h-logout">
                 <img th:src="@{/images/icon/logout.png}" alt="로그아웃 아이콘" class="logout_icon">
+                <img th:src="@{/images/icon/logout2.png}" alt="로그아웃 아이콘" class="logout_icon active">
             </a>
         </div>
     </div>

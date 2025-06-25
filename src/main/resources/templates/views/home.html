@@ -8,6 +8,9 @@
 <!-- 개별 css-->
 <link rel="stylesheet" th:href="@{/css/page.css}">
 
+<!--검색창 css-->
+<link rel="stylesheet" th:href="@{/css/search.css}">
+
 <style>
     .wrapper {
         background: url(/images/main_bg_1.png) no-repeat center / 100%;
@@ -16,9 +19,33 @@
         background-size: cover;
     }
 </style>
-
+<div class="search_modal_wrap">
+    <div class="inner_modal">
+        <a href="javascript:void(0)" class="close_btn">
+            <img th:src="@{/images/icon/close.png}" alt="닫기 아이콘" class="close_icon">
+            <img th:src="@{/images/icon/close2.png}" alt="닫기 아이콘" class="close_icon2">
+        </a>
+        <form action="" class="search_form">
+            <select name="" id="">
+                <option value="">전체</option>
+            </select>
+            <input type="text">
+            <button class="search_btn">검색</button>
+        </form>
+    </div>
+</div>
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
     </th:block>
 </th:block>
+<script>
+    $(document).ready(function(){
+        $(".search_icon").click(function(){
+            $(".search_modal_wrap").fadeIn();
+        })
+        $(".close_btn").click(function(){
+            $(".search_modal_wrap").fadeOut();
+        })
+    })
+</script>
 </html>

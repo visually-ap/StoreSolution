@@ -655,7 +655,8 @@
     justify-content: space-between;
 }
 
-.half-line input {
+.half-line input,
+.half-line select {
     width: 150px;
 }
 
@@ -911,7 +912,8 @@
 }
 
 @media all and (max-width: 1500px) {
-    .half-line input {
+    .half-line input,
+    .half-line select {
         width: 140px;
     }
 }
@@ -919,7 +921,8 @@
     .inner_bg input {
         width: 65%;
     }
-    .half-line input {
+    .half-line input,
+    .half-line select {
         width: 130px;
     }
 }
@@ -927,7 +930,8 @@
     .inner_bg input {
         width: 60%;
     }
-    .half-line input {
+    .half-line input,
+    .half-line select {
         width: 120px;
     }
 }

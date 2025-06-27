@@ -703,6 +703,16 @@
  }
 
 /* 필요하면 셀 높이 맞추기 */
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    box-shadow: initial;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color: transparent;
+    border-color: initial;
+    color: initial;
+}
+
 #calendar {
     overflow: auto;
     width: 100%;
@@ -800,9 +810,23 @@
     outline: none;
 }
 
-.fc-dayGridMonth-button.fc-button.fc-button-primary,
 .fc-timeGridDay-button.fc-button.fc-button-primary {
     border: 1px solid #eee;
+    /*background: #00264b;*/
+    /*color: #fff;*/
+}
+
+.fc-dayGridMonth-button.fc-button.fc-button-primary {
+    border: 1px solid #eee;
+    /*background: #00264b;*/
+    /*color: #fff;*/
+}
+
+.fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled):active,
+.fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled):active{
+    border: 1px solid #eee;
+    background: #00264b;
+    color: #fff;
 }
 
 .fc .fc-timeGridDay-button:hover {
@@ -814,7 +838,7 @@
     border: 0;
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+.fc .fc-button-primary:focus {
     box-shadow: initial;
 }
 
@@ -850,6 +874,40 @@
     border-bottom: none !important;
     background: none !important;
     box-shadow: none !important;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    border: 0;
+}
+
+.fc .fc-scrollgrid-section-body table {
+    border-top-style: dashed;
+    border-left-style: dashed;
+}
+
+/* 날짜 셀 높이 키우고 숫자 크게 보이게 */
+.fc-daygrid-day-frame {
+    min-height: 120px; /* 셀 높이 조절 */
+}
+
+.fc-daygrid-day-number {
+    font-size: 18px;   /* 날짜 숫자 크기 */
+    font-weight: 600;  /* 진하게 */
+    padding: 8px;      /* 셀 안에서 위치 조정 */
+    display: inline-block;
+    line-height: 1.2;
+}
+
+#calendar {
+    height: 100%;
+}
+
+.fc .fc-scrollgrid-section-body table {
+    height: 100% !important;
+}
+
+.fc .fc-daygrid-body {
+    height: 100%;
 }
 
 @media all and (max-width: 1500px) {

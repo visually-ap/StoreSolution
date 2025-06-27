@@ -152,22 +152,30 @@
 <script src="https://apis.google.com/js/api.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'ko', // 한국어
             headerToolbar: {
-                left: 'prev,next',
-                center: 'title',
+                left: 'customNav',
+                center: '',
                 right: 'dayGridMonth,timeGridDay'
             },
+            customButtons: {
+                customNav: {
+                    text: '', // HTML로 덮어쓸 거라 비워둠
+                }
+            },
+            titleFormat: { year: 'numeric', month: 'long' },
+
+            // ⏰ 시간표 관련 설정 유지
             slotMinTime: '00:00:00',
             slotMaxTime: '24:00:00',
             slotDuration: '00:15:00',
             slotLabelInterval: '00:15:00',
-            slotLabelContent: function(arg) {
+            slotLabelContent: function (arg) {
                 var hour = arg.date.getHours();
                 var minute = arg.date.getMinutes();
 
@@ -180,11 +188,30 @@
                     return minute.toString().padStart(2, '0') + '분';
                 }
             },
+
             allDaySlot: false,
-            // ✅ 날짜 셀 내용 가공하기
-            dayCellContent: function(arg) {
+
+            // 📅 날짜 셀 숫자만 추출
+            dayCellContent: function (arg) {
                 var numberOnly = arg.dayNumberText.replace(/[^0-9]/g, '');
                 return { html: numberOnly };
+            },
+
+            // 📌 타이틀 위치 & 버튼 넣기
+            datesSet: function (info) {
+                const toolbar = document.querySelector('.fc-customNav-button');
+
+                const title = info.view.title; // ex: "2025년 7월"
+                toolbar.innerHTML = `
+                <div class="fc-custom-group">
+                    <button type="button" class="fc-prev-button fc-button fc-button-primary"><</button>
+                    <span class="fc-title">${title}</span>
+                    <button type="button" class="fc-next-button fc-button fc-button-primary">></button>
+                </div>
+            `;
+
+                toolbar.querySelector('.fc-prev-button').onclick = () => calendar.prev();
+                toolbar.querySelector('.fc-next-button').onclick = () => calendar.next();
             }
         });
 

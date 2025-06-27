@@ -628,7 +628,7 @@
 }
 
 .inner_bg input {
-    width: 70%;
+    width: 65%;
 }
 
 .inner_style_1 .search_btn {
@@ -726,6 +726,130 @@
     display: flex;
     align-items: center;   /* 세로 가운데 */
     justify-content: center; /* 가로 가운데 (필요하면) */
+}
+
+.fc-custom-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fc .fc-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 10px;
+    color: #2c3e50;
+}
+
+.fc .fc-title:hover {
+    color: #1e6ceb;
+}
+
+.fc .fc-button {
+    padding: 0;
+    background-color: transparent;
+    color: #00264b;
+    border: 0;
+    box-shadow: initial;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: initial;
+}
+
+.fc .fc-next-button,
+.fc .fc-prev-button {
+    background-color: #d1d3d4;
+    min-width: 36px;
+    height: 36px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 16px;
+    color: #fff;
+}
+
+.fc .fc-next-button:hover,
+.fc .fc-prev-button:hover {
+    background-color: #2c3e50;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    border-bottom-right-radius: initial;
+    border-top-right-radius: initial;
+}
+
+.fc .fc-dayGridMonth-button {
+    padding: 0 20px;
+    border-radius: 15px;
+    width: 85px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.fc .fc-dayGridMonth-button:hover {
+    background-color: #f5f5f5;
+    color: #1e6ceb;
+}
+
+.fc .fc-timeGridDay-button {
+    padding: 0 20px;
+    width: 85px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    outline: none;
+}
+
+.fc-dayGridMonth-button.fc-button.fc-button-primary,
+.fc-timeGridDay-button.fc-button.fc-button-primary {
+    border: 1px solid #eee;
+}
+
+.fc .fc-timeGridDay-button:hover {
+    background-color: #f5f5f5;
+    color: #1e6ceb;
+}
+
+.fc-button-active {
+    border: 0;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    box-shadow: initial;
+}
+
+.fc .fc-scrollgrid-sync-inner {
+    border: 0;
+}
+
+/* 요일 셀 테두리 제거 */
+.fc .fc-col-header-cell {
+    border: none !important;
+}
+
+/* 요일 셀 내부 박스도 깔끔하게 */
+.fc .fc-scrollgrid-sync-inner {
+    border: none !important;
+}
+
+/* 요일 셀 전체 border 제거 */
+.fc-scrollgrid thead th,
+.fc-scrollgrid thead td,
+.fc-scrollgrid-sync-table thead tr,
+.fc-col-header-cell,
+.fc-col-header-cell-cushion,
+.fc-scrollgrid-sync-inner {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 헤더 전체 줄 border 제거 */
+.fc-col-header,
+.fc-scrollgrid thead {
+    border: none !important;
+    border-bottom: none !important;
+    background: none !important;
+    box-shadow: none !important;
 }
 
 @media all and (max-width: 1500px) {

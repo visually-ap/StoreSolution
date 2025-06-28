@@ -562,6 +562,18 @@
     height: 30px;
 }
 
+.info_style_1 {
+    border: 1px solid #d1d3d4;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.info_style_1 .description {
+    margin-top: 15px;
+}
+
 .customer_info_btn {
     width: 100%;
     max-width: 450px;
@@ -643,6 +655,7 @@
 
 .one-line {
     display: flex;
+    align-items: center;
 }
 
 .half-line {
@@ -651,8 +664,13 @@
     justify-content: space-between;
 }
 
-.half-line input {
-    width: 150px;
+.one-line .half-line {
+    width: 50%;
+}
+
+.half-line input,
+.half-line select {
+    width: 140px;
 }
 
 .inner_style_2 {
@@ -690,50 +708,18 @@
     color: #1e6ceb;
 }
 
-/* 날짜 숫자만 가운데 정렬 */
- .fc .fc-daygrid-day-number {
-     display: block;
-     text-align: center;
-     float: none;
-     margin: 0 auto;
- }
-
-/* 필요하면 셀 높이 맞추기 */
-#calendar {
-    overflow: auto;
-    width: 100%;
-}
-
-.fc-scrollgrid.fc-scrollgrid-liquid th { height: 35px; }
-
-.fc .fc-daygrid-day-frame {
-    height: 100%;
-}
-
-/* 요일 셀 높이 */
-.fc .fc-col-header-cell {
-    height: 35px;  /* 원하는 높이 */
-    vertical-align: middle; /* 가운데 정렬 */
-}
-
-/* 안쪽 div 높이랑 라인 맞추기 */
-.fc .fc-col-header-cell .fc-scrollgrid-sync-inner {
-    height: 100%;
-    display: flex;
-    align-items: center;   /* 세로 가운데 */
-    justify-content: center; /* 가로 가운데 (필요하면) */
-}
-
 @media all and (max-width: 1500px) {
-    .half-line input {
-        width: 140px;
+    .half-line input,
+    .half-line select {
+        width: 135px;
     }
 }
 @media all and (max-width: 1400px) {
     .inner_bg input {
         width: 65%;
     }
-    .half-line input {
+    .half-line input,
+    .half-line select  {
         width: 130px;
     }
 }
@@ -741,7 +727,8 @@
     .inner_bg input {
         width: 60%;
     }
-    .half-line input {
+    .half-line input,
+    .half-line select {
         width: 120px;
     }
 }

@@ -3,8 +3,33 @@
 <th:block th:fragment="leftFragment">
     <div class="leftNav_wrap" th:with="pathname=${#httpServletRequest.requestURI}">
 
-
-
+        <!-- counseling -->
+        <ul class="left_nav" th:if="${pathname.startsWith('/counseling')}">
+            <!-- about -->
+            <th:block th:if="${pathname == '/counseling/about'}">
+                <li>
+                    <a th:href="@{/counseling/about}" class="about">
+                        <span>About</span>
+                    </a>
+                </li>
+            </th:block>
+            <!-- 고객 목록 -->
+            <th:block th:if="${pathname == '/counseling/customer/list'}">
+                <li class="on">
+                    <a th:href="@{/counseling/customer/list}" class="customerList">
+                        <span>Customer</span>
+                    </a>
+                </li>
+            </th:block>
+            <!-- fabricItem -->
+            <th:block th:if="${pathname == '/counseling/fabricItem'}">
+                <li>
+                    <a th:href="@{/counseling/fabricItem}" class="fabricItem">
+                        <span>fabricItem</span>
+                    </a>
+                </li>
+            </th:block>
+        </ul>
 
 
         <!-- Store Management -->

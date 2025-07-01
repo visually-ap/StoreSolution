@@ -151,6 +151,30 @@
     align-items: center;
 }
 
+.left_nav li .about {
+    background: url(../images/icon/about.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .about {
+    background: url(../images/icon/about_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li .customerList {
+    background: url(../images/icon/customer.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .customerList {
+    background: url(../images/icon/customer_on.png) no-repeat 19px / 23px;
+}
+
+.left_nav li .fabricItem {
+    background: url(../images/icon/fabricItem.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .fabricItem {
+    background: url(../images/icon/fabricItem_on.png) no-repeat 19px / 23px;
+}
+
 .left_nav li .info {
     background: url(../images/icon/info.png) no-repeat 19px / 23px;
 }

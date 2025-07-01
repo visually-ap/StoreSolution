@@ -533,6 +533,7 @@
 .info_calendar .right_area {
     width: 65%;
     min-width: 500px;
+    margin-top: 38px;
 }
 
 .search_style_1 {
@@ -576,10 +577,12 @@
 
 .info_style_2 {
     border: 1px solid #d1d3d4;
-    padding: 5px 15px;
+    padding: 7px 15px;
     box-sizing: border-box;
     border-radius: 10px;
     background: #fff;
+    min-height: 21vh;
+    overflow: hidden;
 }
 
 .info_style_2 .description {
@@ -631,13 +634,13 @@
 .inner_style_1 {
     display: flex;
     align-items: center;
-    padding: 15px 15px 15px 10px;
+    padding: 15px 15px 15px 5px;
     border-radius: 10px;
     justify-content: space-between;
 }
 
 .scroll-box {
-    height: 55vh;
+    height: 56vh;
     overflow: auto;
 }
 
@@ -718,6 +721,31 @@
     display: inline-block;
     font-weight: 700;
     color: #1e6ceb;
+}
+
+.consultReserve-line {
+    width: 100%;
+    gap: 10px;
+}
+
+.date-line {
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.date-line .btn {
+    min-width: 30px;
+    height: 25px;
+    border-radius: 10px;
+    border: 0;
+}
+
+.date-line .btn:hover {
+    background-color: transparent;
+}
+
+.date-line .today {
+    font-weight: 600;
 }
 
 @media all and (max-width: 1500px) {

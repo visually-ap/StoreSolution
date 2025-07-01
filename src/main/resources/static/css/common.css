@@ -107,7 +107,7 @@ button, select {
 
 select {
     border: 1px solid #ddd;
-    min-width: 100px;
+    min-width: 80px;
     border-radius: 7px;
     padding: 0 10px;
     outline: none;
@@ -419,6 +419,14 @@ input::placeholder {
     justify-content: space-between;
 }
 
+.flex-end {
+    justify-content: flex-end;
+}
+
+.align-center {
+    align-items: center;
+}
+
 .column {
     flex-direction: column;
 }
@@ -459,6 +467,26 @@ input::placeholder {
 
 .mb-50px {
     margin-bottom: 50px !important;
+}
+
+/* table */
+.tableStyle.listT {
+    overflow: hidden;
+}
+
+.tableStyle.listT th {
+    height: 55px;
+    font-size: 17px;
+    cursor: default;
+}
+
+.tableStyle.listT td {
+    text-align: center;
+    height: 50px;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* 풀캘린더 */

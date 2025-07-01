@@ -1,14 +1,81 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <!-- 공통 css-->
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
 
-        <div>
-            고객 목록 페이지 입니다.
+        <div class="section_wrap listPage">
+            <h2 class="title">고객검색</h2>
+
+            <form id="searchForm">
+                <div class="search_wrap">
+                    <div class="filter_wrap">
+                        <div class="filter filter_1">
+                            <div class="title">상세검색</div>
+                            <div class="filter__">
+                                <select class="select_box">
+                                    <option value="all" selected>전체</option>
+                                    <option value="name">이름</option>
+                                </select>
+                                <input type="text" placeholder="검색어 입력" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="filter filter_2">
+                            <div class="title">기간검색</div>
+                            <div class="filter__">
+                                <input type="text" class="searchDatePicker" readonly>
+                                ~
+                                <input type="text" class="searchDatePicker" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button_box">
+                        <button type="submit" class="btnColor_1">검색</button>
+                        <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="section_wrap listPage mt-30px">
+            <h2 class="title">고객목록</h2>
+
+            <table class="tableStyle listT">
+                <colgroup>
+                    <col>
+                </colgroup>
+                <tr class="title_tr">
+                    <th>고객명</th>
+                    <th>연락처</th>
+                    <th>촬영일</th>
+                    <th>촬영장소</th>
+                    <th>본식일</th>
+                    <th>예식장소</th>
+                    <th>예약담당</th>
+                    <th>상담담당</th>
+                    <th>상담예약</th>
+                    <th>비고</th>
+                </tr>
+                <tr class="gotoDetail">
+                    <td>최대한</td>
+                    <td>010-2345-6789</td>
+                    <td>25-00-00</td>
+                    <td>제주도 스냅</td>
+                    <td>25-00-00</td>
+                    <td>--웨딩</td>
+                    <td>김모모</td>
+                    <td>김모모</td>
+                    <td>25-00-00</td>
+                    <td>특이사항특이사항특이사항특이사항</td>
+                </tr>
+            </table>
         </div>
     </th:block>
 </th:block>

@@ -1,3 +1,12 @@
+.schedule-container {
+    overflow: auto;
+    height: 80vh;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
 .custom-schedule-table {
     width: 100%;
     border-collapse: collapse;
@@ -18,7 +27,6 @@
 }
 
 .custom-schedule-table th {
-    background-color: #f3f3f3;
     font-weight: bold;
 }
 
@@ -38,4 +46,8 @@
     width: 60px;
     white-space: nowrap;
     text-align: center;
+}
+
+#custom-schedule-table thead tr:first-child {
+    background-color: #f3f3f3;
 }

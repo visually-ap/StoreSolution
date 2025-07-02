@@ -469,6 +469,11 @@ input::placeholder {
     margin-bottom: 50px !important;
 }
 
+/* border */
+.border-0 {
+    border: 0 !important;
+}
+
 /* table */
 .tableStyle.listT {
     overflow: hidden;

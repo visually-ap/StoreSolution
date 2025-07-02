@@ -91,6 +91,163 @@
     width: 12%;
 }
 
+.boxStyle_2 {
+    width: auto;
+}
+
+.boxStyle_2 .line {
+    background-color: #eff1f7;
+    display: inline-flex;
+    border-radius: 10px;
+}
+
+.boxStyle_2 .box {
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 25px;
+}
+
+.boxStyle_2 .box .name {
+    text-align: left;
+    box-sizing: border-box;
+    font-size: 17px;
+    max-width: 130px;
+    min-width: 70px;
+}
+
+.boxStyle_2 .box .value {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    text-align: left;
+    background: #fff;
+    box-shadow: 3px 3px 7px 2px rgba(0,0,0,.025);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.boxStyle_2 .box .value input {
+    border: 0;
+    min-width: 100px;
+    max-width: 200px;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.boxStyle_2 .box .doubleCheckBtn {
+    width: 100px;
+    margin-left: 10px;
+}
+
+.boxStyle_2 .box.other_box .value {
+    background: transparent;
+    font-weight: 500;
+    box-shadow: none;
+}
+
+.boxStyle_2 .box.other_box .resetBtn {
+    padding: 0 20px;
+}
+
+.boxStyle_2 .box .value select {
+    border: 0;
+    width: 100%;
+}
+
+.boxStyle_2 .box.only-box .name {
+    width: 12%;
+}
+
+.boxStyle_2 .boxImg-wrap {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.boxStyle_2 .boxImg {
+    border: 1px solid #d1d3d4;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    position: relative;
+    margin-bottom: 15px;
+    border-radius: 50px;
+    transition: all .3s;
+    overflow: hidden;
+}
+
+.boxStyle_2 .boxImg span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-color: #fff;
+    transition: all .3s;
+}
+
+.boxStyle_2 .boxImg .jacket {
+    background: url(../images/icon/jacket.png) no-repeat 19px / 23px;
+}
+
+.boxStyle_2 .boxImg .jacket.on {
+    background: url(../images/icon/jacket_w.png) no-repeat 19px / 23px;
+    background-color: #1e6ceb;
+}
+
+.boxStyle_2 .boxImg .pants {
+    background: url(../images/icon/pants.png) no-repeat 22px / 15px;
+}
+
+.boxStyle_2 .boxImg .pants.on {
+    background: url(../images/icon/pants_w.png) no-repeat 22px / 15px;
+    background-color: #1e6ceb;
+}
+
+.boxStyle_2 .boxImg .vest {
+    background: url(../images/icon/vest.png) no-repeat 19px / 23px;
+}
+
+.boxStyle_2 .boxImg .vest.on {
+    background: url(../images/icon/vest_w.png) no-repeat 19px / 23px;
+    background-color: #1e6ceb;
+}
+
+.boxStyle_2 .boxImg .coats {
+    background: url(../images/icon/coat.png) no-repeat 19px / 23px;
+}
+
+.boxStyle_2 .boxImg .coats.on {
+    background: url(../images/icon/coat_w.png) no-repeat 19px / 23px;
+    background-color: #1e6ceb;
+}
+
+.boxStyle_2 .boxImg span:hover {
+    background-color: rgb(174 205 255 / 20%);
+}
+
+.boxStyle_2 .sameChk-btn {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.boxStyle_2 .sameChk-btn a {
+    text-align: center;
+    font-weight: 600;
+}
+
+.fabric-4.section_wrap {
+    padding: 30px;
+    overflow: auto;
+}
+
 /* 검색창 */
 .search_wrap {
     background: #eff1f7;

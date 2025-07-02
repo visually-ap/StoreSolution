@@ -346,3 +346,14 @@
         min-width: 640px;
     }
 }
+
+/*design wrap*/
+.design_wrap .option-group {
+    border-radius: 15px;
+    background: #eff1f7;
+    padding: 20px;
+}
+
+.option-group .group-title {
+    padding-bottom: 20px;
+}

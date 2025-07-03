@@ -10,35 +10,29 @@
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
 
-        <div class="section_wrap listPage">
+        <div class="section_wrap fabric-4">
             <h2 class="title">고객검색</h2>
-
-            <form id="searchForm">
-                <div class="search_wrap">
-                    <div class="filter_wrap">
-                        <div class="filter filter_1">
-                            <div class="title">상세검색</div>
-                            <div class="filter__">
-                                <select class="select_box">
-                                    <option value="all" selected>전체</option>
-                                    <option value="name">이름</option>
-                                </select>
-                                <input type="text" placeholder="검색어 입력" maxlength="10">
+            <form action="" class="search_form">
+                <div class="boxStyle_2">
+                    <div class="line align-center">
+                        <div class="box other_box">
+                            <h2 class="name">고객명</h2>
+                            <div class="value">
+                                <input type="text" class="text">
                             </div>
                         </div>
-                        <div class="filter filter_2">
-                            <div class="title">기간검색</div>
-                            <div class="filter__">
-                                <input type="text" class="searchDatePicker" readonly>
-                                ~
-                                <input type="text" class="searchDatePicker" readonly>
+                        <div class="box other_box">
+                            <h2 class="name">연락처</h2>
+                            <div class="value">
+                                <input type="text" class="text">
                             </div>
                         </div>
+                        <button class="boxImg">
+                            <span class="search"></span>
+                        </button>
                     </div>
-
-                    <div class="button_box">
-                        <button type="submit" class="btnColor_1">검색</button>
-                        <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
+                    <div class="btn-style-2">
+                        <a href="#" class="w-150 btnColor_1 btn_3">신규고객등록</a>
                     </div>
                 </div>
             </form>

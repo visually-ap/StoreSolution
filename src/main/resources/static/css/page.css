@@ -233,12 +233,12 @@
     background-color: rgb(174 205 255 / 20%);
 }
 
-.boxStyle_2 .sameChk-btn {
+.boxStyle_2 .btn-style- {
     padding-left: 20px;
     padding-right: 20px;
 }
 
-.boxStyle_2 .sameChk-btn a {
+.boxStyle_2 .btn-style- a {
     text-align: center;
     font-weight: 600;
 }
@@ -246,6 +246,23 @@
 .fabric-4.section_wrap {
     padding: 30px;
     overflow: auto;
+}
+
+.search_form .boxStyle_2 .line {
+    padding: 10px 30px 10px 0;
+}
+
+.search_form .boxStyle_2 .boxImg {
+    margin-bottom: 0;
+}
+
+.search_form .boxStyle_2 .boxImg .search {
+    background: url(../images/icon/search_g.png) no-repeat 19px / 23px;
+}
+
+.search_form .boxStyle_2 .boxImg .search:hover {
+    background: url(../images/icon/search_w.png) no-repeat 19px / 23px;
+    background-color: #1e6ceb;
 }
 
 /* 검색창 */

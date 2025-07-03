@@ -234,11 +234,11 @@ public class SiteEnvSetting {
     private Boolean coatAddOption2;
 
     @Column(length = 10, nullable = false)
-    @Comment("항목1 색상")
+    @Comment("상담예약 색상")
     private String typeColor1;
 
     @Column(columnDefinition = "boolean default 10", nullable = false)
-    @Comment("항목1 시간")
+    @Comment("상담예약 시간")
     private Integer typeTime1;
 
     @Column(length = 10, nullable = false)

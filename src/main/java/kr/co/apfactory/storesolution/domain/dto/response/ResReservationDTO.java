@@ -6,14 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResEmployeeScheduleDTO {
-    private Long userId;
-    private String name;
-    private List<ResReservationDTO> reservationList;
+public class ResReservationDTO {
+    private Long id;
+    private Boolean allDay;
+    private LocalDateTime consultingDatetimeFrom;
+    private LocalDateTime consultingDatetimeTo;
+    private String customerName;
+    private Integer type;
 }

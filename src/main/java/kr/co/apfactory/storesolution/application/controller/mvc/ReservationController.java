@@ -39,6 +39,7 @@ public class ReservationController {
     public String gotoNewCustomerRegister(Model model) {
         model.addAttribute("employeeList", userService.getEmployeeList());
         model.addAttribute("userId", LoginUser.getDetails().getId());
+        model.addAttribute("siteEnvDto", siteService.getSiteEnvironment());
         return "views/reservation/register";
     }
 }

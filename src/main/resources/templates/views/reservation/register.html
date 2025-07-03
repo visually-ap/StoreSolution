@@ -11,11 +11,11 @@
         <!-- 개별 css-->
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
-        <!--커스텀 캘린더-->
-<!--        <link rel="stylesheet" th:href="@{/plugins/calendar/css/calendar.css}">-->
-<!--        <script th:src="@{/plugins/calendar/js/calendar.js}"></script>-->
+        <!-- jquery-validation -->
+        <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+        <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+        <script th:src="@{/js/common/validator.js}"></script>
 
-<!--        full 캘린더-->
         <script th:src="@{/js/timeTable.js}" defer></script>
         <link rel="stylesheet" th:href="@{/css/timeTable.css}">
 
@@ -49,6 +49,13 @@
                 width: 100px;
                 text-align: center;
             }
+
+            .schedule-cell {
+                border: 1px solid #ccc;
+                text-align: center;
+                font-size: 12px;
+                padding: 4px;
+            }
         </style>
 
         <div class="info_calendar">
@@ -63,7 +70,7 @@
                         <form id="dataForm">
                             <div class="top_line flex between">
                                 <h3 class="title">고객 정보</h3>
-                                <button type="button" class="btnColor_1">저장</button>
+                                <button type="button" class="btnColor_1" id="registerButton">저장</button>
                             </div>
                             <div class="inner_bg inner_style_1 column">
                                 <div class="one-line mb-5px">
@@ -83,7 +90,7 @@
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">연락처2</h4>
-                                        <input type="tel" nam="mobile2" id="mobile2" maxlength="11" placeholder="숫자만 입력">
+                                        <input type="tel" name="mobile2" id="mobile2" maxlength="11" placeholder="숫자만 입력">
                                     </div>
                                 </div>
                             </div>
@@ -187,13 +194,23 @@
                                 </li>
                             </ul>
                             <div class="inner_style_3 mt-20px">
-                                <textarea class="textarea" placeholder="특이사항을 작성해 주세요."></textarea>
+                                <textarea class="textarea" name="memo" placeholder="고객 특이사항"></textarea>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="right_area">
+                <div class="date-line flex flex-start align-center">
+                    <ul>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor1}">상담</li>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor2}">항목2</li>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor3}">항목3</li>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor4}">항목4</li>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor5}">항목5</li>
+                        <li th:style="${'color: ' + siteEnvDto.typeColor6}">항목6</li>
+                    </ul>
+                </div>
                 <div class="date-line flex flex-end align-center">
                     <button class="prev-btn btn" id="prevBtn"> < </button>
                     <input type="text" class="timetable_datepicker" id="timetableDatepicker" readonly>
@@ -215,6 +232,60 @@
 </th:block>
 
 <script th:inline="javascript">
+    $(function () {
+        callValidationFormService(
+            $('#dataForm')
+            , {
+                name1: validationObject.customerName1.rules
+                , mobile1: validationObject.customerMobile1.rules
+                , name2: validationObject.customerName2.rules
+                , mobile2: validationObject.customerMobile2.rules
+                , reservationManager: validationObject.reservationManager.rules
+                , consultingManager: validationObject.consultingManager.rules
+                , consultingDate: validationObject.consultingDate.rules
+                , consultingHour: validationObject.consultingHour.rules
+                , consultingMinute: validationObject.consultingMinute.rules
+            }
+            , {
+                name1: validationObject.customerName1.message
+                , mobile1: validationObject.customerMobile1.message
+                , name2: validationObject.customerName2.message
+                , mobile2: validationObject.customerMobile2.message
+                , reservationManager: validationObject.reservationManager.message
+                , consultingManager: validationObject.consultingManager.message
+                , consultingDate: validationObject.consultingDate.message
+                , consultingHour: validationObject.consultingHour.message
+                , consultingMinute: validationObject.consultingMinute.message
+            }
+            , function (form) {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm("신규고객을 등록하시겠습니까?")) {
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                showLoadingImage();
+
+                callService(
+                    "POST"
+                    , "/reservation/consulting/register"
+                    , JSON.stringify(convertFormToJSON(form))
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.replace('/reservation/main');
+                        }
+                    }
+                );
+            }
+        );
+    });
+
+    let siteEnv = [[${siteEnvDto}]];
+
     let todayString = getToday('YYYY-MM-DD');
     let momentDate = moment(todayString);
 
@@ -260,6 +331,10 @@
         momentDate = momentDate.add(1, 'days');
         initTimeTable('custom-schedule-table');
         renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+    });
+
+    $(document).on('click', '#registerButton', function() {
+        $('#dataForm').submit();
     });
 </script>
 

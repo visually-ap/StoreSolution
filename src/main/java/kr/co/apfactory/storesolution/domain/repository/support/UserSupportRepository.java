@@ -9,6 +9,7 @@ import kr.co.apfactory.storesolution.global.security.dto.LoginInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UserSupportRepository {
@@ -21,5 +22,6 @@ public interface UserSupportRepository {
     ResEmployeeDetailDTO selectEmployeeDetail(String lang, Long userId, Long storeId);
 
     List<ResEmployeeListDTO> selectEmployeeList(Long storeId);
-    List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId);
+
+    List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId, LocalDate date);
 }

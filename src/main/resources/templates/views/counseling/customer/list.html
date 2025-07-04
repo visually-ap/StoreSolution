@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
         <!-- 공통 css-->
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
 
+        <!-- 개별 css-->
+        <link rel="stylesheet" th:href="@{/css/page.css}">
+
         <div class="section_wrap fabric-4">
             <h2 class="title">고객검색</h2>
             <form action="" class="search_form">
-                <div class="boxStyle_2">
+                <div class="boxStyle_2 flex align-center">
                     <div class="line align-center">
                         <div class="box other_box">
                             <h2 class="name">고객명</h2>
@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     <div class="btn-style-2">
-                        <a href="#" class="w-150 btnColor_1 btn_3">신규고객등록</a>
+                        <a th:href="@{/counseling/customer/register}" class="w-180 btnColor_3 btn_3">신규고객등록</a>
                     </div>
                 </div>
             </form>

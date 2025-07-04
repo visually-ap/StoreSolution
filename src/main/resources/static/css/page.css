@@ -132,7 +132,7 @@
 
 .boxStyle_2 .box .value input {
     border: 0;
-    min-width: 100px;
+    /*min-width: 100px;*/
     max-width: 200px;
     width: 100%;
     padding: 0 15px;
@@ -265,6 +265,22 @@
     background-color: #1e6ceb;
 }
 
+.search_form .boxStyle_2 .btn-style-2 {
+    display: inline-block;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.boxStyle_2 .btn-style-2 {
+    font-size: 18px
+}
+
+.boxStyle_2 .btn-style-2 button {
+    font-weight: 600;
+}
+
 /* 검색창 */
 .search_wrap {
     background: #eff1f7;
@@ -324,63 +340,62 @@
     right: 0;
 }
 
-@media all and (max-width: 1600px) {
-    .search_wrap {
-        flex-direction: column;
-    }
-    .search_wrap .filter_wrap .filter {
-        width: 50%;
-    }
-    .search_wrap .filter_wrap .filter .title {
-        min-width: 100px;
-        width: 20%;
-    }
-    .search_wrap .filter_wrap .filter .filter__ {
-        width: 80%;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .search_wrap .filter_wrap .filter .filter__ select {
-        width: 40%;
-    }
-    .search_wrap .filter_wrap .filter .filter__ input {
-        width: 60%;
-    }
-    .listPage .button_box {
-        padding-top: 10px;
-    }
+/* 신규정보등록 */
+.registerInfoForm .flex {
+    gap: 20px;
 }
 
-@media all and (max-width: 992px) {
-    .search_wrap {
-        flex-direction: row;
-    }
-    .search_wrap .filter_wrap {
-        flex-direction: column;
-        width: 80%;
-        gap: 7px;
-    }
-    .search_wrap .filter_wrap .filter {
-        width: 100%;
-    }
-    .search_wrap .filter_wrap .filter .filter__ {
-        width: 100%;
-    }
-    .search_wrap .filter_wrap .filter_2 .title {
-        width: 100px;
-        padding-left: 0;
-    }
-    .listPage .button_box {
-        padding-top: 0;
-        flex-direction: column;
-    }
-    .listPage .button_box button {
-        width: 120px;
-    }
+.registerInfoForm .boxStyle_2 .line-2 {
+    flex-direction: column;
+    width: 30%;
+    flex-grow: 1;
 }
 
-/* 직원 목록 수 */
+.registerInfoForm .boxStyle_2 .box .value input {
+    max-width: initial;
+}
+
+.registerInfoForm .boxStyle_2 .line-2 .box .name {
+    /*min-width: 80px;*/
+    padding-left: 5px;
+}
+
+.registerInfoForm .inner_title {
+    white-space: nowrap;
+    padding-right: 5px;
+    /*min-width: 55px;*/
+}
+
+.registerInfoForm .half-line input {
+    width: 100%;
+}
+
+.registerInfoForm .textarea-line {
+    align-items: flex-end;
+    width: 80%;
+}
+
+.registerInfoForm .textarea-line .box {
+    align-items: flex-start;
+}
+
+.registerInfoForm .textarea-line .box .name {
+    padding-top: 10px;
+}
+
+.registerInfoForm .textarea-line .box textarea {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    display: inline-block;
+    resize: none;
+    width: 100%;
+    outline: none;
+    box-shadow: 2px 4px 7px 5px rgba(0,0,0,0.03)
+}
+
+    /* 직원 목록 수 */
 .number_lists.result {
     display: flex;
     padding: 15px 0;
@@ -487,40 +502,6 @@
     right: 0;
 }
 
-@media all and (max-width: 1500px) {
-    .boxStyle_1 .box .name {
-        width: 35%;
-    }
-}
-
-@media all and (max-width: 1280px) {
-    .boxStyle_1 .box {
-        padding: 15px 20px;
-    }
-    .boxStyle_1 .box.only-box .value {
-        width: 77%;
-    }
-    .boxStyle_1 .line .box:nth-child(1) {
-        padding-right: 0;
-    }
-
-    .boxStyle_1 .line .box:nth-child(2) {
-         padding-left: 0;
-     }
-}
-
-@media all and (max-width: 1080px) {
-    .boxStyle_1 .box .name {
-        width: 40%;
-    }
-}
-
-@media all and (max-width: 900px) {
-    .search_wrap {
-        min-width: 640px;
-    }
-}
-
 /*design wrap*/
 .designPage .btn_wrap {
     gap: 10px;
@@ -565,31 +546,6 @@
 
 .type-config select {
     height: 42px;
-}
-
-@media all and (max-width: 1280px) {
-    .type-config input {
-        min-width: 50px;
-        padding: 0;
-    }
-    .type-config select {
-        min-width: 70px;
-    }
-}
-
-@media all and (max-width: 1080px) {
-    .type-config .name {
-        font-size: 16px;
-        white-space: nowrap;
-    }
-}
-
-@media all and (max-width: 992px) {
-    .type-config-wrap {
-        gap: 15px;
-        width: 100%;
-        overflow: hidden;
-    }
 }
 
 /*이미지 선택 페이지*/
@@ -671,25 +627,6 @@
 
 .upload_frame .btn_wrap {
     gap: 10px;
-}
-
-@media all and (max-width: 1200px) {
-    .upload_box {
-        gap: 20px;
-    }
-    .desc_text {
-        font-size: 15px;
-    }
-}
-
-@media all and (max-width: 992px) {
-    .desc_text {
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
-    .desc_text:first-child {
-        margin-top: 2px;
-    }
 }
 
 /* reservation */
@@ -834,7 +771,7 @@
 }
 
 .inner_style_1 .search_btn {
-    min-width: 45px;
+    /*min-width: 45px;*/
     padding: 10px;
 }
 
@@ -927,10 +864,50 @@
     font-weight: 600;
 }
 
+@media all and (max-width: 1600px) {
+    .search_wrap {
+        flex-direction: column;
+    }
+    .search_wrap .filter_wrap .filter {
+        width: 50%;
+    }
+    .search_wrap .filter_wrap .filter .title {
+        min-width: 100px;
+        width: 20%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .search_wrap .filter_wrap .filter .filter__ select {
+        width: 40%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ input {
+        width: 60%;
+    }
+    .listPage .button_box {
+        padding-top: 10px;
+    }
+}
+
 @media all and (max-width: 1500px) {
     .half-line input,
     .half-line select {
         width: 135px;
+    }
+    .boxStyle_1 .box .name {
+        width: 35%;
+    }
+
+    .registerInfoForm .half-line input {
+        width: 115px;
+        width: 100%;
+    }
+    .registerInfoForm .half-line select {
+        width: 50px;
+        padding: 0;
     }
 }
 @media all and (max-width: 1400px) {
@@ -949,5 +926,103 @@
     .half-line input,
     .half-line select {
         width: 120px;
+    }
+}
+
+@media all and (max-width: 1280px) {
+    .boxStyle_1 .box {
+        padding: 15px 20px;
+    }
+    .boxStyle_1 .box.only-box .value {
+        width: 77%;
+    }
+    .boxStyle_1 .line .box:nth-child(1) {
+        padding-right: 0;
+    }
+
+    .boxStyle_1 .line .box:nth-child(2) {
+        padding-left: 0;
+    }
+
+    .type-config input {
+        min-width: 50px;
+        padding: 0;
+    }
+    .type-config select {
+        min-width: 70px;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    .boxStyle_2 .box .value input {
+        max-width: 160px;
+    }
+    .upload_box {
+        gap: 20px;
+    }
+    .desc_text {
+        font-size: 15px;
+    }
+}
+
+@media all and (max-width: 1080px) {
+    .search_form .boxStyle_2 .btn-style-2 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .type-config .name {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+    .boxStyle_1 .box .name {
+        width: 40%;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .search_wrap {
+        flex-direction: row;
+    }
+    .search_wrap .filter_wrap {
+        flex-direction: column;
+        width: 80%;
+        gap: 7px;
+    }
+    .search_wrap .filter_wrap .filter {
+        width: 100%;
+    }
+    .search_wrap .filter_wrap .filter .filter__ {
+        width: 100%;
+    }
+    .search_wrap .filter_wrap .filter_2 .title {
+        width: 100px;
+        padding-left: 0;
+    }
+    .listPage .button_box {
+        padding-top: 0;
+        flex-direction: column;
+    }
+    .listPage .button_box button {
+        width: 120px;
+    }
+    .desc_text {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .desc_text:first-child {
+        margin-top: 2px;
+    }
+
+    .type-config-wrap {
+        gap: 15px;
+        width: 100%;
+        overflow: hidden;
+    }
+}
+
+@media all and (max-width: 900px) {
+    .search_wrap {
+        min-width: 640px;
     }
 }

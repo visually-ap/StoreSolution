@@ -348,12 +348,72 @@
 }
 
 /*design wrap*/
+.designPage .btn_wrap {
+    gap: 10px;
+    position: absolute;
+    bottom: -130px;
+    right: 0;
+    padding-bottom: 50px;
+}
+
 .design_wrap .option-group {
     border-radius: 15px;
     background: #eff1f7;
-    padding: 20px;
+    padding: 30px;
 }
 
 .option-group .group-title {
     padding-bottom: 20px;
+}
+
+
+.type-config-wrap {
+    display: flex;
+    gap: 20px;
+}
+
+.type-config {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #eff1f7;
+    padding: 10px 25px;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.type-config .name {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.type-config select {
+    height: 42px;
+}
+
+@media all and (max-width: 1280px) {
+    .type-config input {
+        min-width: 50px;
+        padding: 0;
+    }
+    .type-config select {
+        min-width: 70px;
+    }
+}
+
+@media all and (max-width: 1080px) {
+    .type-config .name {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .type-config-wrap {
+        gap: 15px;
+        width: 100%;
+        overflow: hidden;
+    }
 }

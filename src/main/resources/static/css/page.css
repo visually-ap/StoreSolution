@@ -111,8 +111,8 @@
     text-align: left;
     box-sizing: border-box;
     font-size: 17px;
-    max-width: 130px;
-    min-width: 70px;
+    white-space: nowrap;
+    padding-right: 10px;
 }
 
 .boxStyle_2 .box .value {
@@ -351,6 +351,10 @@
     flex-grow: 1;
 }
 
+.registerInfoForm .boxStyle_2 .textarea-line .line-2 .other_box {
+
+}
+
 .registerInfoForm .boxStyle_2 .box .value input {
     max-width: initial;
 }
@@ -358,11 +362,13 @@
 .registerInfoForm .boxStyle_2 .line-2 .box .name {
     /*min-width: 80px;*/
     padding-left: 5px;
+    padding-right: 10px;
+    width: 25%;
 }
 
 .registerInfoForm .inner_title {
     white-space: nowrap;
-    padding-right: 5px;
+    padding-right: 20px;
     /*min-width: 55px;*/
 }
 
@@ -372,7 +378,7 @@
 
 .registerInfoForm .textarea-line {
     align-items: flex-end;
-    width: 80%;
+    width: 82.5%;
 }
 
 .registerInfoForm .textarea-line .box {
@@ -478,7 +484,15 @@
     width: 100px;
 }
 
-/* 등록페이지 */
+.tableStyle.listT2 .title_tr th {
+    border: 1px solid #ddd;
+}
+
+.tableStyle.listT2 td {
+    border: 1px solid #ddd;
+    padding: 0 10px;
+}
+
 .registerPage {
     position: relative;
 }
@@ -804,6 +818,11 @@
     width: 140px;
 }
 
+/*.consultReserve-line .half-line input,*/
+.consultReserve-line .half-line select {
+    width: initial;
+}
+
 .inner_style_2 {
     padding: 10px 15px 10px 10px;
     border-radius: 10px;
@@ -847,6 +866,8 @@
 .date-line {
     gap: 10px;
     margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .date-line .btn {
@@ -862,6 +883,38 @@
 
 .date-line .timetable_date {
     font-weight: 600;
+}
+
+.middle-icon-line {
+    margin-bottom: 15px;
+}
+
+.middle-icon-line .name {
+    font-weight: 600;
+    font-size: 17px;
+    color: #00264b;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.middle-icon-line .name:hover {
+    color: #1e6ceb;
+    font-weight: 700;
+}
+
+.excelImg {
+    height: 17px;
+}
+
+.excelDownload {
+    gap: 10px;
+    margin-left: 35px;
+}
+
+.excelDownload button {
+    border: 0;
+    background: transparent;
+    box-shadow: initial;
 }
 
 @media all and (max-width: 1600px) {
@@ -908,6 +961,9 @@
     .registerInfoForm .half-line select {
         width: 50px;
         padding: 0;
+    }
+    .boxStyle_2 .box {
+        padding: 15px;
     }
 }
 @media all and (max-width: 1400px) {
@@ -963,6 +1019,9 @@
     .desc_text {
         font-size: 15px;
     }
+    .registerInfoForm .boxStyle_2 .line-2 .box .name {
+        width: 35%;
+    }
 }
 
 @media all and (max-width: 1080px) {
@@ -976,6 +1035,9 @@
     }
     .boxStyle_1 .box .name {
         width: 40%;
+    }
+    .registerInfoForm .half-line select {
+        width: 30px;
     }
 }
 
@@ -1018,6 +1080,13 @@
         gap: 15px;
         width: 100%;
         overflow: hidden;
+    }
+    .registerInfoForm .inner_title {
+        padding-right: 5px;
+    }
+    .registerInfoForm .boxStyle_2 .line-2 .box .name {
+        width: 45%;
+        padding-right: 5px;
     }
 }
 

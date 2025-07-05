@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                     <div class="half-line">
-                                        <select class="reservationDatetime" name="consultingHour" id="consultingHour" style="width: 10px !important;">
+                                        <select class="reservationDatetime" name="consultingHour" id="consultingHour">
                                             <option value="">선택</option>
                                             <option value="09">09</option>
                                             <option value="10">10</option>
@@ -166,7 +166,7 @@
                                             <option value="22">22</option>
                                         </select>
                                         시&nbsp;
-                                        <select class="reservationDatetime" name="consultingMinute" id="consultingMinute" style="width: 10px !important;">
+                                        <select class="reservationDatetime" name="consultingMinute" id="consultingMinute">
                                             <option value="">선택</option>
                                             <option value="00">0</option>
                                             <option value="15">15</option>
@@ -201,8 +201,8 @@
                 </div>
             </div>
             <div class="right_area">
-                <div class="date-line flex flex-start align-center">
-                    <ul>
+                <div class="flex between">
+                    <ul class="date-line flex flex-start align-center">
                         <li th:style="${'color: ' + siteEnvDto.typeColor1}">상담</li>
                         <li th:style="${'color: ' + siteEnvDto.typeColor2}">항목2</li>
                         <li th:style="${'color: ' + siteEnvDto.typeColor3}">항목3</li>
@@ -210,12 +210,13 @@
                         <li th:style="${'color: ' + siteEnvDto.typeColor5}">항목5</li>
                         <li th:style="${'color: ' + siteEnvDto.typeColor6}">항목6</li>
                     </ul>
+                    <div class="date-line flex flex-end align-center">
+                        <button class="prev-btn btn" id="prevBtn"> < </button>
+                        <input type="text" class="timetable_datepicker" id="timetableDatepicker" readonly>
+                        <button class="next-btn btn" id="nextBtn"> > </button>
+                    </div>
                 </div>
-                <div class="date-line flex flex-end align-center">
-                    <button class="prev-btn btn" id="prevBtn"> < </button>
-                    <input type="text" class="timetable_datepicker" id="timetableDatepicker" readonly>
-                    <button class="next-btn btn" id="nextBtn"> > </button>
-                </div>
+
                 <div class="schedule-container">
                     <table class="custom-schedule-table" id="custom-schedule-table">
                         <thead>

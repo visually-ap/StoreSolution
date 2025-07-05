@@ -10,6 +10,9 @@
         <!-- 개별 css-->
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
+        <!-- 스위치 css -->
+        <link rel="stylesheet" th:href="@{/css/component/switch.css}">
+
         <div class="section_wrap fabric-4">
             <h2 class="title">고객검색</h2>
             <form action="" class="search_form">
@@ -39,9 +42,26 @@
         </div>
 
         <div class="section_wrap listPage mt-30px">
-            <h2 class="title">고객목록</h2>
+            <div class="flex align-center between">
+                <h2 class="title">고객목록</h2>
+                <div class="flex flex-end middle-icon-line">
+                    <div class="switch_line">
+                        <span class="hidden_txt">숨김</span>
+                        <label class="real-switch">
+                            <input type="checkbox" id="customerInfo" value="true" checked="checked">
+                            <span class="real-slider"></span>
+                        </label>
+                        <span class="hidden_txt">보임</span>
+                        <label class="name" for="customerInfo">고객정보보기</label>
+                    </div>
+                    <div class="excelDownload flex align-center">
+                        <img th:src="@{/images/icon/excel.png}" alt="엑셀 파일 다운로드" class="excelImg">
+                        <button id="excel-download" class="name" type="button">엑셀 파일 다운로드</button>
+                    </div>
+                </div>
+            </div>
 
-            <table class="tableStyle listT">
+            <table class="tableStyle listT listT2">
                 <colgroup>
                     <col style="width: 10%">
                     <col style="width: 10%">

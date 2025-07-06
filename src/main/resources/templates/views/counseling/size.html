@@ -7,10 +7,73 @@
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
 
-        <div>
-            사이즈 화면입니다.
+        <!-- 개별 css -->
+        <link rel="stylesheet" th:href="@{/css/size.css}">
+
+        <div class="section_wrap mb-20px">
+            <div class="size_input_wrap">
+                <ul class="sizeTabs flex align-center flex-center">
+                    <li class="tab-link current" data-tab="tab-1">Jacket</li>
+                    <li class="tab-link" data-tab="tab-2">Pants</li>
+                    <li class="tab-link" data-tab="tab-3">Vest</li>
+                    <li class="tab-link" data-tab="tab-4">Coat</li>
+                </ul>
+
+                <div id="tab-1" class="size-tab-content current">
+                    <div class="flex size_article_wrap">
+                        <div class="flex column size_inputImg_wrap">
+                            <div class="img-frame">
+                                <img th:src="@{/images/size/jacket-size1.png}">
+                            </div>
+                            <div class="img-frame">
+                                <img th:src="@{/images/size/jacket-size2.png}">
+                            </div>
+                        </div>
+                        <div class="size_inputNumber_wrap">
+                            <span class="size-title">Size 입력</span>
+                            <div class="inner_inputNumber_wrap">
+                                <div class="line">
+                                    <span class="name"></span>
+                                    <div class="value title">실측 Size</div>
+                                    <button class="btnColor_1">수정량</button>
+                                </div>
+                                <div class="line">
+                                    <span class="name">상동</span>
+                                    <div class="value">
+                                        <input type="text">inch
+                                        <input type="text">cm
+                                    </div>
+                                    <div class="result-num">
+                                        <input type="text">cm
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-2" class="size-tab-content">tab content2</div>
+                <div id="tab-3" class="size-tab-content">tab content3</div>
+                <div id="tab-4" class="size-tab-content">tab content4</div>
+
+            </div>
         </div>
+
     </th:block>
 </th:block>
+
+<script>
+    $(document).ready(function(){
+
+        $('.sizeTabs li').click(function(){
+            var tab_id = $(this).attr('data-tab');
+
+            $('.sizeTabs li').removeClass('current');
+            $('.size-tab-content').removeClass('current');
+
+            $(this).addClass('current');
+            $("#"+tab_id).addClass('current');
+        })
+    })
+</script>
 
 </html>

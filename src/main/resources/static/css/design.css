@@ -1,13 +1,13 @@
 @charset "utf-8";
 
 .section_wrap {
-    /*border: 0;*/
+    border: 0;
+    padding: 0;
 }
 
 .designTabs {
-    /*box-shadow: 3px 3px 11px 1px rgba(0, 0, 0, .09);*/
     border-bottom: 1px solid #d1d3d4;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .designTabs .tab-link {
@@ -63,6 +63,7 @@
     text-align: center;
     border-radius: 7px;
     padding: 0 20px;
+    box-shadow: 3px 3px 11px 1px rgba(0, 0, 0, .09);
 }
 .sub-tabs li.current {
     background: #7991b9;
@@ -87,7 +88,14 @@
 }
 
 .img-frame-wrap {
-    gap: 10px;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.article-img-frame {
+    width: 32%;
 }
 
 .img-frame {
@@ -97,4 +105,58 @@
     padding: 20px;
     box-sizing: border-box;
     background: #fff;
+    height: 500px;
+}
+
+.img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.design_choice_wrap .lastSelect select {
+    width: 200px;
+}
+
+.design_choice_wrap .lastSelect button {
+    width: 200px;
+}
+
+@media all and (max-width: 1500px) {
+    .img-frame {
+        height: 40vh;
+    }
+}
+
+@media all and (max-width: 1280px) {
+    .article-img-frame {
+        width: 31.8%;
+    }
+}
+
+@media all and (max-width: 1200px) {
+    .sub-tabs {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .sub-tabs li {
+        height: 45px;
+        line-height: 45px;
+        font-size: 16px;
+    }
+    .article-img-frame {
+        width: 32.4%;
+    }
+    .img-frame-wrap {
+        gap: 10px;
+    }
+    .img-frame {
+        height: 25vh;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .article-img-frame {
+        width: 32%;
+    }
 }

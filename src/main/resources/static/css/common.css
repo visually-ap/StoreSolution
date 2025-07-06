@@ -493,6 +493,10 @@ input::placeholder {
     align-items: center;
 }
 
+.flex-center {
+    justify-content: center !important;
+}
+
 .column {
     flex-direction: column;
 }

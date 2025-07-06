@@ -1,0 +1,130 @@
+@charset "utf-8";
+
+/*.section_wrap {*/
+/*    border: 0;*/
+/*    padding: 0;*/
+/*}*/
+
+.size_input_wrap {
+
+}
+
+.size_input_wrap .sizeTabs {
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.size_input_wrap .sizeTabs .tab-link {
+    cursor: pointer;
+    border: 1px solid #d1d3d4;
+    border-radius: 10px;
+    background: #fff;
+    font-weight: 600;
+    height: 50px;
+    width: 200px;
+    font-size: 22px;
+    line-height: 50px;
+    text-align: center;
+}
+
+.size_input_wrap .sizeTabs .tab-link.current {
+    background: #1e6ceb;
+    border: 1px solid #1e6ceb;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 10px;
+}
+
+.size_input_wrap .sizeTabs li.current {
+    background: #ededed;
+    color: #222;
+}
+
+.size_input_wrap .size-tab-content {
+    display: none;
+    padding: 15px;
+}
+
+.size_input_wrap .size-tab-content.current {
+    display: inherit;
+}
+
+.size_inputImg_wrap {
+    width: 25%;
+}
+
+.size_inputImg_wrap img {
+    width: 100%;
+}
+
+.size_inputNumber_wrap {
+    width: 35%;
+}
+
+.inner_inputNumber_wrap {
+    border: 1px solid #d8d8d7;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.size-title {
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+    display: block;
+}
+
+.inner_inputNumber_wrap .line {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inner_inputNumber_wrap .line:last-child {
+    margin-bottom: 0;
+}
+
+.inner_inputNumber_wrap .line .name {
+    font-weight: 700;
+    font-size: 17px;
+    text-align: center;
+    width: 15%;
+}
+
+.inner_inputNumber_wrap .line .value.title {
+    font-weight: 700;
+    justify-content: center;
+}
+
+.inner_inputNumber_wrap .line .value {
+    background-color: #eff1f7;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.inner_inputNumber_wrap .line .value input {
+    padding: 0 5px;
+    width: 30%;
+}
+
+.result-num input {
+    padding: 0 5px;
+    width: 80px;
+}
+
+.result-num {
+    display: flex;
+    align-items: center;
+    width: 80px;
+}
+

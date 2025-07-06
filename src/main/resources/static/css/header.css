@@ -207,6 +207,14 @@
     background: url(../images/icon/design_on.png) no-repeat 19px / 23px;
 }
 
+.left_nav li .size {
+    background: url(../images/icon/size.png) no-repeat 19px / 23px;
+}
+
+.left_nav li.on .size {
+    background: url(../images/icon/size_on.png) no-repeat 19px / 23px;
+}
+
 .left_nav li a span {
     display: none;
     color: #00264b;

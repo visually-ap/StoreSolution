@@ -269,6 +269,15 @@ button:hover {
     line-height: 50px;
 }
 
+.btn_3 {
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .3s;
+    box-sizing: border-box;
+    height: 50px;
+    line-height: 50px;
+}
+
 .btnColor_1 {
     background-color: #1e6ceb;
     color: #fff;
@@ -293,7 +302,12 @@ button:hover {
     border: 1px solid #555;
 }
 
-    /*작성 css*/
+/*넓이*/
+.w-150 {
+    width: 150px !important;
+}
+
+/*작성 css*/
 .wrapper {
     width: 100%;
     min-height: 100vh;
@@ -377,9 +391,19 @@ input::placeholder {
     margin-bottom: 20px !important;
 }
 
+.mb-50px {
+    margin-bottom: 50px !important;
+}
+
 @media all and (max-width: 992px) {
     .section_wrap {
         padding: 35px 30px;
+    }
+    .container {
+        width: 87%;
+    }
+    .section_wrap .title {
+        padding-bottom: 15px;
     }
 }
 

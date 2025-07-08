@@ -419,3 +419,105 @@
 }
 
 /*이미지 선택 페이지*/
+.upload_frame {
+    border: 1px solid #ddd;
+    padding: 40px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+}
+
+.upload_box {
+    display: flex;
+    gap: 30px;
+    border-radius: 15px;
+    padding: 30px;
+    background-color: #eff1f7;
+    position: relative;
+}
+
+.selected-count {
+    position: absolute;
+    bottom: 22px;
+}
+
+.upload_label {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    color: #1F365E;
+    /*margin-bottom: 8px;*/
+}
+
+.desc_text {
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #999;
+}
+
+.desc_text:first-child {
+    margin-top: 3px;
+}
+
+.preview_box {
+    width: 30%;
+    height: 120px;
+    /*margin: 12px 0;*/
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    display: flex; /* Flexbox 적용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    overflow: hidden; /* 넘치는 이미지 방지 (선택) */
+}
+
+.upload_boxes .preview_box {
+    height: 140px;
+}
+
+.upload_boxes {
+    padding-bottom: 45px;
+}
+
+.preview_box img {
+    max-width: 100px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.desc_btn_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.upload_box input[type=file] {
+    display: none;
+}
+
+.upload_frame .btn_wrap {
+    gap: 10px;
+}
+
+@media all and (max-width: 1200px) {
+    .upload_box {
+        gap: 20px;
+    }
+    .desc_text {
+        font-size: 15px;
+    }
+}
+
+@media all and (max-width: 992px) {
+    .desc_text {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    .desc_text:first-child {
+        margin-top: 2px;
+    }
+}

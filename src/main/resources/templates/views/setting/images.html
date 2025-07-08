@@ -6,78 +6,38 @@
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-        <style>
-            .upload_box {
-                border: 1px solid #eee;
-                padding: 20px;
-                border-radius: 16px;
-                margin-bottom: 30px;
-            }
-
-            .upload_label {
-                display: block;
-                font-weight: bold;
-                font-size: 18px;
-                color: #1F365E;
-                margin-bottom: 8px;
-            }
-
-            .desc_text {
-                margin-top: 10px;
-                font-size: 13px;
-                color: #999;
-            }
-
-            .preview_box {
-                width: 120px;
-                height: 120px;
-                margin: 12px 0;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                display: flex; /* Flexbox 적용 */
-                align-items: center; /* 세로 중앙 정렬 */
-                justify-content: center; /* 가로 중앙 정렬 */
-                overflow: hidden; /* 넘치는 이미지 방지 (선택) */
-            }
-
-            .preview_box img {
-                max-width: 120px;
-                max-height: 120px;
-                width: auto;
-                height: auto;
-                object-fit: contain;
-                border-radius: 8px;
-            }
-
-            input[type=file] {
-                display: none;
-            }
-        </style>
 
         <!-- 메인 홈 화면 이미지 -->
-        <div class="upload_box">
-            <label class="upload_label">메인 홈 화면 이미지</label>
-            <div class="preview_box">
-                <th:block th:if="${dto.homeImageList != null and !#lists.isEmpty(dto.homeImageList)}">
-                    <img id="homeImagePreview" th:src="@{${dto.homeImageList[0].savedPathFile}}" />
-                </th:block>
-                <th:block th:unless="${dto.homeImageList != null and !#lists.isEmpty(dto.homeImageList)}">
-                    <img id="homeImagePreview" th:src="@{/images/no_image.png}" />
-                </th:block>
+        <div class="section_wrap upload_frame">
+            <label class="title upload_label">메인 홈 화면 이미지</label>
+            <div class="upload_box">
+                <div class="preview_box">
+                    <th:block th:if="${dto.homeImageList != null and !#lists.isEmpty(dto.homeImageList)}">
+                        <img id="homeImagePreview" th:src="@{${dto.homeImageList[0].savedPathFile}}" />
+                    </th:block>
+                    <th:block th:unless="${dto.homeImageList != null and !#lists.isEmpty(dto.homeImageList)}">
+                        <img id="homeImagePreview" th:src="@{/images/no_image.png}" />
+                    </th:block>
+                </div>
+                <div class="desc_btn_wrap">
+                    <div class="desc_text_wrap">
+                        <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+                        <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
+                    </div>
+                    <div class="btn_wrap">
+                        <button type="button" class="w-150 btnColor_1 btn_3 selectImageButton" data-where="homeImage">이미지선택</button>
+                        <button type="button" class="w-150 btn_3" id="homeImageSaveButton">저장</button>
+                    </div>
+                </div>
+                <input type="file" id="homeImage" name="homeImage" accept="image/jpeg,image/png" onchange="previewImage(this, 'homeImagePreview')" />
             </div>
-            <div>
-                <button type="button" class="selectImageButton" data-where="homeImage">이미지선택</button>
-                <button type="button" id="homeImageSaveButton">저장</button>
-            </div>
-            <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
-            <input type="file" id="homeImage" name="homeImage" accept="image/jpeg,image/png" onchange="previewImage(this, 'homeImagePreview')" />
         </div>
 
         <!-- 로고 이미지 -->
-        <div class="upload_box">
-            <label class="upload_label">로고 이미지</label>
-            <div class="preview_box">
+        <div class="section_wrap upload_frame">
+            <label class="title upload_label">로고 이미지</label>
+            <div class="upload_box">
+                <div class="preview_box">
                 <th:block th:if="${dto.logoImage != null}">
                     <img id="logoImagePreview" th:src="@{${dto.logoImage.savedPathFile}}" />
                 </th:block>
@@ -85,34 +45,48 @@
                     <img id="logoImagePreview" th:src="@{/images/no_image.png}" />
                 </th:block>
             </div>
-            <div>
-                <button type="button" class=" selectImageButton" data-where="logoImage">이미지선택</button>
-                <button type="button" id="logoImageSaveButton">저장</button>
+                <div class="desc_btn_wrap">
+                <div class="desc_text_wrap">
+                    <p class="desc_text">* 확장자가 PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+                    <p class="desc_text">* 사이즈는 000×000px에 최적화되어 있으며, 배경이 투명한 이미지를 사용하시기 바랍니다.</p>
+                </div>
+                <div class="btn_wrap">
+                    <button type="button" class="w-150 btnColor_1 btn_3 selectImageButton" data-where="logoImage">이미지선택</button>
+                    <button type="button" class="w-150 btn_3 " id="logoImageSaveButton">저장</button>
+                </div>
             </div>
-            <p class="desc_text">* 확장자가 PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="desc_text">* 사이즈는 000×000px에 최적화되어 있으며, 배경이 투명한 이미지를 사용하시기 바랍니다.</p>
-            <input type="file" id="logoImage" name="logoImage" accept="image/png" onchange="previewImage(this, 'logoImagePreview')" />
+                <input type="file" id="logoImage" name="logoImage" accept="image/png" onchange="previewImage(this, 'logoImagePreview')" />
+            </div>
         </div>
 
         <!-- 상담판 이미지 -->
-        <div class="upload_box">
-            <label class="upload_label">상담판 이미지</label>
-            <div class="preview_box">
-                <th:block th:if="${dto.consultingImageList != null and !#lists.isEmpty(dto.consultingImageList)}">
-                    <img id="consultingImagePreview" th:src="@{${dto.consultingImageList[0].savedPathFile}}" />
-                </th:block>
-                <th:block th:unless="${dto.consultingImageList != null and !#lists.isEmpty(dto.consultingImageList)}">
-                    <img id="consultingImagePreview" th:src="@{/images/no_image.png}" />
-                </th:block>
+        <div class="section_wrap upload_frame mb-50px">
+            <label class="title upload_label">상담판 이미지</label>
+            <div class="upload_box upload_boxes">
+                    <div class="preview_box">
+                        <th:block th:if="${dto.consultingImageList != null and !#lists.isEmpty(dto.consultingImageList)}">
+                            <img id="consultingImagePreview" th:src="@{${dto.consultingImageList[0].savedPathFile}}" />
+                        </th:block>
+                        <th:block th:unless="${dto.consultingImageList != null and !#lists.isEmpty(dto.consultingImageList)}">
+                            <img id="consultingImagePreview" th:src="@{/images/no_image.png}" />
+                        </th:block>
+                    </div>
+                    <!-- ✅ 선택된 이미지 개수 표시 -->
+                    <span class="selected-count">선택된 이미지: <span id="consultingImageCount">0</span>개</span>
+
+                <div class="desc_btn_wrap">
+                <div class="desc_text_wrap">
+                    <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
+                    <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
+                    <p class="desc_text">* 20개 이하의 이미지를 첨부할 수 있습니다.</p>
+                </div>
+                <div class="btn_wrap">
+                    <button type="button" class="w-150 btnColor_1 btn_3 selectImageButton" data-where="consultingImage">이미지선택</button>
+                    <button type="button" class="w-150 btn_3" id="consultingImageSaveButton">저장</button>
+                </div>
             </div>
-            <div>
-                <button type="button" class="selectImageButton" data-where="consultingImage">이미지선택</button>
-                <button type="button" id="consultingImageSaveButton">저장</button>
+                <input type="file" id="consultingImage" name="consultingImage" accept="image/jpeg,image/png" onchange="previewMultipleImages(this, 'consultingImagePreview', 'consultingImageCount')" multiple/>
             </div>
-            <p class="desc_text">* 확장자가 JPG, JPEG, PNG인 3mb 이하의 이미지 파일만 첨부할 수 있습니다.</p>
-            <p class="desc_text">* 사이즈는 0000×0000px에 최적화되어 있습니다.</p>
-            <p class="desc_text">* 20개 이하의 이미지를 첨부할 수 있습니다.</p>
-            <input type="file" id="consultingImage" name="consultingImage" accept="image/jpeg,image/png" onchange="previewMultipleImages(this, 'consultingImagePreview')" multiple/>
         </div>
 
         <script th:inline="javascript">
@@ -146,19 +120,64 @@
             }
 
             // ✅ 복수 이미지 미리보기
-            function previewMultipleImages(input, previewId) {
+            // function previewMultipleImages(input, previewId) {
+            //     const files = input.files;
+            //     const preview = document.getElementById(previewId);
+            //
+            //     if (!files || files.length === 0) {
+            //         preview.src = "/images/no_image.png";
+            //         return;
+            //     }
+            //
+            //     if (files.length > 20) {
+            //         alert("이미지는 최대 20개까지만 첨부할 수 있습니다.");
+            //         input.value = "";
+            //         preview.src = "/images/no_image.png";  // 기본 이미지로 복원
+            //         return;
+            //     }
+            //
+            //     for (const file of files) {
+            //         if (file.size > 3145728) {
+            //             alert("각 파일은 3MB 이하로 첨부하여야 합니다.");
+            //             input.value = "";
+            //             preview.src = "/images/no_image.png";  // 기본 이미지로 복원
+            //             return;
+            //         }
+            //     }
+            //
+            //     const file = files[0];
+            //     if (file.type.startsWith("image/")) {
+            //         const reader = new FileReader();
+            //         reader.onload = function (e) {
+            //             preview.src = e.target.result;
+            //             preview.style.display = "block";
+            //         };
+            //         reader.readAsDataURL(file);
+            //     } else {
+            //         preview.src = "";
+            //         preview.style.display = "none";
+            //     }
+            // }
+
+            // ✅ 복수 이미지 미리보기
+            function previewMultipleImages(input, previewId, countId) {
                 const files = input.files;
                 const preview = document.getElementById(previewId);
+                const countElement = document.getElementById(countId);
 
                 if (!files || files.length === 0) {
                     preview.src = "/images/no_image.png";
+                    preview.style.display = "none";
+                    countElement.textContent = '0';
                     return;
                 }
 
                 if (files.length > 20) {
                     alert("이미지는 최대 20개까지만 첨부할 수 있습니다.");
                     input.value = "";
-                    preview.src = "/images/no_image.png";  // 기본 이미지로 복원
+                    preview.src = "/images/no_image.png";
+                    preview.style.display = "none";
+                    countElement.textContent = '0';
                     return;
                 }
 
@@ -166,11 +185,14 @@
                     if (file.size > 3145728) {
                         alert("각 파일은 3MB 이하로 첨부하여야 합니다.");
                         input.value = "";
-                        preview.src = "/images/no_image.png";  // 기본 이미지로 복원
+                        preview.src = "/images/no_image.png";
+                        preview.style.display = "none";
+                        countElement.textContent = '0';
                         return;
                     }
                 }
 
+                // ✅ 첫 번째 파일만 미리보기
                 const file = files[0];
                 if (file.type.startsWith("image/")) {
                     const reader = new FileReader();
@@ -180,10 +202,14 @@
                     };
                     reader.readAsDataURL(file);
                 } else {
-                    preview.src = "";
+                    preview.src = "/images/no_image.png";
                     preview.style.display = "none";
                 }
+
+                // ✅ 선택한 파일 개수 표시
+                countElement.textContent = files.length;
             }
+
 
             // 이미지 선택 버튼이 파일 input을 트리거
             $(document).on('click', '.selectImageButton', function () {

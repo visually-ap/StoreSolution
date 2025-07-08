@@ -7,10 +7,22 @@
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
 
+        <style>
+            .wrapper:before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 50vh;
+                left: 0;
+                top: 75%;
+                transform: translateY(-50%);
+                background-color: #10234b;
+            }
+        </style>
         <div>
-            About 화면입니다.
+            사진 등록 대기
         </div>
-
+        <div class="about-onlyLine"></div>
         <div>
             <a href="/counseling/fabric-item">Skip</a>
         </div>

@@ -411,10 +411,11 @@ button:hover {
 .container {
     position: absolute;
     top: 110px;
-    left: 10%;
+    left: 50%;
     width: 88%;
     max-width: 1440px;
     min-width: 650px;
+    transform: translateX(-50%);
 }
 
 .section_wrap {
@@ -562,6 +563,17 @@ input::placeholder {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.about-onlyLine {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 90vw;
+    height: 70vh;
+    transform: translate(-50%, 15%);
+    border: 2px solid #ccc;
+    z-index: -1;
 }
 
 @media all and (max-width: 1080px) {

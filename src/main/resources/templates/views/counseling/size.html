@@ -29,31 +29,462 @@
                                 <img th:src="@{/images/size/jacket-size2.png}">
                             </div>
                         </div>
-                        <div class="size_inputNumber_wrap">
-                            <span class="size-title">Size 입력</span>
-                            <div class="inner_inputNumber_wrap">
-                                <div class="line">
-                                    <span class="name"></span>
-                                    <div class="value title">실측 Size</div>
-                                    <button class="btnColor_1">수정량</button>
-                                </div>
-                                <div class="line">
-                                    <span class="name">상동</span>
-                                    <div class="value">
-                                        <input type="text">inch
-                                        <input type="text">cm
+                        <div class="flex between sizeOuter-wrap">
+                            <div class="size_inputNumber_wrap">
+                                <span class="size-title">Size 입력</span>
+                                <div class="inner_inputNumber_wrap">
+                                    <div class="line">
+                                        <span class="name"></span>
+                                        <div class="value title">실측 Size</div>
+                                        <button class="btnColor_1 top_btn">수정량</button>
                                     </div>
-                                    <div class="result-num">
-                                        <input type="text">cm
+                                    <div class="line">
+                                        <span class="name">상동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">중동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">어깨</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(좌)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(우)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">뒷기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">앞기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calc_wrap">
+                                <div class="calc_frame">
+                                    <div class="calculator">
+                                        <div></div>
+                                        <button class="c-btn gray">AC</button>
+                                        <button class="c-btn gray">←</button>
+
+                                        <button class="c-btn">7</button>
+                                        <button class="c-btn">8</button>
+                                        <button class="c-btn">9</button>
+
+                                        <button class="c-btn">4</button>
+                                        <button class="c-btn">5</button>
+                                        <button class="c-btn">6</button>
+
+                                        <button class="c-btn">1</button>
+                                        <button class="c-btn">2</button>
+                                        <button class="c-btn">3</button>
+
+                                        <button class="c-btn zero">0</button>
+                                        <button class="c-btn">.</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="tab-2" class="size-tab-content">tab content2</div>
-                <div id="tab-3" class="size-tab-content">tab content3</div>
-                <div id="tab-4" class="size-tab-content">tab content4</div>
+                <div id="tab-2" class="size-tab-content">
+                    <div class="flex size_article_wrap">
+                        <div class="flex column size_inputImg_wrap">
+                            <div class="img-frame">
+                            </div>
+                            <div class="img-frame">
+                            </div>
+                        </div>
+                        <div class="flex between sizeOuter-wrap">
+                            <div class="size_inputNumber_wrap">
+                                <span class="size-title">Size 입력</span>
+                                <div class="inner_inputNumber_wrap">
+                                    <div class="line">
+                                        <span class="name"></span>
+                                        <div class="value title">실측 Size</div>
+                                        <button class="btnColor_1 top_btn">수정량</button>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">상동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">중동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">어깨</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(좌)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(우)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">뒷기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">앞기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calc_wrap">
+                                <div class="calc_frame">
+                                    <div class="calculator">
+                                        <div></div>
+                                        <button class="c-btn gray">AC</button>
+                                        <button class="c-btn gray">←</button>
+
+                                        <button class="c-btn">7</button>
+                                        <button class="c-btn">8</button>
+                                        <button class="c-btn">9</button>
+
+                                        <button class="c-btn">4</button>
+                                        <button class="c-btn">5</button>
+                                        <button class="c-btn">6</button>
+
+                                        <button class="c-btn">1</button>
+                                        <button class="c-btn">2</button>
+                                        <button class="c-btn">3</button>
+
+                                        <button class="c-btn zero">0</button>
+                                        <button class="c-btn">.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-3" class="size-tab-content">
+                    <div class="flex size_article_wrap">
+                        <div class="flex column size_inputImg_wrap">
+                            <div class="img-frame">
+                            </div>
+                            <div class="img-frame">
+                            </div>
+                        </div>
+                        <div class="flex between sizeOuter-wrap">
+                            <div class="size_inputNumber_wrap">
+                                <span class="size-title">Size 입력</span>
+                                <div class="inner_inputNumber_wrap">
+                                    <div class="line">
+                                        <span class="name"></span>
+                                        <div class="value title">실측 Size</div>
+                                        <button class="btnColor_1 top_btn">수정량</button>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">상동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">중동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">어깨</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(좌)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(우)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">뒷기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">앞기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calc_wrap">
+                                <div class="calc_frame">
+                                    <div class="calculator">
+                                        <div></div>
+                                        <button class="c-btn gray">AC</button>
+                                        <button class="c-btn gray">←</button>
+
+                                        <button class="c-btn">7</button>
+                                        <button class="c-btn">8</button>
+                                        <button class="c-btn">9</button>
+
+                                        <button class="c-btn">4</button>
+                                        <button class="c-btn">5</button>
+                                        <button class="c-btn">6</button>
+
+                                        <button class="c-btn">1</button>
+                                        <button class="c-btn">2</button>
+                                        <button class="c-btn">3</button>
+
+                                        <button class="c-btn zero">0</button>
+                                        <button class="c-btn">.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-4" class="size-tab-content">
+                    <div class="flex size_article_wrap">
+                        <div class="flex column size_inputImg_wrap">
+                            <div class="img-frame">
+                            </div>
+                            <div class="img-frame">
+                            </div>
+                        </div>
+                        <div class="flex between sizeOuter-wrap">
+                            <div class="size_inputNumber_wrap">
+                                <span class="size-title">Size 입력</span>
+                                <div class="inner_inputNumber_wrap">
+                                    <div class="line">
+                                        <span class="name"></span>
+                                        <div class="value title">실측 Size</div>
+                                        <button class="btnColor_1 top_btn">수정량</button>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">상동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">중동</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">어깨</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(좌)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">소매(우)</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">뒷기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <span class="name">앞기장</span>
+                                        <div class="value">
+                                            <div class="value_"><input type="text">&nbsp;inch</div>
+                                            <div class="value_"><input type="text">&nbsp;cm</div>
+                                        </div>
+                                        <div class="result-num">
+                                            <input type="text">&nbsp;cm
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calc_wrap">
+                                <div class="calc_frame">
+                                    <div class="calculator">
+                                        <div></div>
+                                        <button class="c-btn gray">AC</button>
+                                        <button class="c-btn gray">←</button>
+
+                                        <button class="c-btn">7</button>
+                                        <button class="c-btn">8</button>
+                                        <button class="c-btn">9</button>
+
+                                        <button class="c-btn">4</button>
+                                        <button class="c-btn">5</button>
+                                        <button class="c-btn">6</button>
+
+                                        <button class="c-btn">1</button>
+                                        <button class="c-btn">2</button>
+                                        <button class="c-btn">3</button>
+
+                                        <button class="c-btn zero">0</button>
+                                        <button class="c-btn">.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

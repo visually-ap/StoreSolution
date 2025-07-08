@@ -33,13 +33,9 @@
 
 .design-tab-content {
     display: none;
-    background: #eff1f7;
-    padding: 30px;
+    /*background: #eff1f7;*/
+    padding: 30px 0;
     border-radius: 10px;
-}
-
-.design-tab-content {
-
 }
 
 .design-tab-content.current {

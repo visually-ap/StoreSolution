@@ -19,7 +19,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#" class="navMain">reservation</a>
+                <a th:href="@{/reservation/main}" class="navMain" th:classappend="${pathname.startsWith('/reservation')} ? 'on'">reservation</a>
             </li>
             <li sec:authorize="hasRole('ROLE_USER')">
                 <a th:href="@{/setting/store/info}" class="navMain" th:classappend="${pathname.startsWith('/setting')} ? 'on'">Store Management</a>

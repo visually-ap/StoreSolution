@@ -119,47 +119,7 @@
                 }
             }
 
-            // ✅ 복수 이미지 미리보기
-            // function previewMultipleImages(input, previewId) {
-            //     const files = input.files;
-            //     const preview = document.getElementById(previewId);
-            //
-            //     if (!files || files.length === 0) {
-            //         preview.src = "/images/no_image.png";
-            //         return;
-            //     }
-            //
-            //     if (files.length > 20) {
-            //         alert("이미지는 최대 20개까지만 첨부할 수 있습니다.");
-            //         input.value = "";
-            //         preview.src = "/images/no_image.png";  // 기본 이미지로 복원
-            //         return;
-            //     }
-            //
-            //     for (const file of files) {
-            //         if (file.size > 3145728) {
-            //             alert("각 파일은 3MB 이하로 첨부하여야 합니다.");
-            //             input.value = "";
-            //             preview.src = "/images/no_image.png";  // 기본 이미지로 복원
-            //             return;
-            //         }
-            //     }
-            //
-            //     const file = files[0];
-            //     if (file.type.startsWith("image/")) {
-            //         const reader = new FileReader();
-            //         reader.onload = function (e) {
-            //             preview.src = e.target.result;
-            //             preview.style.display = "block";
-            //         };
-            //         reader.readAsDataURL(file);
-            //     } else {
-            //         preview.src = "";
-            //         preview.style.display = "none";
-            //     }
-            // }
-
-            // ✅ 복수 이미지 미리보기
+            // 복수 이미지 미리보기
             function previewMultipleImages(input, previewId, countId) {
                 const files = input.files;
                 const preview = document.getElementById(previewId);
@@ -192,7 +152,7 @@
                     }
                 }
 
-                // ✅ 첫 번째 파일만 미리보기
+                // 첫 번째 파일만 미리보기
                 const file = files[0];
                 if (file.type.startsWith("image/")) {
                     const reader = new FileReader();
@@ -206,7 +166,7 @@
                     preview.style.display = "none";
                 }
 
-                // ✅ 선택한 파일 개수 표시
+                // 선택한 파일 개수 표시
                 countElement.textContent = files.length;
             }
 

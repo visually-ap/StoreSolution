@@ -29,8 +29,13 @@ public class ReservationController {
     private final SiteService siteService;
 
     @GetMapping("/main")
-    public String gotoStoreInfoPage(Model model) {
+    public String gotoReservationMainPage(Model model) {
         model.addAttribute("item", storeService.getStoreInfo());
         return "views/reservation/main";
+    }
+
+    @GetMapping("/register")
+    public String gotoNewCustomerRegister(Model model) {
+        return "views/reservation/register";
     }
 }

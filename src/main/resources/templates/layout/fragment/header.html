@@ -9,13 +9,13 @@
         </h2>
         <ul class="nav">
             <li>
-                <a href="#" class="navMain">counseling</a>
+                <a th:href="@{/counseling/customer/list}" class="navMain" th:classappend="${pathname.startsWith('/counseling')} ? 'on'">counseling</a>
                 <ul class="subNav">
-                    <li><a href="">About</a></li>
-                    <li><a href="">Customer</a></li>
-                    <li><a href="">Fabric&Item</a></li>
-                    <li><a href="">Design</a></li>
-                    <li><a href="">Size</a></li>
+                    <li><a th:href="@{/counseling/customer/list}">Customer</a></li>
+                    <li><a th:href="@{/counseling/about}">About</a></li>
+                    <li><a th:href="@{/counseling/fabric-item}">Fabric&Item</a></li>
+                    <li><a href="#">Design</a></li>
+                    <li><a href="#">Size</a></li>
                 </ul>
             </li>
             <li>

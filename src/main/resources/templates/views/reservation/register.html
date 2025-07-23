@@ -20,6 +20,14 @@
                 width: 100%;
                 transform: translateX(-50%);
             }
+            .datepicker {
+                background-color: #dddddd;
+            }
+
+            .datepicker::placeholder {
+                color: #999999 !important;
+                text-align: center;
+            }
         </style>
 
         <div class="info_calendar">
@@ -30,41 +38,31 @@
                 </div>
 
                 <div class="info_wrap">
-                    <div class="search_style_1 mt-50px">
-                        <h3 class="title">고객 검색</h3>
-                        <form class="inner_bg inner_style_1">
-                            <h4 class="inner_title">고객명</h4>
-                            <input type="text">
-                            <button class="search_btn" style="background:#1e6ceb">
-                                <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
-                            </button>
-                        </form>
-                    </div>
                     <div class="search_style_1 mt-20px scroll-box">
-                        <form class="">
+                        <form id="dataForm">
                             <div class="top_line flex between">
                                 <h3 class="title">고객 정보</h3>
-                                <button type="submit" class="btnColor_1">저장</button>
+                                <button type="button" class="btnColor_1">저장</button>
                             </div>
                             <div class="inner_bg inner_style_1 column">
                                 <div class="one-line mb-5px">
                                     <div class="half-line">
                                         <h4 class="inner_title">고객명</h4>
-                                        <input type="text">
+                                        <input type="text" name="name1" id="name1">
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">연락처</h4>
-                                        <input type="text">
+                                        <input type="text" name="mobile1" id="mobile1">
                                     </div>
                                 </div>
                                 <div class="one-line">
                                     <div class="half-line">
                                         <h4 class="inner_title">고객명</h4>
-                                        <input type="text">
+                                        <input type="text" name="name2" id="name2">
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">연락처</h4>
-                                        <input type="text">
+                                        <input type="text" nam="mobile2" id="mobile2">
                                     </div>
                                 </div>
                             </div>
@@ -72,21 +70,21 @@
                                 <div class="one-line mb-5px">
                                     <div class="half-line">
                                         <h4 class="inner_title">촬영일</h4>
-                                        <input type="date">
+                                        <input type="text" name="photoDate" id="photoDate" class="datepicker" placeholder="날짜선택" readonly>
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">촬영장소</h4>
-                                        <input type="text">
+                                        <input type="text" name="photoPlace" id="photoPlace">
                                     </div>
                                 </div>
                                 <div class="one-line">
                                     <div class="half-line">
                                         <h4 class="inner_title">본식일</h4>
-                                        <input type="date">
+                                        <input type="text" name="weddingDate" id="weddingDate" class="datepicker" placeholder="날짜선택" readonly>
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">예식장소</h4>
-                                        <input type="text">
+                                        <input type="text" name="weddingPlace" id="weddingPlace">
                                     </div>
                                 </div>
                             </div>
@@ -94,34 +92,39 @@
                                 <div class="one-line mb-5px w_100">
                                     <div class="half-line">
                                         <h4 class="inner_title">예약담당</h4>
-                                        <input type="text">
+                                        <select name="reservationManager" id="reservationManager">
+                                            <option value="">-- 선택 --</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="one-line mb-5px w_100">
+                                <div class="one-line">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">상담예약</h4>
+                                        <input type="text" name="consultingDate" id="consultingDate" class="datepicker" placeholder="날짜선택" readonly>
+                                    </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">상담담당</h4>
-                                        <input type="text">
+                                        <select name="consultingManager" id="consultingManager">
+                                            <option value="">-- 선택 --</option>
+                                        </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="inner_bg inner_style_1 column mt-20px">
                                 <div class="one-line mb-5px w_100">
                                     <div class="half-line">
-                                        <h4 class="inner_title">상담일</h4>
-                                        <input type="date">
-                                        <input type="text">
+                                        <h4 class="inner_title">예약시간</h4>
+                                        <span>2025-06-30 PM 02:30</span>
                                     </div>
                                 </div>
                             </div>
                             <ul class="inner_style_2 mt-20px">
-                                <li><span class="border-bottom">홍길동</span>고객님,</li>
+                                <li><span class="border-bottom">홍길동</span> 고객님</li>
                                 <li>
-                                    <span class="border-bottom">2025</span>년
-                                    <span class="border-bottom">7</span>월
-                                    <span class="border-bottom">24</span>일/
-                                    <span class="border-bottom">11</span>시
-                                    <span class="border-bottom">30분</span>
+                                    <span class="border-bottom">2025년 07월 24일 11시 30분</span>
                                 </li>
                                 <li>
-                                    <span class="border-bottom">홍길남</span>담당자와 상담 예약이 진행 예정입니다.
+                                    <span class="border-bottom">홍길남</span> 담당자와 상담 진행 예정입니다.
                                 </li>
                             </ul>
                             <div class="inner_style_3 mt-20px">
@@ -216,6 +219,10 @@
         });
 
         calendar.render();
+    });
+
+    $(document).ready(function () {
+        const fp = standardPicker($('.datepicker'));
     });
 </script>
 

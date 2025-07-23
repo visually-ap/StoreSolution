@@ -6,6 +6,7 @@ import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
+import kr.co.apfactory.storesolution.global.file.domain.dto.UploadFilesDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -13,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor

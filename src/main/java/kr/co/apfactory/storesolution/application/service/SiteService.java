@@ -1,32 +1,34 @@
 package kr.co.apfactory.storesolution.application.service;
 
-import kr.co.apfactory.storesolution.domain.dto.common.FileDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResSiteImageDTO;
 import kr.co.apfactory.storesolution.domain.entity.SiteEnvSetting;
 import kr.co.apfactory.storesolution.domain.entity.Store;
 import kr.co.apfactory.storesolution.domain.repository.SiteEnvSettingRepository;
-import kr.co.apfactory.storesolution.global.file.domain.entity.FileAttach;
+import kr.co.apfactory.storesolution.global.file.domain.entity.StoreFileAttach;
+import kr.co.apfactory.storesolution.global.file.domain.entity.StoreFileAttachMaster;
 import kr.co.apfactory.storesolution.global.file.domain.repository.FileAttachRepository;
+import kr.co.apfactory.storesolution.global.file.domain.repository.StoreFileAttachMasterRepository;
+import kr.co.apfactory.storesolution.global.file.domain.repository.StoreFileAttachRepository;
 import kr.co.apfactory.storesolution.global.object.AlterObject;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SiteService {
+    private final AlterObject alterObject;
+
     private final SiteEnvSettingRepository siteEnvSettingRepository;
     private final FileAttachRepository fileAttachRepository;
-    private final AlterObject alterObject;
+    private final StoreFileAttachRepository storeFileAttachRepository;
+    private final StoreFileAttachMasterRepository storeFileAttachMasterRepository;
 
     public ResEnvironmentUpdateDTO getSiteEnvironment() {
         Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
@@ -71,41 +73,56 @@ public class SiteService {
         Long storeId = LoginUser.getDetails().getStoreId();
         Store store = Store.builder().id(storeId).build();
 
-        // 매장에 해당하는 환경설정 조회
-        SiteEnvSetting setting = siteEnvSettingRepository.findByStore(store);
-        // setting이 존재하지 않으면 빈 객체 반환
-        if (setting == null) {
-            return ResSiteImageDTO.builder()
-                    .homeImageList(Collections.emptyList())
-                    .logoImage(null)
-                    .consultingImageList(Collections.emptyList())
-                    .build();
-        }
+        ResSiteImageDTO resSiteImageDTO = ResSiteImageDTO.builder().build();
 
         // 홈 이미지 목록 조회 (null 방어 처리 포함)
-        List<FileAttach> homeImageList = new ArrayList<>();
-        if (setting.getHomeImage() != null) {
-            homeImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getHomeImage());
+        List<StoreFileAttachMaster> storeFileAttachMasterList = storeFileAttachMasterRepository.findAllByStore(store);
+        for (StoreFileAttachMaster storeFileAttachMaster: storeFileAttachMasterList) {
+            List<StoreFileAttach> storeFileAttachList = storeFileAttachRepository.findAllByStoreFileAttachMaster(storeFileAttachMaster);
+
+            if (storeFileAttachMaster.getFileType() == 1) {
+                // 홈 이미지
+                resSiteImageDTO.setHomeImageList(
+                        storeFileAttachList.stream()
+                        .map(alterObject::toFileDTO)
+                                .collect(Collectors.toList())
+                );
+            } else if (storeFileAttachMaster.getFileType() == 2) {
+                // 로고 이미지
+                resSiteImageDTO.setLogoImage(alterObject.toFileDTO(storeFileAttachList.get(0)));
+            } else if (storeFileAttachMaster.getFileType() == 3) {
+                // 상담판 이미지
+                resSiteImageDTO.setConsultingImageList(
+                        storeFileAttachList.stream()
+                        .map(alterObject::toFileDTO)
+                                .collect(Collectors.toList())
+                );
+            }
         }
 
-        // 로고 이미지 변환 (단건이므로 null 체크 후 DTO 변환)
-        FileDTO logoImageDto = setting.getLogoImage() != null ? alterObject.toFileDTO(setting.getLogoImage()) : null;
+//        List<FileAttach> homeImageList = new ArrayList<>();
+//        if (setting.getHomeImage() != null) {
+//            homeImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getHomeImage());
+//        }
+//
+//        // 로고 이미지 변환 (단건이므로 null 체크 후 DTO 변환)
+//        FileDTO logoImageDto = setting.getLogoImage() != null ? alterObject.toFileDTO(setting.getLogoImage()) : null;
+//
+//        // 컨설팅 이미지 목록 조회 (null 방어 처리 포함)
+//        List<FileAttach> consultingImageList = new ArrayList<>();
+//        if (setting.getConsultingImage() != null) {
+//            consultingImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getConsultingImage());
+//        }
 
-        // 컨설팅 이미지 목록 조회 (null 방어 처리 포함)
-        List<FileAttach> consultingImageList = new ArrayList<>();
-        if (setting.getConsultingImage() != null) {
-            consultingImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getConsultingImage());
-        }
+        return resSiteImageDTO;
 
         // DTO 생성 및 반환
-        return ResSiteImageDTO.builder()
-                .homeImageList(homeImageList.stream()
-                        .map(alterObject::toFileDTO)
-                        .collect(Collectors.toList()))
-                .logoImage(logoImageDto)
-                .consultingImageList(consultingImageList.stream()
-                        .map(alterObject::toFileDTO)
-                        .collect(Collectors.toList()))
-                .build();
+//        return ResSiteImageDTO.builder()
+//                .homeImageList()
+//                .logoImage(logoImageDto)
+//                .consultingImageList(consultingImageList.stream()
+//                        .map(alterObject::toFileDTO)
+//                        .collect(Collectors.toList()))
+//                .build();
     }
 }

@@ -15,5 +15,7 @@ import java.util.List;
 public class UploadFilesDTO {
     private Long id;
 
-    private List<MultipartFile> file;
+    private Integer fileType;
+
+    private List<MultipartFile> files;
 }

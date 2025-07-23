@@ -35,6 +35,42 @@ function callService(type, url, param, callback) {
     });
 }
 
+function callFileAttachService($form, $file, url, callback) {
+    if (!$file.val()) {
+        $file.attr('disabled', true);
+    }
+
+    $form.attr('enctype', 'multipart/form-data');
+    $form.attr('method', 'post');
+
+    $form.ajaxForm({
+        url: url
+        , enctype: 'multipart/form-data'
+        , method: "post"
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        }
+        , error: function (request) {
+            doubleClick.initFlag();
+            if (request.status == '403') {
+                alert('로그인이 필요한 서비스입니다.');
+                location.reload();
+            } else {
+                alert('서비스 호출에 실패하였습니다.\n문제가 지속적으로 발생 시 관리자에게 문의바랍니다.');
+                $file.attr('disabled', false);
+            }
+        }
+        , success: function (data) {
+            if (callback != null) {
+                return callback(data, url);
+            }
+        }
+        , complete: function () {
+            doubleClick.initFlag();
+        }
+    }).submit();
+}
+
 function callMultiFileInputAttachService($form, url, callback) {
     let $files = $form.find('input[type="file"]');
     $files.each(function () {

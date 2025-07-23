@@ -281,15 +281,6 @@ public class SiteEnvSetting {
     @Comment("항목6 시간")
     private Integer typeTime6;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private FileAttachMaster homeImage;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private FileAttach logoImage;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private FileAttachMaster consultingImage;
-
     public ResEnvironmentUpdateDTO toResEnvironmentUpdateDTO() {
         return ResEnvironmentUpdateDTO.builder()
                 .jacketStyle(this.jacketStyle)

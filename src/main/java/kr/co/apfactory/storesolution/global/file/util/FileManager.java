@@ -1,12 +1,17 @@
 package kr.co.apfactory.storesolution.global.file.util;
 
+import kr.co.apfactory.storesolution.global.file.domain.dto.DownloadFileDTO;
 import kr.co.apfactory.storesolution.global.file.domain.dto.UploadResultDTO;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.UUID;
@@ -90,6 +95,26 @@ public class FileManager {
             if (!dirPath.exists()) {
                 dirPath.mkdir();
             }
+        }
+    }
+
+    public void downloadFile(HttpServletResponse response, DownloadFileDTO dto) {
+
+        try {
+            byte[] data = FileUtils.readFileToByteArray(makeFile(dto.getUploadedPathFile()));
+            if (dto.isImage()) {
+                response.setContentType(MimeMedia.getMediaType(FilenameUtils.getExtension(dto.getFilename())).toString());
+            }
+            response.setContentLength(data.length);
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(dto.getFilename(), "UTF-8") + "\";");
+            response.getOutputStream().write(data);
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+        } catch (IOException e) {
+            throw new RuntimeException("다운로드에 실패하였습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException("시스템에 문제가 발생하였습니다.");
         }
     }
 }

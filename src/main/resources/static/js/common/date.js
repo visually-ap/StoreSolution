@@ -7,6 +7,16 @@ function standardPicker($obj) {
     });
 }
 
+function standardPickerWithMinDate($obj) {
+    flatpickr($obj, {
+        locale: "ko" // 언어 설정
+        , dateFormat: "Y-m-d"
+        , minDate: 'today'
+        , allowInput: false
+        , disableMobile: "true"
+    });
+}
+
 function periodPicker(from, to) {
     const fromPicker = flatpickr(from, {
         locale: "ko",

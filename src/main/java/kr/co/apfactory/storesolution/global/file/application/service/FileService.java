@@ -80,7 +80,7 @@ public class FileService {
 
             if (!storeFileAttachList.isEmpty()) {
                 storeFileAttachRepository.saveAll(storeFileAttachList);
-    }
+            }
 
             return ResponseDTO.builder()
                     .message("저장하였습니다.")
@@ -92,7 +92,7 @@ public class FileService {
                     .isSuccess(false)
                     .build();
         }
-        }
+    }
 
     public void downloadStoreImageFile(HttpServletResponse response, Long id, boolean isImage, String path) {
         StoreFileAttach storeFileAttach = storeFileAttachRepository.findById(id).orElseThrow(IllegalAccessError::new);
@@ -106,7 +106,7 @@ public class FileService {
 
         // 파일 다운로드
         fileManager.downloadFile(response, dto);
-            }
+    }
 
     public List<FileDTO> getStoreImageList(Long id) {
         StoreFileAttachMaster storeFileAttachMaster = storeFileAttachMasterRepository.findById(id).orElseThrow(IllegalAccessError::new);

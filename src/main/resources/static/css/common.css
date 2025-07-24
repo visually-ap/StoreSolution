@@ -172,7 +172,13 @@ table td {
 }
 
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
-    height: auto
+    /*height: auto;*/
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
 [type=search] {
@@ -454,247 +460,247 @@ input::placeholder {
 
 /* 풀캘린더 */
 /* 날짜 숫자만 가운데 정렬 */
-.fc .fc-daygrid-day-number {
-    display: block;
-    text-align: center;
-    float: none;
-    margin: 0 auto;
-}
+/*.fc .fc-daygrid-day-number {*/
+/*    display: block;*/
+/*    text-align: center;*/
+/*    float: none;*/
+/*    margin: 0 auto;*/
+/*}*/
 
-/* 필요하면 셀 높이 맞추기 */
-.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
-    box-shadow: initial;
-}
+/*!* 필요하면 셀 높이 맞추기 *!*/
+/*.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {*/
+/*    box-shadow: initial;*/
+/*}*/
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-    background-color: transparent;
-    border-color: initial;
-    color: initial;
-}
+/*.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {*/
+/*    background-color: transparent;*/
+/*    border-color: initial;*/
+/*    color: initial;*/
+/*}*/
 
-#calendar {
-    overflow: auto;
-    width: 100%;
-}
+/*#calendar {*/
+/*    overflow: auto;*/
+/*    width: 100%;*/
+/*}*/
 
-.fc-scrollgrid.fc-scrollgrid-liquid th { height: 32px; }
+/*.fc-scrollgrid.fc-scrollgrid-liquid th { height: 32px; }*/
 
-.fc .fc-daygrid-day-frame {
-    height: 100%;
-}
+/*.fc .fc-daygrid-day-frame {*/
+/*    height: 100%;*/
+/*}*/
 
-/* 요일 셀 높이 */
-.fc .fc-col-header-cell {
-    height: 35px;  /* 원하는 높이 */
-    vertical-align: middle; /* 가운데 정렬 */
-}
+/*!* 요일 셀 높이 *!*/
+/*.fc .fc-col-header-cell {*/
+/*    height: 35px;  !* 원하는 높이 *!*/
+/*    vertical-align: middle; !* 가운데 정렬 *!*/
+/*}*/
 
-/* 안쪽 div 높이랑 라인 맞추기 */
-.fc .fc-col-header-cell .fc-scrollgrid-sync-inner {
-    height: 100%;
-    display: flex;
-    align-items: center;   /* 세로 가운데 */
-    justify-content: center; /* 가로 가운데 (필요하면) */
-}
+/*!* 안쪽 div 높이랑 라인 맞추기 *!*/
+/*.fc .fc-col-header-cell .fc-scrollgrid-sync-inner {*/
+/*    height: 100%;*/
+/*    display: flex;*/
+/*    align-items: center;   !* 세로 가운데 *!*/
+/*    justify-content: center; !* 가로 가운데 (필요하면) *!*/
+/*}*/
 
-.fc-custom-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+/*.fc-custom-group {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 8px;*/
+/*}*/
 
-.fc .fc-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 10px;
-    color: #2c3e50;
-}
+/*.fc .fc-title {*/
+/*    font-size: 24px;*/
+/*    font-weight: 700;*/
+/*    margin: 0 10px;*/
+/*    color: #2c3e50;*/
+/*}*/
 
-.fc .fc-title:hover {
-    color: #1e6ceb;
-}
+/*.fc .fc-title:hover {*/
+/*    color: #1e6ceb;*/
+/*}*/
 
-.fc .fc-button {
-    padding: 0;
-    background-color: transparent;
-    color: #00264b;
-    border: 0;
-    box-shadow: initial;
-}
+/*.fc .fc-button {*/
+/*    padding: 0;*/
+/*    background-color: transparent;*/
+/*    color: #00264b;*/
+/*    border: 0;*/
+/*    box-shadow: initial;*/
+/*}*/
 
-.fc .fc-button-primary:hover {
-    background-color: initial;
-}
+/*.fc .fc-button-primary:hover {*/
+/*    background-color: initial;*/
+/*}*/
 
-.fc .fc-next-button,
-.fc .fc-prev-button {
-    background-color: #d1d3d4;
-    min-width: 36px;
-    height: 36px;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 16px;
-    color: #fff;
-}
+/*.fc .fc-next-button,*/
+/*.fc .fc-prev-button {*/
+/*    background-color: #d1d3d4;*/
+/*    min-width: 36px;*/
+/*    height: 36px;*/
+/*    font-weight: 700;*/
+/*    font-size: 20px;*/
+/*    line-height: 16px;*/
+/*    color: #fff;*/
+/*}*/
 
-.fc .fc-next-button:hover,
-.fc .fc-prev-button:hover {
-    background-color: #2c3e50;
-}
+/*.fc .fc-next-button:hover,*/
+/*.fc .fc-prev-button:hover {*/
+/*    background-color: #2c3e50;*/
+/*}*/
 
-.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
-    border-bottom-right-radius: initial;
-    border-top-right-radius: initial;
-}
+/*.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {*/
+/*    border-bottom-right-radius: initial;*/
+/*    border-top-right-radius: initial;*/
+/*}*/
 
-.fc .fc-dayGridMonth-button {
-    padding: 0 20px;
-    border-radius: 15px;
-    width: 85px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    outline: none;
-}
+/*.fc .fc-dayGridMonth-button {*/
+/*    padding: 0 20px;*/
+/*    border-radius: 15px;*/
+/*    width: 85px;*/
+/*    box-sizing: border-box;*/
+/*    border: 1px solid #ddd;*/
+/*    outline: none;*/
+/*}*/
 
-.fc .fc-dayGridMonth-button:hover {
-    background-color: #f5f5f5;
-    color: #1e6ceb;
-}
+/*.fc .fc-dayGridMonth-button:hover {*/
+/*    background-color: #f5f5f5;*/
+/*    color: #1e6ceb;*/
+/*}*/
 
-.fc .fc-timeGridDay-button {
-    padding: 0 20px;
-    width: 85px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    outline: none;
-}
+/*.fc .fc-timeGridDay-button {*/
+/*    padding: 0 20px;*/
+/*    width: 85px;*/
+/*    box-sizing: border-box;*/
+/*    border-radius: 15px;*/
+/*    outline: none;*/
+/*}*/
 
-.fc-timeGridDay-button.fc-button.fc-button-primary {
-    border: 1px solid #eee;
-    /*background: #00264b;*/
-    /*color: #fff;*/
-}
+/*.fc-timeGridDay-button.fc-button.fc-button-primary {*/
+/*    border: 1px solid #eee;*/
+/*    !*background: #00264b;*!*/
+/*    !*color: #fff;*!*/
+/*}*/
 
-.fc-dayGridMonth-button.fc-button.fc-button-primary {
-    border: 1px solid #eee;
-    /*background: #00264b;*/
-    /*color: #fff;*/
-}
+/*.fc-dayGridMonth-button.fc-button.fc-button-primary {*/
+/*    border: 1px solid #eee;*/
+/*    !*background: #00264b;*!*/
+/*    !*color: #fff;*!*/
+/*}*/
 
-.fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled):active,
-.fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled):active{
-    border: 1px solid #eee;
-    background: #00264b;
-    color: #fff;
-}
+/*.fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-timeGridDay-button.fc-button.fc-button-primary:not(:disabled):active,*/
+/*.fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled).fc-button-active, .fc .fc-dayGridMonth-button.fc-button.fc-button-primary:not(:disabled):active{*/
+/*    border: 1px solid #eee;*/
+/*    background: #00264b;*/
+/*    color: #fff;*/
+/*}*/
 
-.fc .fc-timeGridDay-button:hover {
-    background-color: #f5f5f5;
-    color: #1e6ceb;
-}
+/*.fc .fc-timeGridDay-button:hover {*/
+/*    background-color: #f5f5f5;*/
+/*    color: #1e6ceb;*/
+/*}*/
 
-.fc-button-active {
-    border: 0;
-}
+/*.fc-button-active {*/
+/*    border: 0;*/
+/*}*/
 
-.fc .fc-button-primary:focus {
-    box-shadow: initial;
-}
+/*.fc .fc-button-primary:focus {*/
+/*    box-shadow: initial;*/
+/*}*/
 
-.fc .fc-scrollgrid-sync-inner {
-    border: 0;
-}
+/*.fc .fc-scrollgrid-sync-inner {*/
+/*    border: 0;*/
+/*}*/
 
-/* 요일 셀 테두리 제거 */
-.fc .fc-col-header-cell {
-    border: none !important;
-}
+/*!* 요일 셀 테두리 제거 *!*/
+/*.fc .fc-col-header-cell {*/
+/*    border: none !important;*/
+/*}*/
 
-/* 요일 셀 내부 박스도 깔끔하게 */
-.fc .fc-scrollgrid-sync-inner {
-    border: none !important;
-}
+/*!* 요일 셀 내부 박스도 깔끔하게 *!*/
+/*.fc .fc-scrollgrid-sync-inner {*/
+/*    border: none !important;*/
+/*}*/
 
-/* 요일 셀 전체 border 제거 */
-.fc-scrollgrid thead th,
-.fc-scrollgrid thead td,
-.fc-scrollgrid-sync-table thead tr,
-.fc-col-header-cell,
-.fc-col-header-cell-cushion,
-.fc-scrollgrid-sync-inner {
-    border: none !important;
-    box-shadow: none !important;
-}
+/*!* 요일 셀 전체 border 제거 *!*/
+/*.fc-scrollgrid thead th,*/
+/*.fc-scrollgrid thead td,*/
+/*.fc-scrollgrid-sync-table thead tr,*/
+/*.fc-col-header-cell,*/
+/*.fc-col-header-cell-cushion,*/
+/*.fc-scrollgrid-sync-inner {*/
+/*    border: none !important;*/
+/*    box-shadow: none !important;*/
+/*}*/
 
-/* 헤더 전체 줄 border 제거 */
-.fc-col-header,
-.fc-scrollgrid thead {
-    border: none !important;
-    border-bottom: none !important;
-    background: none !important;
-    box-shadow: none !important;
-}
+/*!* 헤더 전체 줄 border 제거 *!*/
+/*.fc-col-header,*/
+/*.fc-scrollgrid thead {*/
+/*    border: none !important;*/
+/*    border-bottom: none !important;*/
+/*    background: none !important;*/
+/*    box-shadow: none !important;*/
+/*}*/
 
-.fc-theme-standard .fc-scrollgrid {
-    border: 0;
-}
+/*.fc-theme-standard .fc-scrollgrid {*/
+/*    border: 0;*/
+/*}*/
 
-.fc .fc-scrollgrid-section-body table {
-    border-top-style: dashed;
-    border-left-style: dashed;
-}
+/*.fc .fc-scrollgrid-section-body table {*/
+/*    border-top-style: dashed;*/
+/*    border-left-style: dashed;*/
+/*}*/
 
-/* 날짜 셀 높이 키우고 숫자 크게 보이게 */
-.fc-daygrid-day-frame {
-    min-height: 120px; /* 셀 높이 조절 */
-}
+/*!* 날짜 셀 높이 키우고 숫자 크게 보이게 *!*/
+/*.fc-daygrid-day-frame {*/
+/*    min-height: 120px; !* 셀 높이 조절 *!*/
+/*}*/
 
-.fc-daygrid-day-number {
-    font-size: 18px;   /* 날짜 숫자 크기 */
-    font-weight: 600;  /* 진하게 */
-    padding: 8px;      /* 셀 안에서 위치 조정 */
-    display: inline-block;
-    line-height: 1.2;
-}
+/*.fc-daygrid-day-number {*/
+/*    font-size: 18px;   !* 날짜 숫자 크기 *!*/
+/*    font-weight: 600;  !* 진하게 *!*/
+/*    padding: 8px;      !* 셀 안에서 위치 조정 *!*/
+/*    display: inline-block;*/
+/*    line-height: 1.2;*/
+/*}*/
 
-#calendar {
-    height: 100%;
-}
+/*#calendar {*/
+/*    height: 100%;*/
+/*}*/
 
-.fc .fc-scrollgrid-section-body table {
-    height: 100% !important;
-}
+/*.fc .fc-scrollgrid-section-body table {*/
+/*    height: 100% !important;*/
+/*}*/
 
-.fc .fc-daygrid-body {
-    height: 100%;
-}
+/*.fc .fc-daygrid-body {*/
+/*    height: 100%;*/
+/*}*/
 
-@media all and (max-width: 992px) {
-    .section_wrap {
-        padding: 35px 30px;
-    }
-    .container {
-        width: 87%;
-    }
-    .section_wrap .title {
-        padding-bottom: 15px;
-    }
-}
+/*@media all and (max-width: 992px) {*/
+/*    .section_wrap {*/
+/*        padding: 35px 30px;*/
+/*    }*/
+/*    .container {*/
+/*        width: 87%;*/
+/*    }*/
+/*    .section_wrap .title {*/
+/*        padding-bottom: 15px;*/
+/*    }*/
+/*}*/
 
-@media all and (max-width: 900px) {
-    .main_header {
-        left: 5px;
-        transform: translateX(0);
-    }
-    .body_line {
-        width: 100%;
-        height: 100%;
-        border: 0;
-        top: 0;
-        left: 0;
-        transform: translate(0%, 0%);
-    }
-    .section_wrap {
-        padding: 25px 20px;
-    }
-}
+/*@media all and (max-width: 900px) {*/
+/*    .main_header {*/
+/*        left: 5px;*/
+/*        transform: translateX(0);*/
+/*    }*/
+/*    .body_line {*/
+/*        width: 100%;*/
+/*        height: 100%;*/
+/*        border: 0;*/
+/*        top: 0;*/
+/*        left: 0;*/
+/*        transform: translate(0%, 0%);*/
+/*    }*/
+/*    .section_wrap {*/
+/*        padding: 25px 20px;*/
+/*    }*/
+/*}*/

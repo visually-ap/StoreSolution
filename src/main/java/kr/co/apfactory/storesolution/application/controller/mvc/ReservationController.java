@@ -4,6 +4,7 @@ import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.StoreService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,8 @@ public class ReservationController {
 
     @GetMapping("/register")
     public String gotoNewCustomerRegister(Model model) {
+        model.addAttribute("employeeList", userService.getEmployeeList());
+        model.addAttribute("userId", LoginUser.getDetails().getId());
         return "views/reservation/register";
     }
 }

@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<!-- 공통 css-->
-<link rel="stylesheet" th:href="@{/css/header.css}">
-<link rel="stylesheet" th:href="@{/css/common.css}">
-
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
-<!-- FullCalendar CSS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
+
+        <!-- 공통 css-->
+        <link rel="stylesheet" th:href="@{/css/header.css}">
+        <link rel="stylesheet" th:href="@{/css/common.css}">
+
+        <!-- 개별 css-->
+        <link rel="stylesheet" th:href="@{/css/page.css}">
+
+        <!--커스텀 캘린더-->
+        <link rel="stylesheet" th:href="@{/plugins/calendar/css/calendar.css}">
+        <script th:src="@{/plugins/calendar/js/calendar.js}"></script>
+
+<!--        full 캘린더-->
+        <script th:src="@{/js/timeTable.js}" defer></script>
+        <link rel="stylesheet" th:href="@{/css/timeTable.css}">
+
 
         <style>
             .container {
@@ -20,16 +26,18 @@
                 width: 100%;
                 transform: translateX(-50%);
             }
-            .datepicker {
-                background-color: #dddddd;
-            }
 
             .datepicker::placeholder {
                 color: #999999 !important;
                 text-align: center;
             }
+
             .datepicker.flatpickr-input {
                 position: relative;
+            }
+
+            input:read-only {
+                background-color: #dddddd;
             }
         </style>
 
@@ -42,12 +50,29 @@
 
                 <div class="info_wrap">
                     <div class="info_style_1 mt-50px">
-                        <h2 class="title">Welcome!</h2>
-                        <p class="description">
-                            신규 고객님, 환영합니다.<br>
-                            작성된 정보를 바탕으로 정성을 다해 품격있는 비스포크를<br>
-                            완성해 드리겠습니다.
-                        </p>
+                        <div class="calendarWrap">
+                            <div class="orderCalendar">
+                                <div class="calendar-header">
+                                    <div class="yearMonth year-month"></div>
+                                    <div class="nav">
+                                        <a class="nav-btn go-prev" id="calendarPrevBtn">&lt;</a>
+                                        <a class="nav-btn go-next" id="calendarNextBtn">&gt;</a>
+                                    </div>
+                                </div>
+                                <div class="calendar-main">
+                                    <div class="sevenDays days">
+                                        <div class="eachDay day">일</div>
+                                        <div class="eachDay day">월</div>
+                                        <div class="eachDay day">화</div>
+                                        <div class="eachDay day">수</div>
+                                        <div class="eachDay day">목</div>
+                                        <div class="eachDay day">금</div>
+                                        <div class="eachDay day">토</div>
+                                    </div>
+                                    <div class="eachDates dates"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="search_style_1 mt-20px scroll-box">
                         <form id="dataForm">
@@ -58,22 +83,22 @@
                             <div class="inner_bg inner_style_1 column">
                                 <div class="one-line mb-5px">
                                     <div class="half-line">
-                                        <h4 class="inner_title">고객명</h4>
-                                        <input type="text" name="name1" id="name1">
+                                        <h4 class="inner_title">고객명1</h4>
+                                        <input type="text" name="name1" id="name1" maxlength="10" placeholder="10자 이내 입력">
                                     </div>
                                     <div class="half-line">
-                                        <h4 class="inner_title">연락처</h4>
-                                        <input type="text" name="mobile1" id="mobile1">
+                                        <h4 class="inner_title">연락처1</h4>
+                                        <input type="tel" name="mobile1" id="mobile1" maxlength="11" placeholder="숫자만 입력">
                                     </div>
                                 </div>
                                 <div class="one-line">
                                     <div class="half-line">
-                                        <h4 class="inner_title">고객명</h4>
-                                        <input type="text" name="name2" id="name2">
+                                        <h4 class="inner_title">고객명2</h4>
+                                        <input type="text" name="name2" id="name2" maxlength="10" placeholder="10자 이내 입력">
                                     </div>
                                     <div class="half-line">
-                                        <h4 class="inner_title">연락처</h4>
-                                        <input type="text" nam="mobile2" id="mobile2">
+                                        <h4 class="inner_title">연락처2</h4>
+                                        <input type="tel" nam="mobile2" id="mobile2" maxlength="11" placeholder="숫자만 입력">
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +112,7 @@
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">촬영장소</h4>
-                                        <input type="text" name="photoPlace" id="photoPlace">
+                                        <input type="text" name="photoPlace" id="photoPlace" maxlength="20" placeholder="20자 이내 입력">
                                     </div>
                                 </div>
                                 <div class="one-line">
@@ -99,146 +124,132 @@
                                     </div>
                                     <div class="half-line">
                                         <h4 class="inner_title">예식장소</h4>
-                                        <input type="text" name="weddingPlace" id="weddingPlace">
+                                        <input type="text" name="weddingPlace" id="weddingPlace" maxlength="20" placeholder="20자 이내 입력">
                                     </div>
                                 </div>
                             </div>
-                            <div class="inner_bg inner_style_1 column mt-20px">
+
+                            <div class="top_line flex between mt-20px">
+                                <h3 class="title">예약 정보</h3>
+                            </div>
+                            <div class="inner_bg inner_style_1 column">
                                 <div class="one-line mb-5px w_100">
                                     <div class="half-line">
                                         <h4 class="inner_title">예약담당</h4>
                                         <select name="reservationManager" id="reservationManager" class="t-center">
-                                            <option value="">-- 선택 --</option>
+                                            <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}" th:selected="${employee.userId == userId}"></option>
                                         </select>
                                     </div>
-                                    <div class="half-line"></div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">상담담당</h4>
+                                        <select name="consultingManager" id="consultingManager" class="t-center">
+                                            <option value="" selected>-- 선택 --</option>
+                                            <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}"></option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="one-line">
                                     <div class="half-line">
                                         <h4 class="inner_title">상담예약</h4>
                                         <div class="input-with-icon">
-                                            <input type="text" name="consultingDate" id="consultingDate" class="datepicker" placeholder="날짜선택" readonly>
+                                            <input type="text" name="consultingDate" id="consultingDate" class="datepicker reservationDatetime" placeholder="날짜선택" readonly>
                                         </div>
                                     </div>
                                     <div class="half-line">
-                                        <h4 class="inner_title">상담담당</h4>
-                                        <select name="consultingManager" id="consultingManager" class="t-center">
-                                            <option value="">-- 선택 --</option>
+                                        <select class="reservationDatetime" name="consultingHour" id="consultingHour" style="width: 10px !important;">
+                                            <option value="">선택</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
                                         </select>
+                                        시&nbsp;
+                                        <select class="reservationDatetime" name="consultingMinute" id="consultingMinute" style="width: 10px !important;">
+                                            <option value="">선택</option>
+                                            <option value="00">0</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                        </select>
+                                        분
                                     </div>
                                 </div>
                             </div>
                             <div class="inner_bg inner_style_1 column mt-20px">
-                                <div class="one-line mb-5px w_100">
-                                        <h4 class="inner_title">예약시간</h4>
-                                        <span>2025-06-30 PM 02:30</span>
+                                <div class="one-line">
+                                    <h4 class="inner_title">예약일시</h4>
+                                    <span th:text="${#dates.format(#dates.createNow(), 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                                    <input type="hidden" name="reservationDatetime" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}" readonly>
                                 </div>
                             </div>
                             <ul class="inner_style_2 mt-20px">
-                                <li><span class="border-bottom">홍길동</span> 고객님</li>
+                                <li><span class="border-bottom" id="resultName">OOO</span> 고객님</li>
                                 <li>
-                                    <span class="border-bottom">2025년 07월 24일 11시 30분</span>
+                                    <span class="border-bottom" id="resultDatetime">XXXX년 XX월 XX일 XX시 XX분</span>
                                 </li>
                                 <li>
-                                    <span class="border-bottom">홍길남</span> 담당자와 상담 진행 예정입니다.
+                                    <span class="border-bottom">XXX</span> 담당자와 상담 진행 예정입니다.
                                 </li>
                             </ul>
                             <div class="inner_style_3 mt-20px">
-                                <textarea class="textarea" placeholder="특이사항을 작성해 주세요."></textarea>
+                                <textarea class="textarea" placeholder="미친사항을 작성해 주세요."></textarea>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="right_area">
-                <div id="calendar" class="calendar"></div>
+                <div class="schedule-container">
+                    <table class="custom-schedule-table" id="custom-schedule-table">
+                        <thead>
+                        <tr></tr>
+                        </thead>
+                        <tbody id="scheduleBody">
+                        <!-- JS로 생성 -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </th:block>
 </th:block>
 
-<!-- FullCalendar JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-
-<!-- (선택) 한국어 locale 지원 -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.min.js"></script>
-
-<!-- Google Calendar 플러그인 -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://apis.google.com/js/api.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'ko', // 한국어
-            headerToolbar: {
-                left: 'customNav',
-                center: '',
-                right: 'dayGridMonth,timeGridDay'
-            },
-            customButtons: {
-                customNav: {
-                    text: '', // HTML로 덮어쓸 거라 비워둠
-                }
-            },
-            titleFormat: { year: 'numeric', month: 'long' },
-
-            // ⏰ 시간표 관련 설정 유지
-            slotMinTime: '00:00:00',
-            slotMaxTime: '24:00:00',
-            slotDuration: '00:15:00',
-            slotLabelInterval: '00:15:00',
-            slotLabelContent: function (arg) {
-                var hour = arg.date.getHours();
-                var minute = arg.date.getMinutes();
-
-                if (minute === 0) {
-                    var period = hour < 12 ? '오전' : '오후';
-                    var hour12 = hour % 12;
-                    if (hour12 === 0) hour12 = 12;
-                    return period + ' ' + hour12 + '시';
-                } else {
-                    return minute.toString().padStart(2, '0') + '분';
-                }
-            },
-
-            allDaySlot: false,
-
-            // 📅 날짜 셀 숫자만 추출
-            dayCellContent: function (arg) {
-                var numberOnly = arg.dayNumberText.replace(/[^0-9]/g, '');
-                return { html: numberOnly };
-            },
-
-            // 📌 타이틀 위치 & 버튼 넣기
-            datesSet: function (info) {
-                const toolbar = document.querySelector('.fc-customNav-button');
-
-                const title = info.view.title; // ex: "2025년 7월"
-                toolbar.innerHTML = `
-                <div class="fc-custom-group">
-                    <button type="button" class="fc-prev-button fc-button fc-button-primary"><</button>
-                    <span class="fc-title">${title}</span>
-                    <button type="button" class="fc-next-button fc-button fc-button-primary">></button>
-                </div>
-            `;
-
-                toolbar.querySelector('.fc-prev-button').onclick = () => calendar.prev();
-                toolbar.querySelector('.fc-next-button').onclick = () => calendar.next();
-            }
-        });
-
-        calendar.render();
-    });
+<script th:inline="javascript">
+    let employeeList = [[${employeeList}]];
 
     $(document).ready(function () {
-        const fp = standardPicker($('.datepicker'));
+        const fp = standardPickerWithMinDate($('.datepicker'));
+
+        renderTimeTable('custom-schedule-table');
+    });
+
+    $(document).on('focusout', '#name1', function() {
+        let input = $(this).val();
+        if (isEmpty(input)) {
+            input = 'OOO'
+        }
+        $('#resultName').text(input);
+    });
+
+    $(document).on('change', '.reservationDatetime', function() {
+        let dateArray = isEmpty($('#consultingDate').val()) ? 'XXXX-XX-XX'.split('-') : $('#consultingDate').val().split('-');
+        let year = dateArray[0];
+        let month = dateArray[1];
+        let date = dateArray[2];
+        let hour = isEmpty($('#consultingHour').val()) ? 'XX' : $('#consultingHour').val();
+        let minute = isEmpty($('#consultingMinute').val()) ? 'XX' : $('#consultingMinute').val();
+
+        $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
     });
 </script>
 

@@ -5,6 +5,7 @@ import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqPasswordUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
 import kr.co.apfactory.storesolution.domain.entity.CodeType;
 import kr.co.apfactory.storesolution.domain.entity.Store;
@@ -19,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.EMPLOYEE;
 
@@ -162,5 +165,11 @@ public class UserService {
                 .isSuccess(true)
                 .message("직원 정보를 삭제하였습니다.")
                 .build();
+    }
+
+    public List<ResEmployeeListDTO> getEmployeeList() {
+        List<ResEmployeeListDTO> employeeList = userRepository.selectEmployeeList(LoginUser.getDetails().getStoreId());
+
+        return employeeList;
     }
 }

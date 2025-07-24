@@ -158,4 +158,28 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
 
         return result;
     }
+
+    @Override
+    public List<ResEmployeeListDTO> selectEmployeeList(Long storeId) {
+        QUser user = QUser.user;
+        QStore store = QStore.store;
+
+        List<ResEmployeeListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResEmployeeListDTO.class
+                                , user.id.as("userId")
+                                , user.name
+                        )
+                )
+                .from(user)
+                .innerJoin(store).on(user.store.eq(store))
+                .where(
+                        user.deleted.eq(false)
+                                .and(user.store.id.eq(storeId))
+                )
+                .orderBy(user.name.desc())
+                .fetch();
+
+        return results;
+    }
 }

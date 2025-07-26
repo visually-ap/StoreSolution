@@ -574,6 +574,18 @@
     margin-top: 15px;
 }
 
+.info_style_2 {
+    border: 1px solid #d1d3d4;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.info_style_2 .description {
+    margin-top: 15px;
+}
+
 .customer_info_btn {
     width: 100%;
     max-width: 450px;

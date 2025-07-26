@@ -6,6 +6,7 @@ import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqPasswordUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeScheduleDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
 import kr.co.apfactory.storesolution.domain.entity.CodeType;
 import kr.co.apfactory.storesolution.domain.entity.Store;
@@ -171,5 +172,26 @@ public class UserService {
         List<ResEmployeeListDTO> employeeList = userRepository.selectEmployeeList(LoginUser.getDetails().getStoreId());
 
         return employeeList;
+    }
+
+    public ResponseDTO getEmployeeScheduleList() {
+        List<ResEmployeeScheduleDTO> scheduleList = userRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId());
+
+        if (scheduleList.size() < 5) {
+            int limit = 5 - scheduleList.size();
+
+            for (int i = 0; i < limit; i++) {
+                scheduleList.add(
+                        ResEmployeeScheduleDTO.builder()
+                                .name("")
+                                .build()
+                );
+            }
+        }
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .result(scheduleList)
+                .build();
     }
 }

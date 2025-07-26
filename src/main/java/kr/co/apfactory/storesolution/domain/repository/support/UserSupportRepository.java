@@ -3,6 +3,7 @@ package kr.co.apfactory.storesolution.domain.repository.support;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeScheduleDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
 import kr.co.apfactory.storesolution.global.security.dto.LoginInfoDTO;
 import org.springframework.data.domain.Page;
@@ -20,4 +21,5 @@ public interface UserSupportRepository {
     ResEmployeeDetailDTO selectEmployeeDetail(String lang, Long userId, Long storeId);
 
     List<ResEmployeeListDTO> selectEmployeeList(Long storeId);
+    List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId);
 }

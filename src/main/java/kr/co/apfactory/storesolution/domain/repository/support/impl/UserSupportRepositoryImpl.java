@@ -6,10 +6,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResStoreInfoDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.*;
 import kr.co.apfactory.storesolution.domain.entity.QCodeType;
 import kr.co.apfactory.storesolution.domain.entity.QStore;
 import kr.co.apfactory.storesolution.domain.entity.QUser;
@@ -167,6 +164,30 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
         List<ResEmployeeListDTO> results = queryFactory.select(
                         Projections.fields(
                                 ResEmployeeListDTO.class
+                                , user.id.as("userId")
+                                , user.name
+                        )
+                )
+                .from(user)
+                .innerJoin(store).on(user.store.eq(store))
+                .where(
+                        user.deleted.eq(false)
+                                .and(user.store.id.eq(storeId))
+                )
+                .orderBy(user.name.desc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId) {
+        QUser user = QUser.user;
+        QStore store = QStore.store;
+
+        List<ResEmployeeScheduleDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResEmployeeScheduleDTO.class
                                 , user.id.as("userId")
                                 , user.name
                         )

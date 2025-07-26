@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="info_wrap">
-                    <div class="info_style_1 mt-50px">
+                    <div class="info_style_2 mt-20px">
                         <div class="calendarWrap">
                             <div class="orderCalendar">
                                 <div class="calendar-header">
@@ -202,7 +202,7 @@
                                 </li>
                             </ul>
                             <div class="inner_style_3 mt-20px">
-                                <textarea class="textarea" placeholder="미친사항을 작성해 주세요."></textarea>
+                                <textarea class="textarea" placeholder="특이사항을 작성해 주세요."></textarea>
                             </div>
                         </form>
                     </div>
@@ -225,8 +225,6 @@
 </th:block>
 
 <script th:inline="javascript">
-    let employeeList = [[${employeeList}]];
-
     $(document).ready(function () {
         const fp = standardPickerWithMinDate($('.datepicker'));
 

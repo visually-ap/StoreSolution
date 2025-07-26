@@ -11,19 +11,16 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background: #e1e1e1;
-    padding: 1vh 0;
     border-radius: 5px;
-    height: 30px;
-    min-height: 4vh;
+    height: 20px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .orderCalendar .calendar-main {
-    height: 200px;
-    min-height: 26vh;
+    height: 170px;
+    min-height: 17vh;
 }
 
 .orderCalendar .calendar-main .yearMonth {
@@ -33,17 +30,17 @@
 
 .orderCalendar .calendar-main .sevenDays {
     display: flex;
-    padding: 1vh 0;
+    padding: 0.4vh 0;
     background: #fff;
     height: 30px;
-    min-height: 4vh;
+    min-height: 3vh;
     box-sizing: border-box;
 }
 
 .orderCalendar .calendar-main .eachDay {
     width: calc(100% / 7);
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,19 +51,23 @@
     flex-flow: row wrap;
     flex-wrap: wrap;
     background: #fff;
-    height: 170px;
-    min-height: 22vh;
+    height: 120px;
+    min-height: 15vh;
 }
 
 .orderCalendar .calendar-main .eachDates .eachDate {
     width: calc(100% / 7);
-    padding: .9vh;
-    font-size: 14px;
+    padding: 0.3vh 0.5vh;
+    font-size: 12px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 400;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.orderCalendar .calendar-main .eachDates .eachDate span {
+    cursor: pointer;
 }
 
 .calendar-main .eachDay:nth-child(7n + 1),
@@ -119,11 +120,11 @@
 }
 
 .orderCalendar .calendar-header .go-prev {
-    left: 6%;
+    left: 35%;
 }
 
 .orderCalendar .calendar-header .go-next {
-    right: 6%;
+    right: 35%;
 }
 
 .reservationBlank {

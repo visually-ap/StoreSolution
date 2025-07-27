@@ -12,8 +12,8 @@
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
         <!--커스텀 캘린더-->
-        <link rel="stylesheet" th:href="@{/plugins/calendar/css/calendar.css}">
-        <script th:src="@{/plugins/calendar/js/calendar.js}"></script>
+<!--        <link rel="stylesheet" th:href="@{/plugins/calendar/css/calendar.css}">-->
+<!--        <script th:src="@{/plugins/calendar/js/calendar.js}"></script>-->
 
 <!--        full 캘린더-->
         <script th:src="@{/js/timeTable.js}" defer></script>
@@ -39,6 +39,16 @@
             input:read-only {
                 background-color: #dddddd;
             }
+
+            #timetableDatepicker {
+                border: none;
+                background-color: #ffffff;
+                min-width: 1px;
+                height: 20px;
+                padding: 0;
+                width: 100px;
+                text-align: center;
+            }
         </style>
 
         <div class="info_calendar">
@@ -49,32 +59,7 @@
                 </div>
 
                 <div class="info_wrap">
-                    <div class="info_style_2 mt-20px">
-                        <div class="calendarWrap">
-                            <div class="orderCalendar">
-                                <div class="calendar-header">
-                                    <div class="yearMonth year-month"></div>
-                                    <div class="nav">
-                                        <a class="nav-btn go-prev" id="calendarPrevBtn">&lt;</a>
-                                        <a class="nav-btn go-next" id="calendarNextBtn">&gt;</a>
-                                    </div>
-                                </div>
-                                <div class="calendar-main">
-                                    <div class="sevenDays days">
-                                        <div class="eachDay day">일</div>
-                                        <div class="eachDay day">월</div>
-                                        <div class="eachDay day">화</div>
-                                        <div class="eachDay day">수</div>
-                                        <div class="eachDay day">목</div>
-                                        <div class="eachDay day">금</div>
-                                        <div class="eachDay day">토</div>
-                                    </div>
-                                    <div class="eachDates dates"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="search_style_1 mt-20px scroll-box">
+                    <div class="search_style_1 mt-20px scroll-box_1">
                         <form id="dataForm">
                             <div class="top_line flex between">
                                 <h3 class="title">고객 정보</h3>
@@ -185,13 +170,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="inner_bg inner_style_1 column mt-20px">
-                                <div class="one-line">
-                                    <h4 class="inner_title">예약일시</h4>
-                                    <span th:text="${#dates.format(#dates.createNow(), 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
-                                    <input type="hidden" name="reservationDatetime" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}" readonly>
-                                </div>
-                            </div>
+<!--                            <div class="inner_bg inner_style_1 column mt-20px">-->
+<!--                                <div class="one-line">-->
+<!--                                    <h4 class="inner_title">예약일시</h4>-->
+<!--                                    <span th:text="${#dates.format(#dates.createNow(), 'yyyy년 MM월 dd일 HH시 mm분')}"></span>-->
+<!--                                    <input type="hidden" name="reservationDatetime" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <ul class="inner_style_2 mt-20px">
                                 <li><span class="border-bottom" id="resultName">OOO</span> 고객님</li>
                                 <li>
@@ -210,9 +195,9 @@
             </div>
             <div class="right_area">
                 <div class="date-line flex flex-end align-center">
-                    <button class="prev-btn btn"> < </button>
-                    <span class="today">2025-07-01</span>
-                    <button class="right-btn btn"> > </button>
+                    <button class="prev-btn btn" id="prevBtn"> < </button>
+                    <input type="text" class="timetable_datepicker" id="timetableDatepicker" readonly>
+                    <button class="next-btn btn" id="nextBtn"> > </button>
                 </div>
                 <div class="schedule-container">
                     <table class="custom-schedule-table" id="custom-schedule-table">
@@ -230,10 +215,13 @@
 </th:block>
 
 <script th:inline="javascript">
+    let todayString = getToday('YYYY-MM-DD');
+    let momentDate = moment(todayString);
+
     $(document).ready(function () {
         const fp = standardPickerWithMinDate($('.datepicker'));
 
-        renderTimeTable('custom-schedule-table');
+        renderTimeTable('custom-schedule-table', todayString);
     });
 
     $(document).on('focusout', '#name1', function() {
@@ -242,6 +230,13 @@
             input = 'OOO'
         }
         $('#resultName').text(input);
+    });
+
+    $(document).on('change', '#consultingDate, #timetableDatepicker', function() {
+        momentDate = moment($(this).val());
+
+        initTimeTable('custom-schedule-table');
+        renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, $(this).val()));
     });
 
     $(document).on('change', '.reservationDatetime', function() {
@@ -254,6 +249,24 @@
 
         $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
     });
+
+    $(document).on('click', '#prevBtn', function() {
+        momentDate = momentDate.subtract(1, 'days');
+        initTimeTable('custom-schedule-table');
+        renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+    });
+
+    $(document).on('click', '#nextBtn', function() {
+        momentDate = momentDate.add(1, 'days');
+        initTimeTable('custom-schedule-table');
+        renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+    });
 </script>
 
 </html>
+
+
+
+
+
+

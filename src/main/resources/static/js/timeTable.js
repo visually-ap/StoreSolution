@@ -1,17 +1,35 @@
-function renderTimeTable(tableId) {
+function initTimeTable(tableId) {
+    const table = document.getElementById(tableId);
+    table.innerHTML = `
+        <thead>
+        <tr></tr>
+        </thead>
+        <tbody id="scheduleBody">
+        <!-- JS로 생성 -->
+        </tbody>
+    `;
+}
+
+function renderTimeTable(tableId, date) {
     callService(
         "GET"
-        , "/reservation/employee/schedule/list"
+        , "/reservation/employee/schedule/list?date=" + date
         , {}
         , function (response) {
+            const fp1 = standardPicker($('.timetable_datepicker'));
+
+            fp1.setDate(date);
+
             let employeeList = response.result;
 
             const table = document.getElementById(tableId);
-            if (!table) return;
+            if (!table) {
+                return;
+            }
 
             const theadRow = table.querySelector('thead tr');
             const tbody = document.getElementById('scheduleBody');
-            theadRow.innerHTML = '<th></th><th></th>';
+            theadRow.innerHTML = '<th colspan="2"> </th>';
             tbody.innerHTML = '';
 
             // 직원 이름 열 추가

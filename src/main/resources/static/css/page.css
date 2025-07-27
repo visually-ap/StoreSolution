@@ -533,7 +533,7 @@
 .info_calendar .right_area {
     width: 65%;
     min-width: 500px;
-    margin-top: 38px;
+    margin-top: 40px;
 }
 
 .search_style_1 {
@@ -644,6 +644,11 @@
     overflow: auto;
 }
 
+.scroll-box_1 {
+    height: 80vh;
+    overflow: auto;
+}
+
 .inner_style_1 .inner_title {
     font-size: 17px;
     width: 70px;
@@ -689,7 +694,7 @@
 }
 
 .inner_style_2 {
-    padding: 15px 15px 15px 10px;
+    padding: 10px 15px 10px 10px;
     border-radius: 10px;
     border: 1px solid #1e6ceb;
 }
@@ -744,7 +749,7 @@
     background-color: transparent;
 }
 
-.date-line .today {
+.date-line .timetable_date {
     font-weight: 600;
 }
 

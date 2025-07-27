@@ -1,18 +1,23 @@
 package kr.co.apfactory.storesolution.application.controller.rest;
 
+import kr.co.apfactory.storesolution.application.service.ReservationService;
 import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -27,8 +32,16 @@ public class ReservationRestController {
 
     private final SiteService siteService;
 
+    private final ReservationService reservationService;
+
     @GetMapping("/employee/schedule/list")
-    public ResponseEntity<ResponseDTO> getEmployeeScheduleList() {
+    public ResponseEntity<ResponseDTO> getEmployeeScheduleList(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         return ResponseEntity.ok(userService.getEmployeeScheduleList());
+    }
+
+    @PostMapping("/register")
+    @Transactional
+    public ResponseEntity<ResponseDTO> registerReservation(@RequestBody ReqReservationRegisterDTO reqReservationRegisterDTO) {
+        return ResponseEntity.ok(reservationService.registerReservation(reqReservationRegisterDTO));
     }
 }

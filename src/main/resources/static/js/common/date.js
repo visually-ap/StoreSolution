@@ -1,5 +1,5 @@
 function standardPicker($obj) {
-    flatpickr($obj, {
+    return flatpickr($obj, {
         locale: "ko" // 언어 설정
         , dateFormat: "Y-m-d"
         , allowInput: false
@@ -8,7 +8,7 @@ function standardPicker($obj) {
 }
 
 function standardPickerWithMinDate($obj) {
-    flatpickr($obj, {
+    return  flatpickr($obj, {
         locale: "ko" // 언어 설정
         , dateFormat: "Y-m-d"
         , minDate: 'today'
@@ -57,5 +57,5 @@ function getDatetimeString(datetime, format) {
 }
 
 function getToday(format) {
-    return moment().format();
+    return moment().format(format);
 }

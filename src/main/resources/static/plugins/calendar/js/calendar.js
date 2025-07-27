@@ -86,24 +86,8 @@ $(document).ready(function (){
             let month = $('#monthText').text();
             let date = $(this).text();
 
-            // callLazyService(
-            //     "POST"
-            //     , "/reservation/list"
-            //     , JSON.stringify({
-            //         "reservationDate": `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`
-            //     })
-            //     , function (response) {
-            //         $('#reservationList').empty();
-            //         if (response.dataList.length > 0) {
-            //             $.each(response.dataList, function (i, x) {
-            //                 let reservation = `<li class="line"><span class="date">${x.timeString}</span><p><span>${x.name}</span> 고객님 방문 예약</p></li>`;
-            //                 $("#reservationList").append(reservation);
-            //             });
-            //         } else {
-            //             $("#reservationList").append('<span class="reservationBlank">예약이 없습니다.</span>');
-            //         }
-            //     }
-            // );
+            initTimeTable('custom-schedule-table');
+            renderTimeTable('custom-schedule-table', getDatetimeString(momentToday, `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`));
         }
     });
 

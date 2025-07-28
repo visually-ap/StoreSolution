@@ -1,15 +1,13 @@
 package kr.co.apfactory.storesolution.domain.repository.support.impl;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.*;
-import kr.co.apfactory.storesolution.domain.entity.QCodeType;
-import kr.co.apfactory.storesolution.domain.entity.QStore;
-import kr.co.apfactory.storesolution.domain.entity.QUser;
+import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.support.UserSupportRepository;
 import kr.co.apfactory.storesolution.domain.repository.util.FilterManager;
 import kr.co.apfactory.storesolution.domain.repository.util.SortManager;
@@ -19,9 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.*;
+import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.EMPLOYEE;
+import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.USER;
 
 
 // querydsl 사용
@@ -181,26 +182,70 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
     }
 
     @Override
-    public List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId) {
+    public List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId, LocalDate date) {
         QUser user = QUser.user;
         QStore store = QStore.store;
+        QReservation reservation = QReservation.reservation;
+        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
+        QCustomer customer = QCustomer.customer;
 
-        List<ResEmployeeScheduleDTO> results = queryFactory.select(
-                        Projections.fields(
-                                ResEmployeeScheduleDTO.class
-                                , user.id.as("userId")
-                                , user.name
-                        )
-                )
+        List<ResEmployeeScheduleDTO> results = queryFactory
                 .from(user)
                 .innerJoin(store).on(user.store.eq(store))
+                .leftJoin(reservation).on(user.eq(reservation.consultingManager).and(reservation.deleted.isFalse()).and(reservation.consultingDate.eq(date)))
+                .leftJoin(orderConsulting).on(reservation.orderConsulting.eq(orderConsulting))
+                .leftJoin(customer).on(orderConsulting.customer.eq(customer))
                 .where(
                         user.deleted.eq(false)
                                 .and(user.store.id.eq(storeId))
                 )
-                .orderBy(user.name.desc())
-                .fetch();
+                .orderBy(user.name.asc(), reservation.consultingDatetimeFrom.asc())
+                .transform(
+                        GroupBy.groupBy(user.id).list(
+                                Projections.fields(
+                                        ResEmployeeScheduleDTO.class
+                                        , user.id.as("userId")
+                                        , user.name
+                                        , GroupBy.list(
+                                                Projections.fields(
+                                                        ResReservationDTO.class
+                                                        , reservation.id
+                                                        , reservation.allDay
+                                                        , reservation.consultingDatetimeFrom
+                                                        , reservation.consultingDatetimeTo
+                                                        , reservation.type
+                                                        , customer.name1.as("customerName")
+                                                )
+                                        ).as("reservationList")
+                                )
+                        )
+                );
+
+        for (ResEmployeeScheduleDTO dto : results) {
+            List<ResReservationDTO> filtered = dto.getReservationList().stream()
+                    .filter(res -> res.getId() != null)
+                    .collect(Collectors.toList());
+            dto.setReservationList(filtered);
+        }
 
         return results;
     }
+
+
+
+//                List<ResEmployeeScheduleDTO> results = queryFactory.select(
+//                        Projections.fields(
+//                                ResEmployeeScheduleDTO.class
+//                                , user.id.as("userId")
+//                                , user.name
+//                        )
+//                )
+//                .from(user)
+//                .innerJoin(store).on(user.store.eq(store))
+//                .where(
+//                        user.deleted.eq(false)
+//                                .and(user.store.id.eq(storeId))
+//                )
+//                .orderBy(user.name.desc())
+//                .fetch();
 }

@@ -19,9 +19,11 @@ import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.EMPLOYEE;
@@ -174,8 +176,9 @@ public class UserService {
         return employeeList;
     }
 
-    public ResponseDTO getEmployeeScheduleList() {
-        List<ResEmployeeScheduleDTO> scheduleList = userRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId());
+    @Transactional
+    public ResponseDTO getEmployeeScheduleList(LocalDate date) {
+        List<ResEmployeeScheduleDTO> scheduleList = userRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId(), date);
 
         if (scheduleList.size() < 5) {
             int limit = 5 - scheduleList.size();

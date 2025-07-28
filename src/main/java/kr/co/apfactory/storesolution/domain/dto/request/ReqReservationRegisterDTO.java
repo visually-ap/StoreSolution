@@ -1,10 +1,13 @@
 package kr.co.apfactory.storesolution.domain.dto.request;
 
+import kr.co.apfactory.storesolution.domain.entity.Customer;
+import kr.co.apfactory.storesolution.domain.entity.OrderConsulting;
+import kr.co.apfactory.storesolution.domain.entity.Reservation;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class ReqReservationRegisterDTO {
@@ -23,12 +26,41 @@ public class ReqReservationRegisterDTO {
 
     private Long reservationManager;
     private Long consultingManager;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate consultingDate;
     private String consultingHour;
     private String consultingMinute;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime reservationDatetime;
-
     private String memo;
+
+    public Customer toCustomerEntity() {
+        return Customer.builder()
+                .name1(this.name1)
+                .mobile1(this.mobile1)
+                .name2(this.name2)
+                .mobile2(this.mobile2)
+                .photoDate(this.photoDate)
+                .photoPlace(this.photoPlace)
+                .weddingDate(this.weddingDate)
+                .weddingPlace(this.weddingPlace)
+                .memo(this.memo)
+                .build();
+    }
+
+    public OrderConsulting toOrderConsultingEntity() {
+        return OrderConsulting.builder().build();
+    }
+
+    public Reservation toReservationEntity(int type) {
+        return Reservation.builder()
+                .allDay(isAllDay())
+                .consultingDate(consultingDate)
+                .type(type)
+                .build();
+    }
+
+    public boolean isAllDay() {
+        return StringUtils.isEmpty(this.consultingHour) ? true : false;
+    }
 }

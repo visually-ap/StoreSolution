@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 공통 css-->
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+
+        <style>
+            .container {
+                left: 50%;
+                width: 100%;
+                transform: translateX(-50%);
+            }
+        </style>
+
+        <div class="info_calendar">
+            <div class="left_area">
+                <div class="customer_info_btn">
+                    <a href="#" class="page_btn active">기존 고객 정보</a>
+                    <a href="/reservation/register" class="page_btn">신규 고객 정보</a>
+                </div>
+
+                <div class="info_wrap">
+                    <div class="search_style_1 mt-50px">
+                        <h3 class="title">고객 검색</h3>
+                        <form class="inner_bg inner_style_1" action="/">
+                            <h4 class="inner_title">고객명</h4>
+                            <input type="text" id="searchInput">
+                            <button type="button" class="search_btn" style="background:#1e6ceb">
+                                <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="search_style_1 mt-20px scroll-box">
+                        <form class="">
+                            <div class="top_line flex between">
+                                <h3 class="title">고객 정보</h3>
+                                <button type="submit" class="btnColor_1">저장</button>
+                            </div>
+                            <div class="inner_bg inner_style_1 column">
+                                <div class="one-line mb-5px">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">고객명</h4>
+                                        <input type="text">
+                                    </div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">연락처</h4>
+                                        <input type="text">
+                                    </div>
+                                </div>
+                                <div class="one-line">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">고객명</h4>
+                                        <input type="text">
+                                    </div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">연락처</h4>
+                                        <input type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inner_bg inner_style_1 column mt-20px">
+                                <div class="one-line mb-5px">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">촬영일</h4>
+                                        <input type="date">
+                                    </div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">촬영장소</h4>
+                                        <input type="text">
+                                    </div>
+                                </div>
+                                <div class="one-line">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">본식일</h4>
+                                        <input type="date">
+                                    </div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">예식장소</h4>
+                                        <input type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inner_bg inner_style_1 column mt-20px">
+                                <div class="one-line mb-5px w_100">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">예약담당</h4>
+<!--                                        <input type="text">-->
+                                        <select name="" id="">
+                                            <option value="">김모모</option>
+                                        </select>
+                                    </div>
+                                    <div class="half-line"></div>
+                                </div>
+                                <div class="one-line mb-5px w_100">
+                                    <div class="half-line">
+                                        <h4 class="inner_title">상담담당</h4>
+                                        <select name="" id="">
+                                            <option value="">김모모</option>
+                                        </select>
+                                    </div>
+                                    <div class="half-line">
+                                        <h4 class="inner_title">상담일</h4>
+                                        <input type="date">
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="inner_style_2 mt-20px">
+                                <li><span class="border-bottom">홍길동</span>고객님,</li>
+                                <li>
+                                    <span class="border-bottom">2025</span>년
+                                    <span class="border-bottom">7</span>월
+                                    <span class="border-bottom">24</span>일/
+                                    <span class="border-bottom">11</span>시
+                                    <span class="border-bottom">30분</span>
+                                </li>
+                                <li>
+                                    <span class="border-bottom">홍길남</span>담당자와 상담 예약이 진행 예정입니다.
+                                </li>
+                            </ul>
+                            <div class="inner_style_3 mt-20px">
+                                <textarea class="textarea" placeholder="특이사항을 작성해 주세요."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="right_area">
+                <div id="calendar" class="calendar"></div>
+            </div>
+        </div>
+    </th:block>
+</th:block>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<!-- (선택) 한국어 locale 지원 -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.min.js"></script>
+
+<!-- Google Calendar 플러그인 -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ko', // 한국어
+            headerToolbar: {
+                left: 'customNav',
+                center: '',
+                right: 'dayGridMonth,timeGridDay'
+            },
+            customButtons: {
+                customNav: {
+                    text: '', // HTML로 덮어쓸 거라 비워둠
+                }
+            },
+            titleFormat: { year: 'numeric', month: 'long' },
+
+            // ⏰ 시간표 관련 설정 유지
+            slotMinTime: '00:00:00',
+            slotMaxTime: '24:00:00',
+            slotDuration: '00:15:00',
+            slotLabelInterval: '00:15:00',
+            slotLabelContent: function (arg) {
+                var hour = arg.date.getHours();
+                var minute = arg.date.getMinutes();
+
+                if (minute === 0) {
+                    var period = hour < 12 ? '오전' : '오후';
+                    var hour12 = hour % 12;
+                    if (hour12 === 0) hour12 = 12;
+                    return period + ' ' + hour12 + '시';
+                } else {
+                    return minute.toString().padStart(2, '0') + '분';
+                }
+            },
+
+            allDaySlot: false,
+
+            // 📅 날짜 셀 숫자만 추출
+            dayCellContent: function (arg) {
+                var numberOnly = arg.dayNumberText.replace(/[^0-9]/g, '');
+                return { html: numberOnly };
+            },
+
+            // 📌 타이틀 위치 & 버튼 넣기
+            datesSet: function (info) {
+                const toolbar = document.querySelector('.fc-customNav-button');
+
+                const title = info.view.title; // ex: "2025년 7월"
+                toolbar.innerHTML = `
+                <div class="fc-custom-group">
+                    <button type="button" class="fc-prev-button fc-button fc-button-primary"><</button>
+                    <span class="fc-title">${title}</span>
+                    <button type="button" class="fc-next-button fc-button fc-button-primary">></button>
+                </div>
+            `;
+
+                toolbar.querySelector('.fc-prev-button').onclick = () => calendar.prev();
+                toolbar.querySelector('.fc-next-button').onclick = () => calendar.next();
+            }
+        });
+
+        calendar.render();
+    });
+
+    $(document).on('keydown', '#searchInput', function (event) {
+        const inputValue = $(this).val();
+
+        if (event.key === 'Enter' || event.which === 13) {
+            event.preventDefault();
+
+            if (isEmpty(inputValue)) {
+                alert('검색할 고객명을 입력해주세요');
+                return;
+            }
+
+            showLoadingImage();
+
+            callService(
+                "GET"
+                , "/reservation/customer/list?searchKeyword=" + inputValue
+                , {}
+                , function (response) {
+                    if (response.success) {
+
+                    }
+                }
+            );
+        }
+    });
+</script>
+
+</html>

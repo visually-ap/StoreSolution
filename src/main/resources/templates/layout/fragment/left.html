@@ -5,14 +5,6 @@
 
         <!-- counseling -->
         <ul class="left_nav" th:if="${pathname.startsWith('/counseling')}">
-            <!-- about -->
-            <th:block th:if="${pathname == '/counseling/about'}">
-                <li>
-                    <a th:href="@{/counseling/about}" class="about">
-                        <span>About</span>
-                    </a>
-                </li>
-            </th:block>
             <!-- 고객 목록 -->
             <th:block th:if="${pathname == '/counseling/customer/list'}">
                 <li class="on">
@@ -21,11 +13,70 @@
                     </a>
                 </li>
             </th:block>
+            <th:block th:unless="${pathname == '/counseling/customer/list'}">
+                <li>
+                    <a th:href="@{/counseling/customer/list}" class="customerList">
+                        <span>Customer</span>
+                    </a>
+                </li>
+            </th:block>
+            <!-- about -->
+            <th:block th:if="${pathname == '/counseling/about'}">
+                <li class="on">
+                    <a th:href="@{/counseling/about}" class="about">
+                        <span>About</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/counseling/about'}">
+                <li>
+                    <a th:href="@{/counseling/about}" class="about">
+                        <span>About</span>
+                    </a>
+                </li>
+            </th:block>
             <!-- fabricItem -->
             <th:block th:if="${pathname == '/counseling/fabric-item'}">
+                <li class="on">
+                    <a th:href="@{/counseling/fabric-item}" class="fabricItem">
+                        <span>FabricItem</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/counseling/fabric-item'}">
                 <li>
-                    <a th:href="@{/counseling/fabricItem}" class="fabricItem">
-                        <span>fabricItem</span>
+                    <a th:href="@{/counseling/fabric-item}" class="fabricItem">
+                        <span>FabricItem</span>
+                    </a>
+                </li>
+            </th:block>
+            <!-- Design -->
+            <th:block th:if="${pathname == '/counseling/design'}">
+                <li class="on">
+                    <a th:href="@{/counseling/design}" class="design">
+                        <span>Design</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/counseling/design'}">
+                <li>
+                    <a th:href="@{/counseling/design}" class="design">
+                        <span>Design</span>
+                    </a>
+                </li>
+            </th:block>
+            <!-- Size -->
+            <th:block th:if="${pathname == '/counseling/size'}">
+                <li class="on">
+                    <a th:href="@{/counseling/size}" class="size">
+                        <span>Size</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:unless="${pathname == '/counseling/size'}">
+                <li>
+                    <a th:href="@{/counseling/size}" class="size">
+                        <span>Size</span>
                     </a>
                 </li>
             </th:block>

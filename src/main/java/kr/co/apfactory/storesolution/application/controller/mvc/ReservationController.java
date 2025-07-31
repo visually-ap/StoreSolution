@@ -32,7 +32,7 @@ public class ReservationController {
     @GetMapping("/main")
     public String gotoReservationMainPage(Model model) {
         model.addAttribute("item", storeService.getStoreInfo());
-        return "views/reservation/main";
+        return "views/reservation/main_bak";
     }
 
     @GetMapping("/register")

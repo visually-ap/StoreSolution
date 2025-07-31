@@ -2,6 +2,7 @@ package kr.co.apfactory.storesolution.application.service;
 
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.*;
 import kr.co.apfactory.storesolution.global.i18n.I18nUtility;
@@ -9,6 +10,8 @@ import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +63,14 @@ public class CustomerService {
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .message("저장하였습니다.")
+                .build();
+    }
+
+    public ResponseDTO getCustomerList(String searchKeyword) {
+        List<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(searchKeyword, LoginUser.getDetails().getStoreId());
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .result(resCustomerList)
                 .build();
     }
 }

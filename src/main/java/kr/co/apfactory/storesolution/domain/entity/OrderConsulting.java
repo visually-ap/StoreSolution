@@ -40,6 +40,10 @@ public class OrderConsulting extends BaseEntity {
     @Comment("삭제 여부 (true : 삭제, false : 미삭제)")
     private Boolean deleted;
 
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    @Comment("완료 여부 (true : 삭제, false : 미삭제)")
+    private Boolean completed;
+
     @Column(columnDefinition = "decimal(8,0) default 0", nullable = false)
     @Comment("총 금액")
     private BigDecimal totalPrice;

@@ -41,4 +41,9 @@ public class ReservationRestController {
     public ResponseEntity<ResponseDTO> registerConsultingReservation(@RequestBody ReqReservationRegisterDTO reqReservationRegisterDTO) {
         return ResponseEntity.ok(customerService.registerConsultingReservation(reqReservationRegisterDTO));
     }
+
+    @GetMapping("/customer/list")
+    public ResponseEntity<ResponseDTO> getCustomerList(String searchKeyword) {
+        return ResponseEntity.ok(customerService.getCustomerList(searchKeyword));
+    }
 }

@@ -31,4 +31,14 @@ public class CounselingController {
     public String gotoFabricAndItemPage(Model model) {
         return "views/counseling/fabricItem";
     }
+
+    @GetMapping("/design")
+    public String gotoDesignPage(Model model) {
+        return "views/counseling/design";
+    }
+
+    @GetMapping("/size")
+    public String gotoSize(Model model) {
+        return "views/counseling/size";
+    }
 }

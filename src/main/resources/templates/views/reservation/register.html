@@ -3,11 +3,6 @@
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
-
-        <!-- 공통 css-->
-        <link rel="stylesheet" th:href="@{/css/header.css}">
-        <link rel="stylesheet" th:href="@{/css/common.css}">
-
         <!-- 개별 css-->
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
@@ -46,7 +41,7 @@
                 min-width: 1px;
                 height: 20px;
                 padding: 0;
-                width: 100px;
+                width: 102px;
                 text-align: center;
             }
 
@@ -169,28 +164,23 @@
                                         <select class="reservationDatetime" name="consultingMinute" id="consultingMinute">
                                             <option value="">선택</option>
                                             <option value="00">0</option>
-                                            <option value="15">15</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
                                             <option value="30">30</option>
-                                            <option value="45">45</option>
+                                            <option value="40">40</option>
+                                            <option value="50">50</option>
                                         </select>
                                         분
                                     </div>
                                 </div>
                             </div>
-<!--                            <div class="inner_bg inner_style_1 column mt-20px">-->
-<!--                                <div class="one-line">-->
-<!--                                    <h4 class="inner_title">예약일시</h4>-->
-<!--                                    <span th:text="${#dates.format(#dates.createNow(), 'yyyy년 MM월 dd일 HH시 mm분')}"></span>-->
-<!--                                    <input type="hidden" name="reservationDatetime" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}" readonly>-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <ul class="inner_style_2 mt-20px">
                                 <li><span class="border-bottom" id="resultName">OOO</span> 고객님</li>
                                 <li>
                                     <span class="border-bottom" id="resultDatetime">XXXX년 XX월 XX일 XX시 XX분</span>
                                 </li>
                                 <li>
-                                    <span class="border-bottom">XXX</span> 담당자와 상담 진행 예정입니다.
+                                    <span class="border-bottom" id="resultManager">OOO</span> 담당자와 상담 진행 예정입니다.
                                 </li>
                             </ul>
                             <div class="inner_style_3 mt-20px">
@@ -296,30 +286,11 @@
         renderTimeTable('custom-schedule-table', todayString);
     });
 
-    $(document).on('focusout', '#name1', function() {
-        let input = $(this).val();
-        if (isEmpty(input)) {
-            input = 'OOO'
-        }
-        $('#resultName').text(input);
-    });
-
     $(document).on('change', '#consultingDate, #timetableDatepicker', function() {
         momentDate = moment($(this).val());
 
         initTimeTable('custom-schedule-table');
         renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, $(this).val()));
-    });
-
-    $(document).on('change', '.reservationDatetime', function() {
-        let dateArray = isEmpty($('#consultingDate').val()) ? 'XXXX-XX-XX'.split('-') : $('#consultingDate').val().split('-');
-        let year = dateArray[0];
-        let month = dateArray[1];
-        let date = dateArray[2];
-        let hour = isEmpty($('#consultingHour').val()) ? 'XX' : $('#consultingHour').val();
-        let minute = isEmpty($('#consultingMinute').val()) ? 'XX' : $('#consultingMinute').val();
-
-        $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
     });
 
     $(document).on('click', '#prevBtn', function() {
@@ -337,6 +308,46 @@
     $(document).on('click', '#registerButton', function() {
         $('#dataForm').submit();
     });
+
+
+    // 예약 안내 멘트 관련
+    $(document).on('focusout', '#name1', function() {
+        setReservationText();
+    });
+
+    $(document).on('change', '.reservationDatetime', function() {
+        setReservationText();
+    });
+
+    $(document).on('change', '#consultingManager', function() {
+        setReservationText();
+    });
+
+    function setReservationText() {
+        // 이름
+        let name1 = $('#name1').val();
+        if (isEmpty(name1)) {
+            name1 = 'OOO'
+        }
+        $('#resultName').text(name1);
+
+        // 날짜
+        let dateArray = isEmpty($('#consultingDate').val()) ? 'XXXX-XX-XX'.split('-') : $('#consultingDate').val().split('-');
+        let year = dateArray[0];
+        let month = dateArray[1];
+        let date = dateArray[2];
+        let hour = isEmpty($('#consultingHour').val()) ? 'XX' : $('#consultingHour').val();
+        let minute = isEmpty($('#consultingMinute').val()) ? 'XX' : $('#consultingMinute').val();
+
+        $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
+
+        // 담당자 이름
+        let consultManager = $('#consultingManager option:selected').text();
+        if (isEmpty(consultManager)) {
+            consultManager = 'OOO'
+        }
+        $('#resultManager').text(consultManager);
+    }
 </script>
 
 </html>

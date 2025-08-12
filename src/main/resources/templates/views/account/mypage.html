@@ -60,89 +60,88 @@
                     </div>
                 </div>
             </div>
-
-<!--        모달창으로 움직여야 함 -->
-            <div class="modal_window modal_style" id="passwordUpdateModal">
-                <div class="inner_box">
-                    <form id="dataForm">
-                        <h2 class="title">비밀번호 변경 <span class="pointColor_1">* 항목은 필수 입력 항목입니다.</span></h2>
-                        <div class="data_box">
-                            <div class="line">
-                                <h3 class="name">현재비밀번호<span class="pointColor_1">*</span></h3>
-                                <input type="password" class="value" id="nowPassword" name="nowPassword" placeholder="현재 비밀번호 입력">
-                            </div>
-                            <div class="line">
-                                <h3 class="name">비밀번호</h3>
-                                <input type="password" class="value" id="password" name="password" placeholder="4~20자의 영어, 숫자, 특수기호(!,@,#,$,%,^,&,*)">
-                            </div>
-                            <div class="line">
-                                <h3 class="name">비밀번호확인</h3>
-                                <input type="password" class="value" id="confirmPassword" name="confirmPassword" placeholder="새로운비밀번호와 동일하게 입력">
-                            </div>
-                        </div>
-                    </form>
-                    <div class="btn_wrap center mt-40px">
-                        <div class="innerBtn_box">
-                            <button id="updatePasswordButton" class="btnColor_1 btn_2">변경</button>
-                            <button class="closeModalButton btn_2" data-label="#passwordUpdateModal" onclick="closeModal($(this).data('label'), initModal)">닫기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-
-        <script>
-            $(function () {
-                callValidationFormService(
-                    $('#dataForm')
-                    , {
-                        nowPassword: validationObject.nowPassword.rules
-                        , password: validationObject.password.rules
-                        , confirmPassword: validationObject.confirmPassword.rules
-                    }
-                    , {
-                        nowPassword: validationObject.nowPassword.message
-                        , password: validationObject.password.message
-                        , confirmPassword: validationObject.confirmPassword.message
-                    }
-                    , function (form) {
-                        if (doubleClick.isDouble()) {
-                            return false;
-                        }
-
-                        if (!confirm("비밀번호를 변경하시겠습니까?")) {
-                            doubleClick.initFlag();
-                            return;
-                        }
-
-                        showLoadingImage();
-
-                        callService(
-                            "POST"
-                            , "/password/update"
-                            , JSON.stringify(convertFormToJSON(form))
-                            , function (response) {
-                                alert(response.message);
-                                if (response.success) {
-                                    location.href = '/logout';
-                                }
-                            }
-                        );
-                    }
-                );
-            });
-
-            function initModal() {
-                $('#password').val('');
-                $('#newPassword').val('');
-                $('#confirmPassword').val('');
-            }
-
-            $(document).on('click', '#updatePasswordButton', function() {
-                $('#dataForm').submit();
-            });
-        </script>
     </th:block>
 </th:block>
 </html>
+
+<!--        모달창으로 움직여야 함 -->
+<div class="modal_window modal_style" id="passwordUpdateModal">
+    <div class="inner_box">
+        <form id="dataForm">
+            <h2 class="title">비밀번호 변경 <span class="pointColor_1">* 항목은 필수 입력 항목입니다.</span></h2>
+            <div class="data_box">
+                <div class="line">
+                    <h3 class="name">현재비밀번호<span class="pointColor_1">*</span></h3>
+                    <input type="password" class="value" id="nowPassword" name="nowPassword" placeholder="현재 비밀번호 입력">
+                </div>
+                <div class="line">
+                    <h3 class="name">비밀번호</h3>
+                    <input type="password" class="value" id="password" name="password" placeholder="4~20자의 영어, 숫자, 특수기호(!,@,#,$,%,^,&,*)">
+                </div>
+                <div class="line">
+                    <h3 class="name">비밀번호확인</h3>
+                    <input type="password" class="value" id="confirmPassword" name="confirmPassword" placeholder="새로운비밀번호와 동일하게 입력">
+                </div>
+            </div>
+        </form>
+        <div class="btn_wrap center mt-40px">
+            <div class="innerBtn_box">
+                <button id="updatePasswordButton" class="btnColor_1 btn_2">변경</button>
+                <button class="closeModalButton btn_2" data-label="#passwordUpdateModal" onclick="closeModal($(this).data('label'), initModal)">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        callValidationFormService(
+            $('#dataForm')
+            , {
+                nowPassword: validationObject.nowPassword.rules
+                , password: validationObject.password.rules
+                , confirmPassword: validationObject.confirmPassword.rules
+            }
+            , {
+                nowPassword: validationObject.nowPassword.message
+                , password: validationObject.password.message
+                , confirmPassword: validationObject.confirmPassword.message
+            }
+            , function (form) {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm("비밀번호를 변경하시겠습니까?")) {
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                showLoadingImage();
+
+                callService(
+                    "POST"
+                    , "/password/update"
+                    , JSON.stringify(convertFormToJSON(form))
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.href = '/logout';
+                        }
+                    }
+                );
+            }
+        );
+    });
+
+    function initModal() {
+        $('#password').val('');
+        $('#newPassword').val('');
+        $('#confirmPassword').val('');
+    }
+
+    $(document).on('click', '#updatePasswordButton', function() {
+        $('#dataForm').submit();
+    });
+</script>

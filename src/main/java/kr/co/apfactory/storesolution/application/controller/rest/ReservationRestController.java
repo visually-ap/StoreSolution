@@ -5,6 +5,7 @@ import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -45,5 +46,16 @@ public class ReservationRestController {
     @GetMapping("/customer/list")
     public ResponseEntity<ResponseDTO> getCustomerList(String searchKeyword) {
         return ResponseEntity.ok(customerService.getCustomerList(searchKeyword));
+    }
+
+    @GetMapping("/customer/detail")
+    public ResponseEntity<ResponseDTO> getCustomerDetailByOrderConsultingId(Long orderConsultingId) {
+        return ResponseEntity.ok(customerService.getCustomerDetailByOrderConsultingId(orderConsultingId));
+    }
+
+    @PostMapping("/consulting/update")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateConsultingReservation(@RequestBody ReqReservationUpdateDTO reqReservationUpdateDTO) {
+        return ResponseEntity.ok(customerService.updateConsultingReservation(reqReservationUpdateDTO));
     }
 }

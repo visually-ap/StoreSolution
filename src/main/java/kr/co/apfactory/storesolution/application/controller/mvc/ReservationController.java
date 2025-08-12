@@ -32,6 +32,8 @@ public class ReservationController {
     @GetMapping("/main")
     public String gotoReservationMainPage(Model model) {
         model.addAttribute("item", storeService.getStoreInfo());
+        model.addAttribute("employeeList", userService.getEmployeeList());
+        model.addAttribute("siteEnvDto", siteService.getSiteEnvironment());
         return "views/reservation/main_bak";
     }
 

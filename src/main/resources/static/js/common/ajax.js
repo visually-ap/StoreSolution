@@ -35,6 +35,37 @@ function callService(type, url, param, callback) {
     });
 }
 
+function callLazyService(type, url, param, callback) {
+    $.ajax({
+        type: type
+        , url: url
+        , async: true
+        , dataType: 'json'
+        , contentType: 'application/json'
+        , data: param
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        }
+        , success: function (data) {
+            if (callback != null) {
+                return callback(data, url);
+            }
+        }
+        , error: function (request) {
+            doubleClick.initFlag();
+            if (request.status == '403') {
+                alert('로그인이 필요한 서비스입니다.')
+                location.reload();
+            } else {
+                alert('서비스 호출에 실패하였습니다.\n문제가 지속적으로 발생 시 관리자에게 문의하시기 바랍니다.');
+            }
+        }
+        , complete: function () {
+            doubleClick.initFlag();
+        }
+    });
+}
+
 function callFileAttachService($form, $file, url, callback) {
     if (!$file.val()) {
         $file.attr('disabled', true);

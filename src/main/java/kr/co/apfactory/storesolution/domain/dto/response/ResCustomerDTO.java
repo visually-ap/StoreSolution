@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 @Builder
 public class ResCustomerDTO {
     private Long customerId;
+    private Long orderConsultingId;
+    private Long reservationId;
 
     private String name1;
     private String mobile1;
@@ -26,13 +29,23 @@ public class ResCustomerDTO {
     private LocalDate weddingDate;
     private String weddingPlace;
     private Long reservationManagerId;
+    private String reservationManagerName;
     private Long consultingManagerId;
+    private String consultingManagerName;
 
     private LocalDate consultingDate;
+    private LocalDateTime consultingDatetimeFrom;
     private String consultingHour;
     private String consultingMinute;
 
     private String memo;
 
     private Boolean completed;
+
+    public void setConsultingDatetime() {
+        if (this.consultingDatetimeFrom != null) {
+            this.consultingHour = String.format("%02d", this.consultingDatetimeFrom.getHour());
+            this.consultingMinute = String.format("%02d", this.consultingDatetimeFrom.getMinute());
+        }
+    }
 }

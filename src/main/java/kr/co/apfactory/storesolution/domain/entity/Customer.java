@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,5 +74,17 @@ public class Customer extends BaseEntity {
 
     public void updateStore(Store store) {
         this.store = store;
+    }
+
+    public void updateCustomerInfo(ReqReservationUpdateDTO dto) {
+        this.name1 = dto.getName1();
+        this.mobile1 = dto.getMobile1();
+        this.name2 = dto.getName2();
+        this.mobile2 = dto.getMobile2();
+        this.photoDate = dto.getPhotoDate();
+        this.photoPlace = dto.getPhotoPlace();
+        this.weddingDate = dto.getWeddingDate();
+        this.weddingPlace = dto.getWeddingPlace();
+        this.memo = dto.getMemo();
     }
 }

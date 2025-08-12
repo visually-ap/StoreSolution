@@ -3,6 +3,10 @@ package kr.co.apfactory.storesolution.domain.repository.util;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
+import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.entity.QCustomer;
+import kr.co.apfactory.storesolution.domain.entity.QReservation;
+import kr.co.apfactory.storesolution.domain.entity.QStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -69,6 +73,61 @@ public class FilterManager {
             return new BooleanBuilder(f.get());
         } catch (Exception e) {
             return new BooleanBuilder();
+        }
+    }
+
+    public BooleanBuilder getReservationCustomerListBooleanBuilderByKeyword(String searchKeyword) {
+        return nullSafeBuilder(() ->
+                queryStringEq(QCustomer.customer.name1, searchKeyword)
+                        .or(queryStringEq(QCustomer.customer.name2, searchKeyword))
+        );
+    }
+
+    public BooleanBuilder getCounselingCustomerListBooleanBuilderByKeyword(SearchDTO searchDTO) {
+        if (!"".equals(searchDTO.getSearchKeyword())) {
+            if ("all".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QCustomer.customer.name1, searchDTO.getSearchKeyword())
+                                .or(queryStringEq(QCustomer.customer.mobile1, searchDTO.getSearchKeyword()))
+                );
+            } else if ("name".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QCustomer.customer.name1, searchDTO.getSearchKeyword())
+                );
+            } else if ("mobile".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QCustomer.customer.mobile1, searchDTO.getSearchKeyword())
+                );
+            } else {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QCustomer.customer.name1, searchDTO.getSearchKeyword())
+                                .or(queryStringEq(QCustomer.customer.mobile1, searchDTO.getSearchKeyword()))
+                );
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getCounselingCustomerListBooleanBuilderByPeriod(SearchDTO searchDTO) {
+        if (searchDTO.getDateFrom() != null && searchDTO.getDateTo() != null) {
+            if ("consulting".equals(searchDTO.getDateCondition())) {
+                return nullSafeBuilder(() ->
+                        QReservation.reservation.consultingDate.between(searchDTO.getDateFrom(), searchDTO.getDateTo())
+                );
+            } else if ("photo".equals(searchDTO.getDateCondition())) {
+                return nullSafeBuilder(() ->
+                        QCustomer.customer.photoDate.between(searchDTO.getDateFrom(), searchDTO.getDateTo())
+                );
+            } else if ("wedding".equals(searchDTO.getDateCondition())) {
+                return nullSafeBuilder(() ->
+                        QCustomer.customer.weddingDate.between(searchDTO.getDateFrom(), searchDTO.getDateTo())
+                );
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }

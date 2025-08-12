@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,5 +59,9 @@ public class OrderConsulting extends BaseEntity {
 
     public void updateCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public void updateOrderConsultingInfo(ReqReservationUpdateDTO dto) {
+
     }
 }

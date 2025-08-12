@@ -12,7 +12,7 @@
         <script th:src="@{/js/common/validator.js}"></script>
 
         <div class="section_wrap detailPage">
-            <h2 class="title">직원 상세 <span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
+            <h2 class="title">직원 상세 정보<span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
 
             <form id="dataForm">
                 <div class="boxStyle_1">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="line">
                         <div class="box">
-                            <h2 class="name">휴대전화번호<span class="pointColor_1">*</span></h2>
+                            <h2 class="name">직급<span class="pointColor_1">*</span></h2>
                             <div class="value">
                                 <select id="position" name="position" required>
                                     <option value="" th:selected="${item.position == null}">선택</option>

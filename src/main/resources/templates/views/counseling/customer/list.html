@@ -13,51 +13,95 @@
         <!-- 스위치 css -->
         <link rel="stylesheet" th:href="@{/css/component/switch.css}">
 
+        <style>
+            .datepicker::placeholder {
+                color: #999999 !important;
+                text-align: center;
+            }
+
+            .datepicker.flatpickr-input {
+                position: relative;
+            }
+
+            input:read-only {
+                background-color: #dddddd;
+            }
+        </style>
+
         <div class="section_wrap fabric-4">
             <h2 class="title">고객검색</h2>
-            <form action="" class="search_form">
+            <form action="/counseling/customer/list" method="get" class="search_form" onsubmit="return checkDateInput()">
                 <div class="boxStyle_2 flex align-center">
                     <div class="line align-center">
                         <div class="box other_box">
-                            <h2 class="name">고객명</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
+                            <h2 class="name">상세검색</h2>
+                            <select class="t-center" th:field="*{searchDTO.searchCondition}">
+                                <option value="all" selected>전체</option>
+                                <option value="name">고객명</option>
+                                <option value="mobile">연락처</option>
+                            </select>
+                            <input type="text" class="text" maxlength="10" th:field="*{searchDTO.searchKeyword}">
                         </div>
                         <div class="box other_box">
-                            <h2 class="name">연락처</h2>
-                            <div class="value">
-                                <input type="text" class="text">
+                            <h2 class="name">기간검색</h2>
+                            <select class="t-center" th:field="*{searchDTO.dateCondition}">
+                                <option value="consulting" selected>상담예약</option>
+                                <option value="photo">촬영일</option>
+                                <option value="wedding">본식일</option>
+                            </select>
+                            <div class="input-with-icon">
+                                <input type="text" class="datepicker" placeholder="날짜선택" readonly th:field="*{searchDTO.dateFrom}">
+                            </div>
+                            &nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;
+                            <div class="input-with-icon">
+                                <input type="text" class="datepicker" placeholder="날짜선택" readonly th:field="*{searchDTO.dateTo}">
                             </div>
                         </div>
-                        <button class="boxImg">
+                        <button type="submit" class="boxImg">
                             <span class="search"></span>
                         </button>
+                        <button type="button" class="boxImg" onclick="resetSearchForm();">
+                            <span class="init"></span>
+                        </button>
                     </div>
-                    <div class="btn-style-2">
-                        <a th:href="@{/counseling/customer/register}" class="w-180 btnColor_3 btn_3">신규고객등록</a>
-                    </div>
+<!--                    <div class="btn-style-2">-->
+<!--                        <a th:href="@{/reservation/register}" class="w-180 btnColor_3 btn_3">신규고객등록</a>-->
+<!--                    </div>-->
                 </div>
             </form>
+            <script>
+                function checkDateInput() {
+                    let fromDate = $('input[name=dateFrom]').val();
+                    let toDate = $('input[name=dateTo]').val();
+                    if (!(isEmpty(fromDate) && isEmpty(toDate))) {
+                        if (isEmpty(fromDate) || isEmpty(toDate)) {
+                            alert('검색할 시작날짜와 종료날짜를 모두 입력해 주세요.');
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            </script>
         </div>
 
         <div class="section_wrap listPage mt-30px">
             <div class="flex align-center between">
                 <h2 class="title">고객목록</h2>
                 <div class="flex flex-end middle-icon-line">
-                    <div class="switch_line">
-                        <span class="hidden_txt">숨김</span>
-                        <label class="real-switch">
-                            <input type="checkbox" id="customerInfo" value="true" checked="checked">
-                            <span class="real-slider"></span>
-                        </label>
-                        <span class="hidden_txt">보임</span>
-                        <label class="name" for="customerInfo">고객정보보기</label>
-                    </div>
-                    <div class="excelDownload flex align-center">
-                        <img th:src="@{/images/icon/excel.png}" alt="엑셀 파일 다운로드" class="excelImg">
-                        <button id="excel-download" class="name" type="button">엑셀 파일 다운로드</button>
-                    </div>
+<!--                    <div class="switch_line">-->
+<!--                        <span class="hidden_txt">숨김</span>-->
+<!--                        <label class="real-switch">-->
+<!--                            <input type="checkbox" id="customerInfo" value="true" checked="checked">-->
+<!--                            <span class="real-slider"></span>-->
+<!--                        </label>-->
+<!--                        <span class="hidden_txt">보임</span>-->
+<!--                        <label class="name" for="customerInfo">고객정보보기</label>-->
+<!--                    </div>-->
+<!--                    <div class="excelDownload flex align-center">-->
+<!--                        <img th:src="@{/images/icon/excel.png}" alt="엑셀 파일 다운로드" class="excelImg">-->
+<!--                        <button id="excel-download" class="name" type="button">엑셀 파일 다운로드</button>-->
+<!--                    </div>-->
                 </div>
             </div>
 
@@ -86,21 +130,48 @@
                     <th>상담예약</th>
                     <th>비고</th>
                 </tr>
-                <tr class="gotoDetail">
-                    <td>최대한</td>
-                    <td>010-2345-6789</td>
-                    <td>25-00-00</td>
-                    <td>제주도 스냅</td>
-                    <td>25-00-00</td>
-                    <td>--웨딩</td>
-                    <td>김모모</td>
-                    <td>김모모</td>
-                    <td>25-00-00</td>
-                    <td>특이사항특이사항특이사항특이사항</td>
+                <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.customerId}">
+                    <td th:text="${item.name1}"></td>
+                    <td th:text="${item.mobile1}"></td>
+                    <td th:text="${item.photoDate}"></td>
+                    <td th:text="${item.photoPlace}"></td>
+                    <td th:text="${item.weddingDate}"></td>
+                    <td th:text="${item.weddingPlace}"></td>
+                    <td th:text="${item.reservationManagerName}"></td>
+                    <td th:text="${item.consultingManagerName}"></td>
+                    <td th:text="${item.consultingDate}"></td>
+                    <td th:text="${item.memo}"></td>
                 </tr>
             </table>
+            <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
         </div>
     </th:block>
 </th:block>
-
 </html>
+
+<script>
+    $(document).ready(function () {
+        const fp = standardPicker($('.datepicker'));
+    });
+
+    $(document).on('click', '.gotoDetail', function () {
+        const id = $(this).data('id');
+
+        showLoadingImage();
+
+        callService(
+            "POST"
+            , `/counseling/init?id=${id}`
+            , {}
+            , function (response) {
+                if (response.success) {
+                    window.open(`/counseling/about?id=${id}`, "ImageViewer"
+                        , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
+                    );
+                } else {
+                    alert(response.message);
+                }
+            }
+        );
+    });
+</script>

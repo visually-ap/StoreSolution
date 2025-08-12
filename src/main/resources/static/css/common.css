@@ -551,14 +551,14 @@ input::placeholder {
 }
 
 .tableStyle.listT th {
-    height: 55px;
+    height: 30px;
     font-size: 17px;
     cursor: default;
 }
 
 .tableStyle.listT td {
     text-align: center;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
     white-space: nowrap;
     overflow: hidden;

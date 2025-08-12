@@ -8,164 +8,114 @@
         <link rel="stylesheet" th:href="@{/css/common.css}">
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
-        <div class="section_wrap fabric-4">
-            <h2 class="title">고객정보</h2>
-            <div class="boxStyle_2">
-                <div class="line">
-                    <div class="box other_box">
-                        <h2 class="name">고객명</h2>
-                        <div class="value">
-                            <input type="text" class="text">
-                        </div>
-                    </div>
-                    <div class="box other_box">
-                        <h2 class="name">연락처</h2>
-                        <div class="value">
-                            <input type="text" class="text">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="section_wrap border-0 fabric-4">
-            <h2 class="title">품목</h2>
-            <div class="boxStyle_2">
-                <div class="boxImg-wrap">
-                    <div class="boxImg">
-                        <span class="jacket on"></span>
-                    </div>
-                    <div class="boxImg">
-                        <span class="pants on"></span>
-                    </div>
-                    <div class="boxImg">
-                        <span class="vest"></span>
-                    </div>
-                    <div class="boxImg">
-                        <span class="coats"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section_wrap fabric-4">
-            <h2 class="title">자켓</h2>
-            <div class="boxStyle_2">
-                <div class="line">
-                    <div class="box other_box">
-                        <h2 class="name">원단</h2>
-                        <div class="value">
-                            <input type="text" class="text">
-                        </div>
-                    </div>
-                    <div class="box other_box">
-                        <h2 class="name">품번</h2>
-                        <div class="value">
-                            <input type="text" class="text">
-                        </div>
-                    </div>
-                    <div class="box other_box">
-                        <h2 class="name">진곤무지</h2>
-                        <div class="value">
-                            <input type="text" class="text">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="section_wrap mt-20px fabric-4">
-            <h2 class="title">하의</h2>
-            <div class="boxStyle_2">
-                <div class="flex align-center">
+        <form id="dataForm">
+            <div class="section_wrap fabric-4">
+                <h2 class="title">고객정보</h2>
+                <div class="boxStyle_2">
                     <div class="line">
                         <div class="box other_box">
-                            <h2 class="name">원단</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
+                            <h2 class="name">고객명</h2>
+                            <div class="value" th:text="${session.counseling.name1}"></div>
                         </div>
                         <div class="box other_box">
-                            <h2 class="name">품번</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
+                            <h2 class="name">연락처</h2>
+                            <div class="value" th:text="${session.counseling.mobile1}"></div>
                         </div>
                         <div class="box other_box">
-                            <h2 class="name">진곤무지</h2>
+                            <h2 class="name">Made From</h2>
                             <div class="value">
-                                <input type="text" class="text">
+                                <select id="factory" name="factory" required>
+                                    <option value="" th:selected="${session.counseling.factory == null}">-- 선택 --</option>
+                                    <option value="1" th:selected="${session.counseling.factory == 1}">White</option>
+                                    <option value="2" th:selected="${session.counseling.factory == 2}">Black</option>
+                                    <option value="3" th:selected="${session.counseling.factory == 3}">Etc</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="btn-style-">
-                        <a href="#" class="w-150 btnColor_1 btn_3">+ 위와 동일 원단</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="section_wrap mt-20px fabric-4">
-            <h2 class="title">조끼</h2>
-            <div class="boxStyle_2">
-                <div class="flex align-center">
-                    <div class="line">
-                        <div class="box other_box">
-                            <h2 class="name">원단</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                        <div class="box other_box">
-                            <h2 class="name">품번</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                        <div class="box other_box">
-                            <h2 class="name">진곤무지</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-style-">
-                        <a href="#" class="w-150 btnColor_1 btn_3">+ 위와 동일 원단</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="section_wrap mt-20px mb-20px fabric-4">
-            <h2 class="title">코트</h2>
-            <div class="boxStyle_2">
-                <div class="flex align-center">
-                    <div class="line">
-                        <div class="box other_box">
-                            <h2 class="name">원단</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                        <div class="box other_box">
-                            <h2 class="name">품번</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                        <div class="box other_box">
-                            <h2 class="name">진곤무지</h2>
-                            <div class="value">
-                                <input type="text" class="text">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-style-">
-                        <a href="#" class="w-150 btnColor_1 btn_3">+ 위와 동일 원단</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+            <div class="section_wrap border-0 fabric-4">
+                <h2 class="title">품목</h2>
+                <div class="boxStyle_2">
+                    <div class="boxImg-wrap">
+                        <div class="boxImg">
+                            <span class="jacket itemType" data-type="jacket" th:classappend="${session.counseling.jacket ? 'on' : ''}"></span>
+                            <input type="hidden" id="jacket" name="jacket" th:value="${session.counseling.jacket}">
+                        </div>
+                        <div class="boxImg">
+                            <span class="pants itemType" data-type="pants" th:classappend="${session.counseling.pants ? 'on' : ''}"></span>
+                            <input type="hidden" id="pants" name="pants" th:value="@{session.counseling.pants}">
+                        </div>
+                        <div class="boxImg">
+                            <span class="vest itemType" data-type="vest" th:classappend="${session.counseling.vest ? 'on' : ''}"></span>
+                            <input type="hidden" id="vest" name="vest" th:value="${session.counseling.vest}">
+                        </div>
+                        <div class="boxImg">
+                            <span class="coats itemType" data-type="coat" th:classappend="${session.counseling.coat ? 'on' : ''}"></span>
+                            <input type="hidden" id="coat" name="coat" th:value="${session.counseling.coat}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section_wrap fabric-4">
+                <h2 class="title">원단</h2>
+                <div class="boxStyle_2">
+                    <div class="line">
+                        <div class="box other_box">
+                            <h2 class="name">원단회사</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricCompany" name="fabricCompany" maxlength="10" th:value="${session.counseling.fabricCompany}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단품번</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricPattern" name="fabricPattern" maxlength="15" th:value="${session.counseling.fabricPattern}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단색상</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricColor" name="fabricColor" maxlength="10" th:value="${session.counseling.fabricColor}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </th:block>
 </th:block>
-
 </html>
+
+<script>
+    $(document).on('click', '.itemType', function () {
+       $(this).toggleClass('on');
+       const type = $(this).data('type');
+       if (type == 'coat') {
+           $('.jacket, .pants, .vest').removeClass('on');
+           $('#jacket, #pants, #vest').val(false);
+       } else {
+           $('.coats').removeClass('on');
+           $('#coat').val(false);
+       }
+       $(`#${type}`).val($(this).hasClass('on'));
+    });
+
+    window.addEventListener('beforeunload', function () {
+        showLoadingImage();
+        callService(
+            "POST"
+            , "/counseling/fabric/save"
+            , JSON.stringify(convertFormToJSON($('#dataForm')))
+            , function (response) {
+                if (!response.success) {
+                    alert('데이터 저장에 실패하였습니다.');
+                    console.log(response.message);
+                }
+            }
+        );
+    });
+</script>

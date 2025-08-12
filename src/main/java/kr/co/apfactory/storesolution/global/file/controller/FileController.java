@@ -35,4 +35,9 @@ public class FileController {
         model.addAttribute("imageList", fileList);
         return "views/popup/imageViewer";
     }
+
+    @GetMapping("/about/image/download/{id}")
+    public void downloadAboutImageFiles(HttpServletResponse response, @PathVariable("id") Long id) {
+        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("upload.path"));
+    }
 }

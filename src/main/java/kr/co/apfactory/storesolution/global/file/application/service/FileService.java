@@ -119,4 +119,26 @@ public class FileService {
                 .map(alterObject::toFileDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<FileDTO> getAboutImageList() {
+        Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
+
+        StoreFileAttachMaster storeFileAttachMaster = storeFileAttachMasterRepository.findByStoreAndFileType(store, 3);
+        if (storeFileAttachMaster == null) {
+            return null;
+        }
+
+        List<StoreFileAttach> storeFileAttachList = storeFileAttachRepository.findAllByStoreFileAttachMaster(storeFileAttachMaster);
+
+        List<FileDTO> fileList = new ArrayList<>();
+        for (StoreFileAttach file : storeFileAttachList) {
+            fileList.add(FileDTO.builder()
+                    .fileId(file.getId())
+                    .fileMasterId(file.getStoreFileAttachMaster() != null ? file.getStoreFileAttachMaster().getId() : null)
+                    .originalFileName(file.getOriginalFileName())
+                    .savedPathFile(file.getSavedPathFile())
+                    .build());
+        }
+        return fileList;
+    }
 }

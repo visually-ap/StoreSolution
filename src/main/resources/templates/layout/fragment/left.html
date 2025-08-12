@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="leftFragment">
+    <script>
+        function openAboutPopup() {
+            window.open(`/counseling/about?id=${getParamValue('id')}`, "ImageViewer"
+                , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
+            );
+        }
+
+        function gotoSubPage(url) {
+            location.href = `${url}?id=${getParamValue('id')}`;
+        }
+    </script>
+
     <div class="leftNav_wrap" th:with="pathname=${#httpServletRequest.requestURI}">
 
         <!-- counseling -->
-        <ul class="left_nav" th:if="${pathname.startsWith('/counseling')}">
-            <!-- 고객 목록 -->
-            <th:block th:if="${pathname == '/counseling/customer/list'}">
-                <li class="on">
-                    <a th:href="@{/counseling/customer/list}" class="customerList">
-                        <span>Customer</span>
-                    </a>
-                </li>
-            </th:block>
-            <th:block th:unless="${pathname == '/counseling/customer/list'}">
-                <li>
-                    <a th:href="@{/counseling/customer/list}" class="customerList">
-                        <span>Customer</span>
-                    </a>
-                </li>
-            </th:block>
+        <ul class="left_nav" th:if="${pathname.startsWith('/counseling') && pathname != '/counseling/customer/list'}">
             <!-- about -->
             <th:block th:if="${pathname == '/counseling/about'}">
                 <li class="on">
-                    <a th:href="@{/counseling/about}" class="about">
+                    <a href="javascript: return;" class="about">
                         <span>About</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/counseling/about'}">
                 <li>
-                    <a th:href="@{/counseling/about}" class="about">
+                    <a href="javascript: openAboutPopup();" class="about">
                         <span>About</span>
                     </a>
                 </li>
@@ -38,14 +35,14 @@
             <!-- fabricItem -->
             <th:block th:if="${pathname == '/counseling/fabric-item'}">
                 <li class="on">
-                    <a th:href="@{/counseling/fabric-item}" class="fabricItem">
+                    <a href="javascript: return;" class="fabricItem">
                         <span>FabricItem</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/counseling/fabric-item'}">
                 <li>
-                    <a th:href="@{/counseling/fabric-item}" class="fabricItem">
+                    <a href="javascript: gotoSubPage('/counseling/fabric-item');" class="fabricItem">
                         <span>FabricItem</span>
                     </a>
                 </li>
@@ -53,35 +50,37 @@
             <!-- Design -->
             <th:block th:if="${pathname == '/counseling/design'}">
                 <li class="on">
-                    <a th:href="@{/counseling/design}" class="design">
+                    <a href="javascript: return;" class="design">
                         <span>Design</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/counseling/design'}">
                 <li>
-                    <a th:href="@{/counseling/design}" class="design">
+                    <a href="javascript: gotoSubPage('/counseling/design')" class="design">
                         <span>Design</span>
                     </a>
                 </li>
             </th:block>
+            <script>
+
+            </script>
             <!-- Size -->
             <th:block th:if="${pathname == '/counseling/size'}">
                 <li class="on">
-                    <a th:href="@{/counseling/size}" class="size">
+                    <a href="javascript: return;" class="size">
                         <span>Size</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/counseling/size'}">
                 <li>
-                    <a th:href="@{/counseling/size}" class="size">
+                    <a href="javascript: gotoSubPage('/counseling/size')" class="size">
                         <span>Size</span>
                     </a>
                 </li>
             </th:block>
         </ul>
-
 
         <!-- Store Management -->
         <ul class="left_nav" th:if="${pathname.startsWith('/setting')}">

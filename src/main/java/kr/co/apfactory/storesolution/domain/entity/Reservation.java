@@ -92,4 +92,12 @@ public class Reservation extends BaseEntity {
             return defaultValue;
         }
     }
+
+    public void updateConsultingDatetimeFrom(LocalDateTime consultingDatetimeFrom) {
+        this.consultingDatetimeFrom = consultingDatetimeFrom;
+    }
+
+    public void updateConsultingDatetimeTo(LocalDateTime consultingDatetimeTo) {
+        this.consultingDatetimeTo = consultingDatetimeTo;
+    }
 }

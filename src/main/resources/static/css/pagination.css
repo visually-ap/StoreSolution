@@ -81,3 +81,7 @@
 .pagination .button_next:hover span {
     background: url(../images/pagination/next_arrow_icon_active.png) no-repeat;
 }
+
+.elements_disabled {
+    cursor: not-allowed;
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ImageViewer</title>
+
+    <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+    <script th:src="@{/js/common/url.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!-- Demo styles -->
+    <style>
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        body {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .action_area {
+            position: fixed;
+            bottom: 1%;
+            left: 1%;
+            z-index: 100;
+            font-size: 24px;
+        }
+
+        .span_link {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Swiper -->
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" th:each="image, index : ${imageList}">
+            <img class="cus_image" th:src="@{/about/image/download/{id}(id=${image.fileId})}" alt="">
+        </div>
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    <div class="action_area">
+        <span class="span_link" id="fullscreenButton">Fullscreen</span>
+        <span class="span_link" id="skipButton">Close</span>
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let swiper = new Swiper(".mySwiper", {
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            allowTouchMove: true
+        });
+    });
+
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    const FS = {
+        isFull() {
+            return document.fullscreenElement
+                || document.webkitFullscreenElement
+                || document.msFullscreenElement;
+        },
+        async enter() {
+            const el = document.documentElement;
+            const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+            if (!req) throw new Error('Fullscreen API not supported');
+            return req.call(el);
+        },
+        async exit() {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+            if (!exit) return;
+            return exit.call(document);
+        },
+        onChange(handler) {
+            ['fullscreenchange','webkitfullscreenchange','msfullscreenchange']
+                .forEach(evt => document.addEventListener(evt, handler));
+            ['fullscreenerror','webkitfullscreenerror','msfullscreenerror']
+                .forEach(evt => document.addEventListener(evt, handler));
+        }
+    };
+
+    const $btn = document.getElementById('fullscreenButton');
+
+    /** 상태에 따라 버튼 표시/숨김 */
+    function syncFsButton() {
+        const inFull = !!FS.isFull();
+        $btn.hidden = inFull;                 // 전체화면이면 숨김
+        $btn.setAttribute('aria-pressed', inFull ? 'true' : 'false');
+    }
+
+    /** 클릭 시 전체화면 진입 (사용자 제스처 필요) */
+    $btn.addEventListener('click', async () => {
+        try {
+            await FS.enter();
+            // 성공하면 fullscreenchange 이벤트에서 버튼이 숨겨짐
+        } catch (e) {
+            alert('전체화면 실패: ' + (e && e.message ? e.message : e));
+        }
+    });
+
+    /** 전체화면 변경/에러 시 버튼 상태 동기화 */
+    FS.onChange(syncFsButton);
+
+    /** 초기 진입: 전체화면 아니면 버튼 보이기 */
+    window.addEventListener('DOMContentLoaded', () => {
+        syncFsButton();
+    });
+
+    document.getElementById('skipButton').addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = '/counseling/fabric-item?id=' + getParamValue('id');
+
+        try {
+            if (window.opener && !window.opener.closed) {
+                // 동일 출처라면 직접 이동
+                try {
+                    window.opener.location.href = target;
+                    // 선택: 부모창 포커스
+                    window.opener.focus?.();
+                } catch (err) {
+                    // 교차 출처 등으로 직접 접근 불가 → postMessage로 부모에 요청
+                    const origin = location.origin; // 부모 도메인으로 정확히 지정 권장
+                    window.opener.postMessage({ type: 'NAVIGATE_AND_CLOSE', url: target }, origin);
+                }
+            }
+        } finally {
+            // 팝업은 스크립트로 연 열린 창일 때만 닫힘
+            window.close();
+        }
+    });
+</script>
+</body>
+</html>

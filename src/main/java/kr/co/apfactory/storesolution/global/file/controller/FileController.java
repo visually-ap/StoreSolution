@@ -23,7 +23,7 @@ public class FileController {
 
     @GetMapping("/store/image/download/{id}")
     public void downloadStoreImageFiles(HttpServletResponse response, @PathVariable("id") Long id) {
-        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("upload.path"));
+        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("store.upload.path"));
     }
 
     @GetMapping("/store/image/viewer")
@@ -38,6 +38,6 @@ public class FileController {
 
     @GetMapping("/about/image/download/{id}")
     public void downloadAboutImageFiles(HttpServletResponse response, @PathVariable("id") Long id) {
-        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("upload.path"));
+        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("store.upload.path"));
     }
 }

@@ -58,7 +58,7 @@ public class FileService {
             } else {
                 List<StoreFileAttach> fileAttachList = storeFileAttachRepository.findAllByStoreFileAttachMaster(storeFileAttachMaster);
                 for (StoreFileAttach fileAttach : fileAttachList) {
-                    fileManager.deleteFile(fileAttach.getUploadedFullPath(environment.getProperty("upload.path")));
+                    fileManager.deleteFile(fileAttach.getUploadedFullPath(environment.getProperty("store.upload.path")));
                 }
                 storeFileAttachRepository.deleteAllByStoreFileAttachMaster(storeFileAttachMaster);
             }
@@ -66,7 +66,7 @@ public class FileService {
             List<StoreFileAttach> storeFileAttachList = new ArrayList<>();
             for (MultipartFile file : uploadFilesDTO.getFiles()) {
                 // 파일 업로드
-                UploadResultDTO uploadResultDTO = fileManager.uploadFile(file, environment.getProperty("upload.path"));
+                UploadResultDTO uploadResultDTO = fileManager.uploadFile(file, environment.getProperty("store.upload.path"));
 
                 // 파일 정보 빌드
                 storeFileAttachList.add(

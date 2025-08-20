@@ -104,7 +104,7 @@ public class CustomerService {
     }
 
     public ResponseDTO updateConsultingReservation(ReqReservationUpdateDTO  reqReservationUpdateDTO) {
-        OrderConsulting orderConsulting = orderConsultingRepository.findById(reqReservationUpdateDTO.getOrderConsultingId()).orElse(null);
+        OrderConsulting orderConsulting = orderConsultingRepository.findById(reqReservationUpdateDTO.getOrderConsultingId())findById(;
         if (orderConsulting == null) {
             return ResponseDTO.builder()
                     .message("상담 예약 내용을 찾을 수 없습니다.")

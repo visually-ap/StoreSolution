@@ -1,6 +1,5 @@
 package kr.co.apfactory.storesolution.domain.repository;
 
-import kr.co.apfactory.storesolution.domain.entity.OrderConsulting;
 import kr.co.apfactory.storesolution.domain.entity.Reservation;
 import kr.co.apfactory.storesolution.domain.entity.User;
 import kr.co.apfactory.storesolution.domain.repository.support.CustomerSupportRepository;
@@ -13,5 +12,4 @@ import java.time.LocalDateTime;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, CustomerSupportRepository {
     int countByConsultingManagerAndConsultingDatetimeFromLessThanEqualAndConsultingDatetimeToGreaterThan(User consultingManager, LocalDateTime targetFrom, LocalDateTime targetTo);
-    Reservation findByOrderConsulting(OrderConsulting orderConsulting);
 }

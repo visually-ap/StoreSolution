@@ -30,7 +30,7 @@ public class Reservation extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("주문 상담 시퀀스")
-    private OrderConsulting orderConsulting;
+    private Customer customer;
 
     @Column(columnDefinition = "boolean default false", nullable = false)
     @Comment("삭제 여부 (true : 삭제, false : 미삭제)")
@@ -64,8 +64,12 @@ public class Reservation extends BaseEntity {
     @Comment("상담예약 종료 일시")
     private LocalDateTime consultingDatetimeTo;
 
-    public void updateOrderConsulting(OrderConsulting orderConsulting) {
-        this.orderConsulting = orderConsulting;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    @Comment("상담 완료 여부")
+    private Boolean completed;
+
+    public void updateCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void updateReservationManager(User reservationManager) {

@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.application.service;
 
+import kr.co.apfactory.storesolution.domain.dto.common.FileDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResSiteImageDTO;
@@ -100,29 +101,35 @@ public class SiteService {
             }
         }
 
-//        List<FileAttach> homeImageList = new ArrayList<>();
-//        if (setting.getHomeImage() != null) {
-//            homeImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getHomeImage());
-//        }
-//
-//        // 로고 이미지 변환 (단건이므로 null 체크 후 DTO 변환)
-//        FileDTO logoImageDto = setting.getLogoImage() != null ? alterObject.toFileDTO(setting.getLogoImage()) : null;
-//
-//        // 컨설팅 이미지 목록 조회 (null 방어 처리 포함)
-//        List<FileAttach> consultingImageList = new ArrayList<>();
-//        if (setting.getConsultingImage() != null) {
-//            consultingImageList = fileAttachRepository.findAllByFileAttachMaster(setting.getConsultingImage());
-//        }
-
         return resSiteImageDTO;
+    }
 
-        // DTO 생성 및 반환
-//        return ResSiteImageDTO.builder()
-//                .homeImageList()
-//                .logoImage(logoImageDto)
-//                .consultingImageList(consultingImageList.stream()
-//                        .map(alterObject::toFileDTO)
-//                        .collect(Collectors.toList()))
-//                .build();
+    public FileDTO getLogoImage() {
+        Long storeId = LoginUser.getDetails().getStoreId();
+        Store store = Store.builder().id(storeId).build();
+
+        StoreFileAttachMaster storeFileAttachMaster = storeFileAttachMasterRepository.findByStoreAndFileType(store, 2);
+        if (storeFileAttachMaster == null) {
+            return null;
+        }
+        StoreFileAttach storeFileAttach = storeFileAttachRepository.findByStoreFileAttachMaster(storeFileAttachMaster);
+        if  (storeFileAttach == null) {
+            return null;
+        }
+
+        return FileDTO.builder()
+                .fileId(storeFileAttach.getId())
+                .fileMasterId(storeFileAttachMaster.getId())
+                .originalFileName(storeFileAttach.getOriginalFileName())
+                .savedPathFile(storeFileAttach.getSavedPathFile())
+                .build();
+    }
+
+    public List<FileDTO> getMainImageList() {
+        Long storeId = LoginUser.getDetails().getStoreId();
+
+        List<FileDTO> fileList = storeFileAttachRepository.selectSiteImageList(storeId, 1);
+
+        return fileList;
     }
 }

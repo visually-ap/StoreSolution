@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
 @Builder
 public class ResCounselingDTO {
     private Long customerId;
-    private Long orderConsultingId;
     private Long reservationId;
+    private Long counselingCommonId;
+
+    private String name;
+    private String mobile;
 
     private Integer factory;
-
-    private String name1;
-    private String mobile1;
 
     private Boolean jacket = false;
     private Boolean pants = false;

@@ -40,7 +40,7 @@ public class CounselingController {
     }
 
     @GetMapping("/about")
-    public String openAboutPopup(Model model, Long id) {
+    public String openAboutPopup(Model model, Long reservationId) {
         // 상담판 파일타입 = 3
         List<FileDTO> fileList = fileService.getAboutImageList();
 
@@ -48,8 +48,9 @@ public class CounselingController {
         return "views/popup/about";
     }
 
-    @GetMapping("/fabric-item")
-    public String gotoFabricAndItemPage(Model model, Long id) {
+    @GetMapping("/pre-order")
+    public String gotoFabricAndItemPage(Model model, Long reservationId) {
+        model.addAttribute("counseling", customerService.getCounselingDetail(reservationId));
         return "views/counseling/fabricItem";
     }
 

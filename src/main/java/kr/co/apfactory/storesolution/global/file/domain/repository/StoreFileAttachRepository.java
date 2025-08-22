@@ -10,5 +10,7 @@ import java.util.List;
 public interface StoreFileAttachRepository extends JpaRepository<StoreFileAttach, Long>, FileSupportRepository {
     List<StoreFileAttach> findAllByStoreFileAttachMaster(StoreFileAttachMaster storeFileAttachMaster);
 
+    StoreFileAttach findByStoreFileAttachMaster(StoreFileAttachMaster storeFileAttachMaster);
+
     void deleteAllByStoreFileAttachMaster(StoreFileAttachMaster storeFileAttachMaster);
 }

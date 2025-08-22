@@ -1,7 +1,6 @@
 package kr.co.apfactory.storesolution.domain.dto.request;
 
 import kr.co.apfactory.storesolution.domain.entity.Customer;
-import kr.co.apfactory.storesolution.domain.entity.OrderConsulting;
 import kr.co.apfactory.storesolution.domain.entity.Reservation;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,10 +45,6 @@ public class ReqReservationRegisterDTO {
                 .weddingPlace(this.weddingPlace)
                 .memo(this.memo)
                 .build();
-    }
-
-    public OrderConsulting toOrderConsultingEntity() {
-        return OrderConsulting.builder().build();
     }
 
     public Reservation toReservationEntity(int type) {

@@ -87,7 +87,7 @@
 
         <div class="section_wrap listPage mt-30px">
             <div class="flex align-center between">
-                <h2 class="title">고객목록</h2>
+                <h2 class="title">고객예약목록</h2>
                 <div class="flex flex-end middle-icon-line">
 <!--                    <div class="switch_line">-->
 <!--                        <span class="hidden_txt">숨김</span>-->
@@ -130,7 +130,7 @@
                     <th>상담예약</th>
                     <th>비고</th>
                 </tr>
-                <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.customerId}">
+                <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.reservationId}">
                     <td th:text="${item.name1}"></td>
                     <td th:text="${item.mobile1}"></td>
                     <td th:text="${item.photoDate}"></td>
@@ -155,23 +155,8 @@
     });
 
     $(document).on('click', '.gotoDetail', function () {
-        const id = $(this).data('id');
-
-        showLoadingImage();
-
-        callService(
-            "POST"
-            , `/counseling/init?id=${id}`
-            , {}
-            , function (response) {
-                if (response.success) {
-                    window.open(`/counseling/about?id=${id}`, "ImageViewer"
-                        , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
-                    );
-                } else {
-                    alert(response.message);
-                }
-            }
+        window.open(`/counseling/about?reservationId=${$(this).data('id')}`, "ImageViewer"
+            , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
         );
     });
 </script>

@@ -186,15 +186,13 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
         QUser user = QUser.user;
         QStore store = QStore.store;
         QReservation reservation = QReservation.reservation;
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
         QCustomer customer = QCustomer.customer;
 
         List<ResEmployeeScheduleDTO> results = queryFactory
                 .from(user)
                 .innerJoin(store).on(user.store.eq(store))
                 .leftJoin(reservation).on(user.eq(reservation.consultingManager).and(reservation.deleted.isFalse()).and(reservation.consultingDate.eq(date)))
-                .leftJoin(orderConsulting).on(reservation.orderConsulting.eq(orderConsulting))
-                .leftJoin(customer).on(orderConsulting.customer.eq(customer))
+                .leftJoin(customer).on(reservation.customer.eq(customer))
                 .where(
                         user.deleted.eq(false)
                                 .and(user.store.id.eq(storeId))
@@ -230,22 +228,4 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
 
         return results;
     }
-
-
-
-//                List<ResEmployeeScheduleDTO> results = queryFactory.select(
-//                        Projections.fields(
-//                                ResEmployeeScheduleDTO.class
-//                                , user.id.as("userId")
-//                                , user.name
-//                        )
-//                )
-//                .from(user)
-//                .innerJoin(store).on(user.store.eq(store))
-//                .where(
-//                        user.deleted.eq(false)
-//                                .and(user.store.id.eq(storeId))
-//                )
-//                .orderBy(user.name.desc())
-//                .fetch();
 }

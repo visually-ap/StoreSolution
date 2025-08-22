@@ -40,4 +40,9 @@ public class FileController {
     public void downloadAboutImageFiles(HttpServletResponse response, @PathVariable("id") Long id) {
         fileService.downloadStoreImageFile(response, id, true, environment.getProperty("store.upload.path"));
     }
+
+    @GetMapping("/logo/image/download/{id}")
+    public void downloadLogoImageFiles(HttpServletResponse response, @PathVariable("id") Long id) {
+        fileService.downloadStoreImageFile(response, id, true, environment.getProperty("store.upload.path"));
+    }
 }

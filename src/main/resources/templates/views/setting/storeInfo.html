@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <!-- 개별 css-->
+        <link rel="stylesheet" th:href="@{/css/page.css}">
+
         <div class="settingInfo_wrap">
             <h1 class="main_title">정보 수정을 원할 경우 관리자에게 문의하시기 바랍니다.</h1>
             <div class="section_wrap">

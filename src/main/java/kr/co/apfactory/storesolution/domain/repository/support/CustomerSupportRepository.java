@@ -11,11 +11,9 @@ import java.util.List;
 public interface CustomerSupportRepository {
     List<ResCustomerDTO> selectCustomerList(String searchKeyword, Long storeId);
 
-    ResCustomerDTO selectCustomerDetailByOrderConsultingId(Long orderConsultingId);
+    ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId);
 
     Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId);
 
-    ResCustomerDTO selectCustomerDetail(Long customerId);
-
-    ResCounselingDTO selectCounselingDetail(Long customerId);
+    ResCounselingDTO selectCounselingDetail(Long reservationId);
 }

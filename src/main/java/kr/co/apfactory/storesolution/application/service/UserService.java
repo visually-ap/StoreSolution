@@ -171,9 +171,7 @@ public class UserService {
     }
 
     public List<ResEmployeeListDTO> getEmployeeList() {
-        List<ResEmployeeListDTO> employeeList = userRepository.selectEmployeeList(LoginUser.getDetails().getStoreId());
-
-        return employeeList;
+        return userRepository.selectEmployeeList(LoginUser.getDetails().getStoreId());
     }
 
     @Transactional

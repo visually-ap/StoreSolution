@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class ReqReservationUpdateDTO {
-    private Long orderConsultingId;
+    private Long reservationId;
 
     private String name1;
     private String mobile1;

@@ -31,7 +31,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     @Override
     public List<ResCustomerDTO> selectCustomerList(String searchKeyword, Long storeId) {
         QCustomer customer = QCustomer.customer;
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
+        QReservation reservation = QReservation.reservation;
 
         List<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -41,12 +41,12 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.mobile1
                                 , customer.name2
                                 , customer.mobile2
-                                , orderConsulting.completed
-                                , orderConsulting.id.as("orderConsultingId")
+                                , reservation.completed
+                                , reservation.id.as("reservationId")
                         )
                 )
                 .from(customer)
-                .leftJoin(orderConsulting).on(customer.eq(orderConsulting.customer))
+                .leftJoin(reservation).on(customer.eq(reservation.customer))
                 .where(
                         customer.deleted.eq(false)
                                 .and(customer.store.id.eq(storeId))
@@ -59,8 +59,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     }
 
     @Override
-    public ResCustomerDTO selectCustomerDetailByOrderConsultingId(Long orderConsultingId) {
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
+    public ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId) {
         QCustomer customer = QCustomer.customer;
         QReservation reservation = QReservation.reservation;
 
@@ -81,16 +80,15 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , reservation.reservationManager.id.as("reservationManagerId")
                                 , reservation.consultingDate
                                 , reservation.consultingDatetimeFrom
-                                , orderConsulting.completed
-                                , orderConsulting.id.as("orderConsultingId")
+                                , reservation.completed
+                                , reservation.id.as("reservationId")
                         )
                 )
-                .from(orderConsulting)
-                .innerJoin(customer).on(orderConsulting.customer.eq(customer))
-                .innerJoin(reservation).on(orderConsulting.eq(reservation.orderConsulting))
+                .from(reservation)
+                .innerJoin(customer).on(reservation.customer.eq(customer))
                 .where(
                         customer.deleted.eq(false)
-                                .and(orderConsulting.id.eq(orderConsultingId))
+                                .and(reservation.id.eq(reservationId))
                 )
                 .orderBy()
                 .fetchFirst();
@@ -101,7 +99,6 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     @Override
     public Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId) {
         QCustomer customer = QCustomer.customer;
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
         QReservation reservation = QReservation.reservation;
         QUser reservationManger = new QUser("reservationManger");
         QUser consultingManger = new QUser("consultingManger");
@@ -121,24 +118,17 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.memo
                                 , reservationManger.name.as("reservationManagerName")
                                 , consultingManger.name.as("consultingManagerName")
-                                , orderConsulting.completed
-                                , orderConsulting.id.as("orderConsultingId")
                                 , reservation.id.as("reservationId")
                                 , reservation.consultingDate
                         )
                 )
                 .from(customer)
-                .innerJoin(orderConsulting).on(customer.eq(orderConsulting.customer))
-                .innerJoin(reservation).on(orderConsulting.eq(reservation.orderConsulting))
+                .innerJoin(reservation).on(customer.eq(reservation.customer))
                 .innerJoin(reservationManger).on(reservation.reservationManager.eq(reservationManger))
                 .innerJoin(consultingManger).on(reservation.reservationManager.eq(consultingManger))
-//                .from(reservation)
-//                .innerJoin(reservationManger).on(reservation.reservationManager.eq(reservationManger))
-//                .innerJoin(consultingManger).on(reservation.reservationManager.eq(consultingManger))
-//                .innerJoin(orderConsulting).on(reservation.orderConsulting.eq(orderConsulting))
-//                .innerJoin(customer).on(orderConsulting.customer.eq(customer))
                 .where(
                         customer.deleted.eq(false)
+                                .and(reservation.completed.isFalse())
                                 .and(customer.store.id.eq(storeId))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByKeyword(searchDTO))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByPeriod(searchDTO))
@@ -150,75 +140,44 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     }
 
     @Override
-    public ResCustomerDTO selectCustomerDetail(Long customerId) {
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
+    public ResCounselingDTO selectCounselingDetail(Long reservationId) {
         QCustomer customer = QCustomer.customer;
         QReservation reservation = QReservation.reservation;
-
-        ResCustomerDTO result = queryFactory.select(
-                        Projections.fields(
-                                ResCustomerDTO.class
-                                , customer.id.as("customerId")
-                                , customer.name1
-                                , customer.mobile1
-                                , customer.name2
-                                , customer.mobile2
-                                , customer.photoDate
-                                , customer.photoPlace
-                                , customer.weddingDate
-                                , customer.weddingPlace
-                                , customer.memo
-                                , reservation.consultingManager.id.as("consultingManagerId")
-                                , reservation.reservationManager.id.as("reservationManagerId")
-                                , reservation.consultingDate
-                                , reservation.consultingDatetimeFrom
-                                , orderConsulting.completed
-                                , orderConsulting.id.as("orderConsultingId")
-                        )
-                )
-                .from(customer)
-                .innerJoin(orderConsulting).on(customer.eq(orderConsulting.customer))
-                .innerJoin(reservation).on(orderConsulting.eq(reservation.orderConsulting))
-                .where(
-                        customer.deleted.eq(false)
-                                .and(customer.id.eq(customerId))
-                )
-                .orderBy()
-                .fetchFirst();
-
-        return result;
-    }
-
-    @Override
-    public ResCounselingDTO selectCounselingDetail(Long customerId) {
-        QOrderConsulting orderConsulting = QOrderConsulting.orderConsulting;
-        QCustomer customer = QCustomer.customer;
-        QReservation reservation = QReservation.reservation;
-        QOrderStore orderStore = QOrderStore.orderStore;
+        QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
 
         ResCounselingDTO result = queryFactory.select(
                         Projections.fields(
                                 ResCounselingDTO.class
                                 , customer.id.as("customerId")
-                                , orderConsulting.id.as("orderConsultingId")
                                 , reservation.id.as("reservationId")
-                                , customer.name1
-                                , customer.mobile1
-                                , orderStore.fabricCompany
-                                , orderStore.fabricPattern
-                                , orderStore.fabricColor
+                                , counselingCommon.id.as("counselingCommonId")
+                                , customer.name1.as("name")
+                                , customer.mobile1.as("mobile")
+                                , counselingCommon.factory
+                                , counselingCommon.jacket
+                                , counselingCommon.pants
+                                , counselingCommon.vest
+                                , counselingCommon.coat
+                                , counselingCommon.fabricCompanyJacket
+                                , counselingCommon.fabricPatternJacket
+                                , counselingCommon.fabricColorJacket
+                                , counselingCommon.fabricCompanyPants
+                                , counselingCommon.fabricPatternPants
+                                , counselingCommon.fabricColorPants
+                                , counselingCommon.fabricCompanyVest
+                                , counselingCommon.fabricPatternVest
+                                , counselingCommon.fabricColorVest
                         )
                 )
-                .from(customer)
-                .innerJoin(orderConsulting).on(customer.eq(orderConsulting.customer))
-                .innerJoin(reservation).on(orderConsulting.eq(reservation.orderConsulting))
-                .leftJoin(orderStore).on(customer.eq(orderStore.customer).and(orderStore.canceled.isFalse()))
+                .from(reservation)
+                .innerJoin(customer).on(customer.eq(reservation.customer))
+                .leftJoin(counselingCommon).on(reservation.eq(counselingCommon.reservation).and(counselingCommon.canceled.isFalse()))
                 .where(
                         customer.deleted.eq(false)
-                                .and(customer.id.eq(customerId))
+                                .and(reservation.id.eq(reservationId))
                 )
                 .orderBy()
-                .fetchFirst();
+                .fetchOne();
 
         return result;
     }

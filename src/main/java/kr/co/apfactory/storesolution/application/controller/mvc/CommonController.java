@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.application.controller.mvc;
 
+import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,12 +25,15 @@ public class CommonController {
 
     private final UserService userService;
 
+    private final SiteService siteService;
+
     /**
      * 홈이동
      */
     @GetMapping("/")
-    public String gotoHomePage(Model model, HttpServletRequest request, String searchKeyword) {
+    public String gotoHomePage(Model model, String searchKeyword) {
         model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("imageList", siteService.getMainImageList());
         return "views/home";
     }
 

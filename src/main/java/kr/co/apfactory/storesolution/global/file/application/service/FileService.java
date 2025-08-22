@@ -13,6 +13,7 @@ import kr.co.apfactory.storesolution.global.file.domain.repository.FileAttachRep
 import kr.co.apfactory.storesolution.global.file.domain.repository.StoreFileAttachMasterRepository;
 import kr.co.apfactory.storesolution.global.file.domain.repository.StoreFileAttachRepository;
 import kr.co.apfactory.storesolution.global.file.util.FileManager;
+import kr.co.apfactory.storesolution.global.file.util.FileSortManager;
 import kr.co.apfactory.storesolution.global.object.AlterObject;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,8 @@ public class FileService {
     private final Environment environment;
 
     private final FileManager fileManager;
+
+    private final FileSortManager fileSortManager;
 
     private final AlterObject alterObject;
 
@@ -62,6 +66,9 @@ public class FileService {
                 }
                 storeFileAttachRepository.deleteAllByStoreFileAttachMaster(storeFileAttachMaster);
             }
+
+            // 파일명 오름차순 정렬
+            uploadFilesDTO.setFiles(fileSortManager.sortFilesByName(uploadFilesDTO.getFiles()));
 
             List<StoreFileAttach> storeFileAttachList = new ArrayList<>();
             for (MultipartFile file : uploadFilesDTO.getFiles()) {

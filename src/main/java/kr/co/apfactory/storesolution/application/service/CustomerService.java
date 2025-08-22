@@ -8,6 +8,7 @@ import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.*;
+import kr.co.apfactory.storesolution.domain.repository.util.CounselingRepository;
 import kr.co.apfactory.storesolution.global.i18n.I18nUtility;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +33,13 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    private final OrderConsultingRepository orderConsultingRepository;
-
     private final ReservationRepository reservationRepository;
 
     private final SiteEnvSettingRepository siteEnvSettingRepository;
 
-    public ResponseDTO registerConsultingReservation(ReqReservationRegisterDTO reqReservationRegisterDTO) {
+    private final CounselingRepository counselingRepository;
+
+    public ResponseDTO registerCustomerReservation(ReqReservationRegisterDTO reqReservationRegisterDTO) {
         // 등록가능한 일정인지부터 확인해보자
         LocalDateTime consultingDatetime = reqReservationRegisterDTO.getConsultingDate().atTime(Integer.parseInt(reqReservationRegisterDTO.getConsultingHour()), Integer.parseInt(reqReservationRegisterDTO.getConsultingMinute()));
         if (reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanEqualAndConsultingDatetimeToGreaterThan(User.builder().id(reqReservationRegisterDTO.getConsultingManager()).build(), consultingDatetime, consultingDatetime) > 0) {
@@ -55,15 +56,9 @@ public class CustomerService {
 
         customerRepository.save(customer);
 
-        // 주문 상담 정보 등록
-        OrderConsulting orderConsulting = reqReservationRegisterDTO.toOrderConsultingEntity();
-        orderConsulting.updateCustomer(customer);
-
-        orderConsultingRepository.save(orderConsulting);
-
         // 예약 정보 등록
         Reservation reservation = reqReservationRegisterDTO.toReservationEntity(1);
-        reservation.updateOrderConsulting(orderConsulting);
+        reservation.updateCustomer(customer);
         reservation.updateReservationManager(User.builder().id(reqReservationRegisterDTO.getReservationManager()).build());
         reservation.updateConsultingManager(User.builder().id(reqReservationRegisterDTO.getConsultingManager()).build());
         if (!reservation.getAllDay()) {
@@ -87,8 +82,8 @@ public class CustomerService {
                 .build();
     }
 
-    public ResponseDTO getCustomerDetailByOrderConsultingId(Long orderConsultingId) {
-        ResCustomerDTO dto = customerRepository.selectCustomerDetailByOrderConsultingId(orderConsultingId);
+    public ResponseDTO getCustomerDetailByReservationId(Long reservationId) {
+        ResCustomerDTO dto = customerRepository.selectCustomerDetailByReservationId(reservationId);
         if (dto == null) {
             return ResponseDTO.builder()
                     .message("고객 정보를 찾을 수 없습니다.")
@@ -104,14 +99,20 @@ public class CustomerService {
     }
 
     public ResponseDTO updateConsultingReservation(ReqReservationUpdateDTO  reqReservationUpdateDTO) {
-        OrderConsulting orderConsulting = orderConsultingRepository.findById(reqReservationUpdateDTO.getOrderConsultingId())findById(;
-        if (orderConsulting == null) {
+        Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
+
+        Reservation reservation = reservationRepository.findById(reqReservationUpdateDTO.getReservationId()).orElseThrow(IllegalAccessError::new);
+        if (reservation == null) {
             return ResponseDTO.builder()
                     .message("상담 예약 내용을 찾을 수 없습니다.")
                     .build();
         }
 
-        Reservation reservation = reservationRepository.findByOrderConsulting(orderConsulting);
+        // 고객정보 수정
+        Customer customer = reservation.getCustomer();
+        customer.updateCustomerInfo(reqReservationUpdateDTO);
+        customerRepository.save(customer);
+
         LocalDateTime consultingDatetimeFrom = reservation.getConsultingDatetimeFrom();
         LocalDateTime consultingDatetimeTo = reservation.getConsultingDatetimeTo();
 
@@ -133,26 +134,13 @@ public class CustomerService {
                     .build();
         }
 
-        Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
-
-        // 고객정보 수정
-        Customer customer = orderConsulting.getCustomer();
-        customer.updateCustomerInfo(reqReservationUpdateDTO);
-        customerRepository.save(customer);
-
-        // 주문 상담 정보 등록 - 추후 금액 작성 시
-//        orderConsultingRepository.save(orderConsulting);
-
         // 예약 정보 등록
-        reservation.updateOrderConsulting(orderConsulting);
         reservation.updateReservationManager(User.builder().id(reqReservationUpdateDTO.getReservationManager()).build());
         reservation.updateConsultingManager(User.builder().id(reqReservationUpdateDTO.getConsultingManager()).build());
         if (!reservation.getAllDay()) {
             SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStore(store);
             reservation.updateConsultingDatetime(reqReservationUpdateDTO.getConsultingHour(), reqReservationUpdateDTO.getConsultingMinute(), siteEnvSetting.getTypeTime1());
         }
-
-        reservationRepository.save(reservation);
 
         return ResponseDTO.builder()
                 .isSuccess(true)
@@ -165,16 +153,9 @@ public class CustomerService {
         return resCustomerList;
     }
 
-    public ResCustomerDTO getCustomerDetail(Long id) {
-        ResCustomerDTO dto = customerRepository.selectCustomerDetail(id);
-        return dto;
-    }
+    public ResCounselingDTO getCounselingDetail(Long reservationId) {
+        ResCounselingDTO resCounselingDTO = customerRepository.selectCounselingDetail(reservationId);
 
-    public ResCounselingDTO getCounselingDetail(Long customerId) {
-        ResCounselingDTO dto = customerRepository.selectCounselingDetail(customerId);
-        if (dto == null) {
-            dto = new ResCounselingDTO();
-        }
-        return dto;
+        return resCounselingDTO;
     }
 }

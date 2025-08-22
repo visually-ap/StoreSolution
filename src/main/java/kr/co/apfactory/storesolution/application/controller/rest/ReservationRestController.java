@@ -37,10 +37,10 @@ public class ReservationRestController {
         return ResponseEntity.ok(userService.getEmployeeScheduleList(date));
     }
 
-    @PostMapping("/consulting/register")
+    @PostMapping("/customer/register")
     @Transactional
-    public ResponseEntity<ResponseDTO> registerConsultingReservation(@RequestBody ReqReservationRegisterDTO reqReservationRegisterDTO) {
-        return ResponseEntity.ok(customerService.registerConsultingReservation(reqReservationRegisterDTO));
+    public ResponseEntity<ResponseDTO> registerCustomerReservation(@RequestBody ReqReservationRegisterDTO reqReservationRegisterDTO) {
+        return ResponseEntity.ok(customerService.registerCustomerReservation(reqReservationRegisterDTO));
     }
 
     @GetMapping("/customer/list")
@@ -49,13 +49,13 @@ public class ReservationRestController {
     }
 
     @GetMapping("/customer/detail")
-    public ResponseEntity<ResponseDTO> getCustomerDetailByOrderConsultingId(Long orderConsultingId) {
-        return ResponseEntity.ok(customerService.getCustomerDetailByOrderConsultingId(orderConsultingId));
+    public ResponseEntity<ResponseDTO> getCustomerDetailByReservationId(Long reservationId) {
+        return ResponseEntity.ok(customerService.getCustomerDetailByReservationId(reservationId));
     }
 
-    @PostMapping("/consulting/update")
+    @PostMapping("/update")
     @Transactional
-    public ResponseEntity<ResponseDTO> updateConsultingReservation(@RequestBody ReqReservationUpdateDTO reqReservationUpdateDTO) {
+    public ResponseEntity<ResponseDTO> updateReservation(@RequestBody ReqReservationUpdateDTO reqReservationUpdateDTO) {
         return ResponseEntity.ok(customerService.updateConsultingReservation(reqReservationUpdateDTO));
     }
 }

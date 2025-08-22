@@ -9,10 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_order_store")
+@Table(name = "tb_counseling_common")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,10 +20,10 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @DynamicInsert
 @Getter
-public class OrderStore extends BaseEntity {
+public class CounselingCommon extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("매장 주문 솔루션 주문 시퀀스")
+    @Comment("카운셀링 공통 시퀀스")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,16 +31,16 @@ public class OrderStore extends BaseEntity {
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Comment("고객")
-    private Customer customer;
+    @Comment("예약 시퀀스")
+    private Reservation reservation;
 
     @Column(columnDefinition = "boolean default false", nullable = false)
     @Comment("취소 여부")
     private Boolean canceled;
 
     @Column(columnDefinition = "tinyint", nullable = false)
-    @Comment("주문 위치 구분 (1:화이트, 2:블랙")
-    private Integer nation;
+    @Comment("주문 위치 구분 (1:화이트, 2:블랙, 3:기타")
+    private Integer factory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("작업방식 (13:직봉, 14:초가봉, 15:중가봉")
@@ -71,14 +70,38 @@ public class OrderStore extends BaseEntity {
     private FileAttachMaster fileAttachMaster;
 
     @Column(length = 100)
-    @Comment("원단 회사")
-    private String fabricCompany;
+    @Comment("상의, 코트 원단 회사")
+    private String fabricCompanyJacket;
 
     @Column(length = 100)
-    @Comment("원단 품번")
-    private String fabricPattern;
+    @Comment("상의, 코트 원단 품번")
+    private String fabricPatternJacket;
 
     @Column(length = 100)
-    @Comment("원단 색상")
-    private String fabricColor;
+    @Comment("상의, 코트 원단 색상")
+    private String fabricColorJacket;
+
+    @Column(length = 100)
+    @Comment("하의 원단 회사")
+    private String fabricCompanyPants;
+
+    @Column(length = 100)
+    @Comment("하의 원단 품번")
+    private String fabricPatternPants;
+
+    @Column(length = 100)
+    @Comment("하의 원단 색상")
+    private String fabricColorPants;
+
+    @Column(length = 100)
+    @Comment("조끼 원단 회사")
+    private String fabricCompanyVest;
+
+    @Column(length = 100)
+    @Comment("조끼 원단 품번")
+    private String fabricPatternVest;
+
+    @Column(length = 100)
+    @Comment("조끼 원단 색상")
+    private String fabricColorVest;
 }

@@ -1,47 +1,159 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<!-- 공통 css-->
-<link rel="stylesheet" th:href="@{/css/header.css}">
-<link rel="stylesheet" th:href="@{/css/common.css}">
-
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
-<!--검색창 css-->
-<link rel="stylesheet" th:href="@{/css/search.css}">
-
-<!--모달 js-->
-<script th:src="@{/js/modal.js}"></script>
-
-<style>
-    .wrapper {
-        background: url(/images/main_bg_1.png) no-repeat center / 100%;
-        width: 100%;
-        height: 100vh;
-        background-size: cover;
-    }
-</style>
-<div class="search_modal_wrap">
-    <div class="inner_modal">
-        <a href="javascript:void(0)" class="close_btn">
-            <img th:src="@{/images/icon/close.png}" alt="닫기 아이콘" class="close_icon">
-            <img th:src="@{/images/icon/close2.png}" alt="닫기 아이콘" class="close_icon2">
-        </a>
-        <form action="" class="search_form">
-            <select name="" id="">
-                <option value="">전체</option>
-            </select>
-            <input type="text">
-            <button class="search_btn">
-                <span class="h-search"><img th:src="@{/images/icon/search_g.png}" alt="닫기 아이콘" class="close_icon"></span>
-                <span class="h-search hover"><img th:src="@{/images/icon/search_w.png}" alt="닫기 아이콘" class="close_icon"></span>
-            </button>
-        </form>
-    </div>
-</div>
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <!-- 개별 css-->
+        <link rel="stylesheet" th:href="@{/css/page.css}">
+        <!--검색창 css-->
+        <link rel="stylesheet" th:href="@{/css/search.css}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <!--모달 js-->
+        <script th:src="@{/js/modal.js}"></script>
+
+        <style>
+            .container {
+                top: 0px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .swiper {
+                width: 100%;
+                height: 100%;
+            }
+
+            .swiper-slide {
+                text-align: center;
+                font-size: 18px;
+                background: #444;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .swiper-slide img {
+                display: block;
+                width: 100%;
+                max-height: 100vh;
+            }
+
+            .default_image {
+                background: url(/images/main_bg_1.png) no-repeat center / 100%;
+                width: 100%;
+                height: 100vh;
+                background-size: cover;
+            }
+        </style>
+
+        <!-- Swiper -->
+        <th:block th:if="${imageList.size > 0}">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" th:each="image, index : ${imageList}">
+                        <img class="cus_image" th:src="@{/store/image/download/{id}(id=${image.fileId})}" alt="">
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </th:block>
+        <th:block th:unless="${imageList.size > 0}">
+            <div class="default_image"></div>
+        </th:block>
+
+        <div class="search_modal_wrap">
+            <div class="inner_modal">
+                <a href="javascript:void(0)" class="close_btn">
+                    <img th:src="@{/images/icon/close.png}" alt="닫기 아이콘" class="close_icon">
+                    <img th:src="@{/images/icon/close2.png}" alt="닫기 아이콘" class="close_icon2">
+                </a>
+                <form action="" class="search_form">
+                    <select name="" id="">
+                        <option value="">전체</option>
+                    </select>
+                    <input type="text">
+                    <button class="search_btn">
+                        <span class="h-search"><img th:src="@{/images/icon/search_g.png}" alt="닫기 아이콘" class="close_icon"></span>
+                        <span class="h-search hover"><img th:src="@{/images/icon/search_w.png}" alt="닫기 아이콘" class="close_icon"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
     </th:block>
 </th:block>
 </html>
+
+<script>
+    $(document).ready(function () {
+        let swiper;
+
+        if (isMobileDevice()) {
+            // 모바일 UI 초기화
+            swiper = new Swiper(".mySwiper", {
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                allowTouchMove: true,
+                loop: true,
+                autoplay: {
+                    // 슬라이드가 자동으로 이동하는 시간 간격
+                    delay: 5000,
+
+                    // disableOnInteraction true로 지정시 사용자 조작시 autoplay의 지속 여부를 결정 사용자 조작이란 이전,다음 버튼클릭 마우스로 슬라이더 이동 등을 의미
+                    disableOnInteraction: false,
+
+                    // pauseOnMouseEnter true로 지정시 슬라이더 위에 마우스를 올리면 autoplay가 자동으로 정지, 떼면 다시 시작을 의미
+                    pauseOnMouseEnter: false,
+
+                    // stopOnLastSlide true로 지정시 마지막 슬라이드에서 자동 슬라이드를 멈추는 옵션
+                    // loop를 true로 설정했다면 그 의도가 충돌되는 것이므로 상황에 맞게 선택해야 함
+                    stopOnLastSlide: false
+                },
+                speed: 800
+            });
+        } else {
+            // 데스크탑 UI 초기화
+            swiper = new Swiper(".mySwiper", {
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                allowTouchMove: false,
+                loop: true,
+                autoplay: {
+                    // 슬라이드가 자동으로 이동하는 시간 간격
+                    delay: 5000,
+
+                    // disableOnInteraction true로 지정시 사용자 조작시 autoplay의 지속 여부를 결정 사용자 조작이란 이전,다음 버튼클릭 마우스로 슬라이더 이동 등을 의미
+                    disableOnInteraction: false,
+
+                    // pauseOnMouseEnter true로 지정시 슬라이더 위에 마우스를 올리면 autoplay가 자동으로 정지, 떼면 다시 시작을 의미
+                    pauseOnMouseEnter: false,
+
+                    // stopOnLastSlide true로 지정시 마지막 슬라이드에서 자동 슬라이드를 멈추는 옵션
+                    // loop를 true로 설정했다면 그 의도가 충돌되는 것이므로 상황에 맞게 선택해야 함
+                    stopOnLastSlide: false
+                },
+                speed: 800
+            });
+        }
+    });
+
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+</script>

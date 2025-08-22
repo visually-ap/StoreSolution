@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
-<!-- 개별 js-->
-<script th:src="@{/js/common/switch.js}"></script>
-
     <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
         <th:block th:fragment="content">
+            <!-- 개별 css-->
+            <link rel="stylesheet" th:href="@{/css/page.css}">
             <link rel="stylesheet" th:href="@{/css/component/switch.css}">
+
+            <!-- 개별 js-->
+            <script th:src="@{/js/common/switch.js}"></script>
 
             <div class="designPage">
                 <form id="envForm">

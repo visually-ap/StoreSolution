@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class ResCustomerDTO {
     private Long customerId;
-    private Long orderConsultingId;
     private Long reservationId;
 
     private String name1;

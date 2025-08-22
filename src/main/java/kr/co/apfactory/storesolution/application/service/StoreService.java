@@ -29,9 +29,7 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public ResStoreInfoDTO getStoreInfo() {
-        ResStoreInfoDTO dto = storeRepository.selectStoreInfo(LoginUser.getDetails().getId());
-
-        return dto;
+        return storeRepository.selectStoreInfo(LoginUser.getDetails().getId());
     }
 
     @Transactional(readOnly = true)

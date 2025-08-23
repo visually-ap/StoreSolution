@@ -140,7 +140,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     }
 
     @Override
-    public ResCounselingDTO selectCounselingDetail(Long reservationId) {
+    public ResCounselingDTO selectCounselingDetail(Long storeId, Long reservationId) {
         QCustomer customer = QCustomer.customer;
         QReservation reservation = QReservation.reservation;
         QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
@@ -167,11 +167,18 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , counselingCommon.fabricCompanyVest
                                 , counselingCommon.fabricPatternVest
                                 , counselingCommon.fabricColorVest
+                                , counselingCommon.fabricCompanyCoat
+                                , counselingCommon.fabricPatternCoat
+                                , counselingCommon.fabricColorCoat
                         )
                 )
                 .from(reservation)
                 .innerJoin(customer).on(customer.eq(reservation.customer))
-                .leftJoin(counselingCommon).on(reservation.eq(counselingCommon.reservation).and(counselingCommon.canceled.isFalse()))
+                .leftJoin(counselingCommon).on(
+                        reservation.eq(counselingCommon.reservation)
+                                .and(counselingCommon.canceled.isFalse())
+                                .and(counselingCommon.store.id.eq(storeId))
+                )
                 .where(
                         customer.deleted.eq(false)
                                 .and(reservation.id.eq(reservationId))

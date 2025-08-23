@@ -1,8 +1,8 @@
 package kr.co.apfactory.storesolution.application.controller.mvc;
 
 import kr.co.apfactory.storesolution.application.service.CustomerService;
-import kr.co.apfactory.storesolution.domain.dto.common.FileDTO;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
 import kr.co.apfactory.storesolution.global.file.application.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,9 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -40,27 +37,39 @@ public class CounselingController {
     }
 
     @GetMapping("/about")
-    public String openAboutPopup(Model model, Long reservationId) {
+    public String openAboutPopup(Model model) {
         // 상담판 파일타입 = 3
-        List<FileDTO> fileList = fileService.getAboutImageList();
-
-        model.addAttribute("imageList", fileList);
+        model.addAttribute("imageList", fileService.getAboutImageList());
         return "views/popup/about";
     }
 
-    @GetMapping("/pre-order")
+    @GetMapping("/fabric-item")
     public String gotoFabricAndItemPage(Model model, Long reservationId) {
-        model.addAttribute("counseling", customerService.getCounselingDetail(reservationId));
+        ResCounselingDTO dto = customerService.getCounselingDetail(reservationId);
+        if (dto == null) {
+            throw new RuntimeException("잘못된 접근입니다.");
+        }
+        model.addAttribute("counseling", dto);
         return "views/counseling/fabricItem";
     }
 
     @GetMapping("/design")
-    public String gotoDesignPage(Model model) {
+    public String gotoDesignPage(Model model, Long reservationId) {
+        ResCounselingDTO dto = customerService.getCounselingDetail(reservationId);
+        if (dto == null) {
+            throw new RuntimeException("잘못된 접근입니다.");
+        }
+        model.addAttribute("counseling", dto);
         return "views/counseling/design";
     }
 
     @GetMapping("/size")
-    public String gotoSize(Model model) {
+    public String gotoSize(Model model, Long reservationId) {
+        ResCounselingDTO dto = customerService.getCounselingDetail(reservationId);
+        if (dto == null) {
+            throw new RuntimeException("잘못된 접근입니다.");
+        }
+        model.addAttribute("counseling", dto);
         return "views/counseling/size";
     }
 }

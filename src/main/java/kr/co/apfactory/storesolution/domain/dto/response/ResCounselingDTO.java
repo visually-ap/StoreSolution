@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,10 +24,22 @@ public class ResCounselingDTO {
     private Boolean pants = false;
     private Boolean vest = false;
     private Boolean coat = false;
+    private String fabricCompanyJacket;
+    private String fabricPatternJacket;
+    private String fabricColorJacket;
 
-    private String fabricCompany;
-    private String fabricPattern;
-    private String fabricColor;
+    private String fabricCompanyPants;
+    private String fabricPatternPants;
+    private String fabricColorPants;
+
+    private String fabricCompanyVest;
+    private String fabricPatternVest;
+    private String fabricColorVest;
+
+    private String fabricCompanyCoat;
+    private String fabricPatternCoat;
+    private String fabricColorCoat;
+
 
     public void updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO){
         this.factory = reqFabricSaveDTO.getFactory();
@@ -40,8 +49,20 @@ public class ResCounselingDTO {
         this.vest = reqFabricSaveDTO.getVest();
         this.coat = reqFabricSaveDTO.getCoat();
 
-        this.fabricCompany = reqFabricSaveDTO.getFabricCompany();
-        this.fabricPattern = reqFabricSaveDTO.getFabricPattern();
-        this.fabricColor = reqFabricSaveDTO.getFabricColor();
+        this.fabricCompanyJacket = reqFabricSaveDTO.getFabricCompanyJacket();
+        this.fabricPatternJacket = reqFabricSaveDTO.getFabricPatternJacket();
+        this.fabricColorJacket = reqFabricSaveDTO.getFabricColorJacket();
+
+        this.fabricCompanyPants = reqFabricSaveDTO.getFabricCompanyPants();
+        this.fabricPatternPants = reqFabricSaveDTO.getFabricPatternPants();
+        this.fabricColorPants = reqFabricSaveDTO.getFabricColorPants();
+
+        this.fabricCompanyVest = reqFabricSaveDTO.getFabricCompanyVest();
+        this.fabricPatternVest = reqFabricSaveDTO.getFabricPatternVest();
+        this.fabricColorVest = reqFabricSaveDTO.getFabricColorVest();
+
+        this.fabricCompanyCoat = reqFabricSaveDTO.getFabricCompanyCoat();
+        this.fabricPatternCoat = reqFabricSaveDTO.getFabricPatternCoat();
+        this.fabricColorCoat = reqFabricSaveDTO.getFabricColorCoat();
     }
 }

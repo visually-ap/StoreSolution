@@ -147,7 +147,7 @@
 
     document.getElementById('skipButton').addEventListener('click', function (e) {
         e.preventDefault();
-        const target = '/counseling/pre-order?reservationId=' + getParamValue('reservationId');
+        const target = '/counseling/fabric-item?reservationId=' + getParamValue('reservationId');
 
         try {
             if (window.opener && !window.opener.closed) {

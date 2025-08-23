@@ -8,12 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface CustomerSupportRepository {
-    List<ResCustomerDTO> selectCustomerList(String searchKeyword, Long storeId);
-
-    ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId);
-
-    Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId);
-
-    ResCounselingDTO selectCounselingDetail(Long storeId, Long reservationId);
+public interface CounselingSupportRepository {
 }

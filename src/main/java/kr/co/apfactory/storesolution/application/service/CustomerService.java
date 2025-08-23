@@ -2,13 +2,13 @@ package kr.co.apfactory.storesolution.application.service;
 
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqFabricSaveDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.*;
-import kr.co.apfactory.storesolution.domain.repository.util.CounselingRepository;
 import kr.co.apfactory.storesolution.global.i18n.I18nUtility;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class CustomerService {
 
     private final SiteEnvSettingRepository siteEnvSettingRepository;
 
-    private final CounselingRepository counselingRepository;
+    private final CounselingCommonRepository counselingCommonRepository;
 
     public ResponseDTO registerCustomerReservation(ReqReservationRegisterDTO reqReservationRegisterDTO) {
         // 등록가능한 일정인지부터 확인해보자
@@ -154,8 +154,36 @@ public class CustomerService {
     }
 
     public ResCounselingDTO getCounselingDetail(Long reservationId) {
-        ResCounselingDTO resCounselingDTO = customerRepository.selectCounselingDetail(reservationId);
+        ResCounselingDTO resCounselingDTO = customerRepository.selectCounselingDetail(LoginUser.getDetails().getStoreId(), reservationId);
+        if (resCounselingDTO == null) {
+            return null;
+        }
+
+        if (resCounselingDTO.getCounselingCommonId() == null) {
+            counselingCommonRepository.save(CounselingCommon.builder()
+                    .store(Store.builder().id(LoginUser.getDetails().getStoreId()).build())
+                    .reservation(Reservation.builder().id(resCounselingDTO.getReservationId()).build())
+                    .build()
+            );
+        }
 
         return resCounselingDTO;
+    }
+
+    public ResponseDTO updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO) {
+        CounselingCommon counselingCommon = counselingCommonRepository.findByStoreIdAndReservationId(LoginUser.getDetails().getStoreId(), reqFabricSaveDTO.getReservationId());
+        if (counselingCommon == null) {
+            return ResponseDTO.builder()
+                    .message("잘못된 접근입니다.")
+                    .build();
+        }
+
+        counselingCommon.updateFabricData(reqFabricSaveDTO);
+
+        counselingCommonRepository.save(counselingCommon);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .build();
     }
 }

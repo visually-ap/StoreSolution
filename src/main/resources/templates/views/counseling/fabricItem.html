@@ -3,32 +3,52 @@
 
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <style>
+            .boxStyle_2 .boxImg {
+                 margin-bottom: 0px !important;
+            }
+
+            .display_none {
+                display: none !important;
+            }
+
+            /* 품목별 원단 입력 블록 간격 */
+            .fabric-form {
+                margin-bottom: 20px; /* 원하는 간격으로 조정 가능 */
+            }
+
+            /* 마지막 원단 블록은 여백 제거 */
+            .fabric-form:last-child {
+                margin-bottom: 0;
+            }
+        </style>
         <!-- 공통 css-->
         <link rel="stylesheet" th:href="@{/css/header.css}">
         <link rel="stylesheet" th:href="@{/css/common.css}">
         <link rel="stylesheet" th:href="@{/css/page.css}">
 
         <form id="dataForm">
+            <input type="hidden" name="reservationId" th:value="${counseling.reservationId}">
             <div class="section_wrap fabric-4">
                 <h2 class="title">고객정보</h2>
                 <div class="boxStyle_2">
                     <div class="line">
                         <div class="box other_box">
                             <h2 class="name">고객명</h2>
-                            <div class="value" th:text="${session.counseling.name1}"></div>
+                            <div class="value" th:text="${counseling.name}"></div>
                         </div>
                         <div class="box other_box">
                             <h2 class="name">연락처</h2>
-                            <div class="value" th:text="${session.counseling.mobile1}"></div>
+                            <div class="value" th:text="${@stringParser.addDashToMobileNumber(counseling.mobile)}"></div>
                         </div>
                         <div class="box other_box">
-                            <h2 class="name">Made From</h2>
+                            <h2 class="name">라인</h2>
                             <div class="value">
                                 <select id="factory" name="factory" required>
-                                    <option value="" th:selected="${session.counseling.factory == null}">-- 선택 --</option>
-                                    <option value="1" th:selected="${session.counseling.factory == 1}">White</option>
-                                    <option value="2" th:selected="${session.counseling.factory == 2}">Black</option>
-                                    <option value="3" th:selected="${session.counseling.factory == 3}">Etc</option>
+                                    <option value="" th:selected="${counseling.factory == null}">-- 선택 --</option>
+                                    <option value="1" th:selected="${counseling.factory == 1}">White</option>
+                                    <option value="2" th:selected="${counseling.factory == 2}">Black</option>
+                                    <option value="3" th:selected="${counseling.factory == 3}">Etc</option>
                                 </select>
                             </div>
                         </div>
@@ -41,45 +61,148 @@
                 <div class="boxStyle_2">
                     <div class="boxImg-wrap">
                         <div class="boxImg">
-                            <span class="jacket itemType" data-type="jacket" th:classappend="${session.counseling.jacket ? 'on' : ''}"></span>
-                            <input type="hidden" id="jacket" name="jacket" th:value="${session.counseling.jacket}">
+                            <span class="jacket itemType" data-type="jacket" th:classappend="${counseling.jacket ? 'on' : ''}"></span>
+                            <input type="hidden" id="jacket" name="jacket" th:value="${counseling.jacket}">
                         </div>
                         <div class="boxImg">
-                            <span class="pants itemType" data-type="pants" th:classappend="${session.counseling.pants ? 'on' : ''}"></span>
-                            <input type="hidden" id="pants" name="pants" th:value="@{session.counseling.pants}">
+                            <span class="pants itemType" data-type="pants" th:classappend="${counseling.pants ? 'on' : ''}"></span>
+                            <input type="hidden" id="pants" name="pants" th:value="${counseling.pants}">
                         </div>
                         <div class="boxImg">
-                            <span class="vest itemType" data-type="vest" th:classappend="${session.counseling.vest ? 'on' : ''}"></span>
-                            <input type="hidden" id="vest" name="vest" th:value="${session.counseling.vest}">
+                            <span class="vest itemType" data-type="vest" th:classappend="${counseling.vest ? 'on' : ''}"></span>
+                            <input type="hidden" id="vest" name="vest" th:value="${counseling.vest}">
                         </div>
                         <div class="boxImg">
-                            <span class="coats itemType" data-type="coat" th:classappend="${session.counseling.coat ? 'on' : ''}"></span>
-                            <input type="hidden" id="coat" name="coat" th:value="${session.counseling.coat}">
+                            <span class="coats itemType" data-type="coat" th:classappend="${counseling.coat ? 'on' : ''}"></span>
+                            <input type="hidden" id="coat" name="coat" th:value="${counseling.coat}">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="section_wrap fabric-4">
+            <div class="section_wrap fabric-4" id="fabricGuide">
                 <h2 class="title">원단</h2>
-                <div class="boxStyle_2">
+                <div>
+                    <div class="boxStyle_2">
+                        <div class="line">
+                            <div class="box other_box">
+                                <h2 class="name">품목 선택 시 해당 품목의 원단 정보를 입력할 수 있습니다.</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_wrap fabric-4" id="fabricForms">
+                <h2 class="title">원단</h2>
+                <div style="margin-bottom: 12px;">
+                    <label>
+                        <input type="checkbox" id="allSameFabric"> 원단 모두 동일
+                    </label>
+                </div>
+                <div class="boxStyle_2 fabric-form" data-type="jacket">
                     <div class="line">
+                        <div class="box other_box">
+                            <div class="boxImg">
+                                <span class="jacket"></span>
+                            </div>
+                        </div>
                         <div class="box other_box">
                             <h2 class="name">원단회사</h2>
                             <div class="value">
-                                <input type="text" class="text" id="fabricCompany" name="fabricCompany" maxlength="10" th:value="${session.counseling.fabricCompany}">
+                                <input type="text" class="text" id="fabricCompanyJacket" name="fabricCompanyJacket" maxlength="10" th:value="${counseling.fabricCompanyJacket}">
                             </div>
                         </div>
                         <div class="box other_box">
                             <h2 class="name">원단품번</h2>
                             <div class="value">
-                                <input type="text" class="text" id="fabricPattern" name="fabricPattern" maxlength="15" th:value="${session.counseling.fabricPattern}">
+                                <input type="text" class="text" id="fabricPatternJacket" name="fabricPatternJacket" maxlength="15" th:value="${counseling.fabricPatternJacket}">
                             </div>
                         </div>
                         <div class="box other_box">
                             <h2 class="name">원단색상</h2>
                             <div class="value">
-                                <input type="text" class="text" id="fabricColor" name="fabricColor" maxlength="10" th:value="${session.counseling.fabricColor}">
+                                <input type="text" class="text" id="fabricColorJacket" name="fabricColorJacket" maxlength="10" th:value="${counseling.fabricColorJacket}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxStyle_2 fabric-form" data-type="pants">
+                    <div class="line">
+                        <div class="box other_box">
+                            <div class="boxImg">
+                                <span class="pants"></span>
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단회사</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricCompanyPants" name="fabricCompanyPants" maxlength="10" th:value="${counseling.fabricCompanyPants}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단품번</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricPatternPants" name="fabricPatternPants" maxlength="15" th:value="${counseling.fabricPatternPants}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단색상</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricColorPants" name="fabricColorPants" maxlength="10" th:value="${counseling.fabricColorPants}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxStyle_2 fabric-form" data-type="vest">
+                    <div class="line">
+                        <div class="box other_box">
+                            <div class="boxImg">
+                                <span class="vest"></span>
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단회사</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricCompanyVest" name="fabricCompanyVest" maxlength="10" th:value="${counseling.fabricCompanyVest}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단품번</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricPatternVest" name="fabricPatternVest" maxlength="15" th:value="${counseling.fabricPatternVest}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단색상</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricColorVest" name="fabricColorVest" maxlength="10" th:value="${counseling.fabricColorVest}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxStyle_2 fabric-form" data-type="coat">
+                    <div class="line">
+                        <div class="box other_box">
+                            <div class="boxImg">
+                                <span class="coats"></span>
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단회사</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricCompanyCoat" name="fabricCompanyCoat" maxlength="10" th:value="${counseling.fabricCompanyCoat}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단품번</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricPatternCoat" name="fabricPatternCoat" maxlength="15" th:value="${counseling.fabricPatternCoat}">
+                            </div>
+                        </div>
+                        <div class="box other_box">
+                            <h2 class="name">원단색상</h2>
+                            <div class="value">
+                                <input type="text" class="text" id="fabricColorCoat" name="fabricColorCoat" maxlength="10" th:value="${counseling.fabricColorCoat}">
                             </div>
                         </div>
                     </div>
@@ -91,17 +214,176 @@
 </html>
 
 <script>
+    const TYPES = ['jacket', 'pants', 'vest', 'coat'];
+
+    const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+    const SMALLS = ['jacket','pants','vest'];
+
+    $(document).ready(function () {
+        updateFabricForms();
+        coatGuard();
+        updateAllSameFabricState();
+    });
+    // 현재 선택 상태에 맞춰 원단 폼/안내 섹션 표시 업데이트
+    function updateFabricForms() {
+        let selectedCount = 0;
+
+        TYPES.forEach(function (t) {
+            const selected = $(`.${t}`).hasClass('on') ||
+                String($(`#${t}`).val()).toLowerCase() === 'true';
+
+            // 품목별 블록 토글
+            $(`.fabric-form[data-type="${t}"]`).toggleClass('display_none', !selected);
+
+            if (selected) selectedCount++;
+        });
+
+        // ▶ 섹션 단위 토글 (빈 영역 제거 포인트)
+        const anySelected = selectedCount > 0;
+        $('#fabricForms').toggleClass('display_none', !anySelected);
+        $('#fabricGuide').toggleClass('display_none', anySelected);
+    }
+
+    function isSelected(type){
+        return $(`.${type}`).hasClass('on') || String($(`#${type}`).val()).toLowerCase() === 'true';
+    }
+
+    function getSelectedSmalls(){
+        return SMALLS.filter(isSelected);
+    }
+
+    // 리더 우선순위: 상의 > 하의 > 조끼
+    function getLeader(){
+        if (isSelected('jacket')) return 'jacket';
+        if (isSelected('pants'))  return 'pants';
+        if (isSelected('vest'))   return 'vest';
+        return null;
+    }
+
+    // 리더 제외 선택된 대상(코트 제외)
+    function buildTargets(leader){
+        return getSelectedSmalls().filter(t => t !== leader).map(cap); // 'Pants', 'Vest' 형태로 반환
+    }
+
+    // leader의 값을 targets로 복사
+    function syncFromLeader(leader){
+        if (!leader) return;
+        const L = cap(leader);
+        const company = $(`#fabricCompany${L}`).val();
+        const pattern = $(`#fabricPattern${L}`).val();
+        const color   = $(`#fabricColor${L}`).val();
+
+        buildTargets(leader).forEach(T => {
+            $(`#fabricCompany${T}`).val(company);
+            $(`#fabricPattern${T}`).val(pattern);
+            $(`#fabricColor${T}`).val(color);
+        });
+    }
+
+    // 입력 잠금/해제 (리더 제외)
+    function lockTargets(leader, locked){
+        buildTargets(leader).forEach(T => {
+            $(`#fabricCompany${T}, #fabricPattern${T}, #fabricColor${T}`).prop('readonly', locked);
+        });
+    }
+
+    // 리더 입력 변화에 대한 바인딩 on/off
+    let ALL_SAME_LEADER = null;
+    function bindLeaderSync(leader, bind){
+        const L = cap(leader);
+        const sel = `#fabricCompany${L}, #fabricPattern${L}, #fabricColor${L}`;
+        $(sel).off('input.allSame');
+        if (bind) $(sel).on('input.allSame', function(){ syncFromLeader(leader); });
+    }
+
+    // “모두 동일” 버튼 활성 조건: 코트 미선택 && (상의/하의/조끼 중 2개 이상 선택)
+    function updateAllSameFabricState() {
+        const coatOn = $('.coats').hasClass('on') || String($('#coat').val()).toLowerCase()==='true';
+        const count = getSelectedSmalls().length;
+        const canUse = !coatOn && count >= 2;
+
+        if (!canUse) {
+            $('#allSameFabric').prop('checked', false).prop('disabled', true);
+            if (ALL_SAME_LEADER){
+                bindLeaderSync(ALL_SAME_LEADER, false);
+                lockTargets(ALL_SAME_LEADER, false);
+                ALL_SAME_LEADER = null;
+            }
+        } else {
+            $('#allSameFabric').prop('disabled', false);
+        }
+    }
+
+    // 코트 단독 규칙
+    function coatGuard() {
+        const coatOn = $('.coats').hasClass('on') || String($('#coat').val()).toLowerCase() === 'true';
+        if (coatOn) {
+            // 상/하/조 해제
+            $('.jacket, .pants, .vest').removeClass('on');
+            $('#jacket, #pants, #vest').val(false);
+
+            // 모두 동일 해제/잠금
+            $('#allSameFabric').prop('checked', false).prop('disabled', true);
+            if (ALL_SAME_LEADER){
+                bindLeaderSync(ALL_SAME_LEADER, false);
+                lockTargets(ALL_SAME_LEADER, false);
+                ALL_SAME_LEADER = null;
+            }
+        } else {
+            $('#allSameFabric').prop('disabled', false);
+        }
+    }
+
     $(document).on('click', '.itemType', function () {
-       $(this).toggleClass('on');
-       const type = $(this).data('type');
-       if (type == 'coat') {
-           $('.jacket, .pants, .vest').removeClass('on');
-           $('#jacket, #pants, #vest').val(false);
-       } else {
-           $('.coats').removeClass('on');
-           $('#coat').val(false);
-       }
-       $(`#${type}`).val($(this).hasClass('on'));
+        $(this).toggleClass('on');
+        const type = $(this).data('type');
+
+        if (type === 'coat') {
+            $('.jacket, .pants, .vest').removeClass('on');
+            $('#jacket, #pants, #vest').val(false);
+        } else {
+            $('.coats').removeClass('on');
+            $('#coat').val(false);
+        }
+        $(`#${type}`).val($(this).hasClass('on'));
+
+        updateFabricForms();
+        coatGuard();
+        updateAllSameFabricState();
+
+        // 모두 동일 켜져 있으면 리더/타겟 재결정 후 즉시 동기화
+        if ($('#allSameFabric').is(':checked')) {
+            if (ALL_SAME_LEADER) bindLeaderSync(ALL_SAME_LEADER, false);
+            ALL_SAME_LEADER = getLeader();            // 동적으로 리더 선정
+            bindLeaderSync(ALL_SAME_LEADER, true);
+            lockTargets(ALL_SAME_LEADER, true);
+            syncFromLeader(ALL_SAME_LEADER);
+            }
+    });
+
+    $(document).on('change', '#allSameFabric', function () {
+        const on = $(this).is(':checked');
+
+        if (on) {
+            updateAllSameFabricState();
+            if ($(this).is(':disabled')) return;
+
+            // 리더 선정 (상의 없으면 하의, 그것도 없으면 조끼)
+            ALL_SAME_LEADER = getLeader();
+            if (!ALL_SAME_LEADER) { $(this).prop('checked', false); return; }
+
+            // 즉시 동기화 + 리더 바인딩 + 타겟 잠금
+            syncFromLeader(ALL_SAME_LEADER);
+            bindLeaderSync(ALL_SAME_LEADER, true);
+            lockTargets(ALL_SAME_LEADER, true);
+
+        } else {
+            if (ALL_SAME_LEADER){
+                bindLeaderSync(ALL_SAME_LEADER, false);
+                lockTargets(ALL_SAME_LEADER, false);
+                ALL_SAME_LEADER = null;
+            }
+        }
     });
 
     window.addEventListener('beforeunload', function () {
@@ -112,8 +394,8 @@
             , JSON.stringify(convertFormToJSON($('#dataForm')))
             , function (response) {
                 if (!response.success) {
-                    alert('데이터 저장에 실패하였습니다.');
-                    console.log(response.message);
+                    alert(response.message);
+                    location.href = '/counseling/customer/list';
                 }
             }
         );

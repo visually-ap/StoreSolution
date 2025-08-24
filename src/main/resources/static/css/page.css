@@ -145,7 +145,7 @@
 
 .boxStyle_2 .box.other_box {
     gap: 5px;
-    padding: 0 15px 10px;
+    padding: 15px 10px;
 }
 
 .boxStyle_2 .box.other_box .name {
@@ -162,6 +162,12 @@
 
 .boxStyle_2 .box.other_box .resetBtn {
     padding: 0 20px;
+}
+
+.boxStyle_2 .guide_text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1e6ceb;
 }
 
 .boxStyle_2 .box .value select {
@@ -259,12 +265,65 @@
     overflow: auto;
 }
 
+.fabric-4 .btn_wrap {
+    gap: 7px;
+}
+
+.fabric-4 .btn_wrap span {
+    color: #00264b;
+}
+
+.fabric-4 .btn_wrap .search_frame {
+    width: 13%;
+}
+
+.fabric-4 .btn_wrap .reset_frame {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.fabric-4 .btn_wrap .reset_frame .reset {
+    background-image: url(../images/icon/reset.png);
+    width: 13px;
+    height: 15px;
+    display: inline-block;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.apply-all-label-wrap {
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+.apply-all-label-wrap .apply-all-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.apply-all-label-wrap .apply-all-label input {
+    height: auto;
+    cursor: pointer;
+}
+
 .search_form .boxStyle_2 .line {
-    padding: 10px;
+    padding: 15px 10px 5px;
+    margin-bottom: 10px;
 
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    box-sizing: border-box;
+}
+
+.search_form .boxStyle_2 .line .box.other_box {
+    padding: 0 15px 10px;
 }
 
 .search_form .boxStyle_2 .boxImg {

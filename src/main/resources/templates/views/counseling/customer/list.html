@@ -57,12 +57,14 @@
                                 <input type="text" class="datepicker" placeholder="날짜선택" readonly th:field="*{searchDTO.dateTo}">
                             </div>
                         </div>
-                        <button type="submit" class="boxImg">
-                            <span class="search"></span>
-                        </button>
-                        <button type="button" class="boxImg" onclick="resetSearchForm();">
-                            <span class="init"></span>
-                        </button>
+                        <div class="btn_wrap flex-end">
+                            <button type="submit" class="">
+                                <span class="search"></span>검색
+                            </button>
+                            <button type="button" class="" onclick="resetSearchForm();">
+                                <span class="init"></span>초기화
+                            </button>
+                        </div>
                     </div>
 <!--                    <div class="btn-style-2">-->
 <!--                        <a th:href="@{/reservation/register}" class="w-180 btnColor_3 btn_3">신규고객등록</a>-->

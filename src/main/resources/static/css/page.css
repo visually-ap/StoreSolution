@@ -143,6 +143,17 @@
     margin-left: 10px;
 }
 
+.boxStyle_2 .box.other_box {
+    gap: 5px;
+    padding: 0 15px 10px;
+}
+
+.boxStyle_2 .box.other_box .name {
+    text-align: center;
+    width: 120px;
+    padding-right: 0;
+}
+
 .boxStyle_2 .box.other_box .value {
     background: transparent;
     font-weight: 500;
@@ -249,7 +260,11 @@
 }
 
 .search_form .boxStyle_2 .line {
-    padding: 10px 30px 10px 0;
+    padding: 10px;
+
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
 }
 
 .search_form .boxStyle_2 .boxImg {

@@ -729,17 +729,18 @@
 /* reservation */
 .info_calendar {
     display: flex;
-    gap: 30px;
+    gap: 20px;
+    justify-content: center;
 }
 
 .info_calendar .left_area {
-    min-width: 450px;
+    min-width: 400px;
     max-width: 500px;
     width: 35%;
 }
 
 .info_calendar .right_area {
-    width: 65%;
+    width: 55%;
     min-width: 500px;
     margin-top: 40px;
 }
@@ -870,6 +871,7 @@
 .inner_style_1 .search_btn {
     min-width: 45px;
     padding: 10px;
+    margin-left: 5px;
 }
 
 .inner_style_1 .search_btn img {

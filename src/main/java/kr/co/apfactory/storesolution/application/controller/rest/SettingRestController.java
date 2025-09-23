@@ -75,8 +75,6 @@ public class SettingRestController {
     @PostMapping("/environment/update")
     @Transactional
     public ResponseEntity<ResponseDTO> updateEnvironment(@RequestBody ReqEnvironmentUpdateDTO dto) {
-
-        // TODO: 환경설정 저장 로직 호출 (아직 서비스 계층 구현 전)
         siteService.updateEnvironment(dto);
 
         return ResponseEntity.ok(

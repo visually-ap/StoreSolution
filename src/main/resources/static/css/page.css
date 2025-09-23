@@ -211,11 +211,11 @@
 }
 
 .boxStyle_2 .boxImg .jacket {
-    background: url(../images/icon/jacket.png) no-repeat 19px / 23px;
+    background: url(../images/icon/jacket.png) no-repeat 18px / 23px;
 }
 
 .boxStyle_2 .boxImg .jacket.on {
-    background: url(../images/icon/jacket_w.png) no-repeat 19px / 23px;
+    background: url(../images/icon/jacket_w.png) no-repeat 18px / 23px;
     background-color: #1e6ceb;
 }
 
@@ -229,20 +229,20 @@
 }
 
 .boxStyle_2 .boxImg .vest {
-    background: url(../images/icon/vest.png) no-repeat 19px / 23px;
+    background: url(../images/icon/vest.png) no-repeat 18px / 23px;
 }
 
 .boxStyle_2 .boxImg .vest.on {
-    background: url(../images/icon/vest_w.png) no-repeat 19px / 23px;
+    background: url(../images/icon/vest_w.png) no-repeat 18px / 23px;
     background-color: #1e6ceb;
 }
 
 .boxStyle_2 .boxImg .coats {
-    background: url(../images/icon/coat.png) no-repeat 19px / 23px;
+    background: url(../images/icon/coat.png) no-repeat 18px / 23px;
 }
 
 .boxStyle_2 .boxImg .coats.on {
-    background: url(../images/icon/coat_w.png) no-repeat 19px / 23px;
+    background: url(../images/icon/coat_w.png) no-repeat 18px / 23px;
     background-color: #1e6ceb;
 }
 
@@ -865,7 +865,7 @@
 }
 
 .inner_bg input {
-    width: 70%;
+    width: 60%;
 }
 
 .inner_style_1 .search_btn {
@@ -1053,7 +1053,7 @@
 }
 @media all and (max-width: 1400px) {
     .inner_bg input {
-        width: 65%;
+        width: 55%;
     }
     .half-line input,
     .half-line select  {
@@ -1062,7 +1062,7 @@
 }
 @media all and (max-width: 1300px) {
     .inner_bg input {
-        width: 60%;
+        width: 50%;
     }
     .half-line input,
     .half-line select {

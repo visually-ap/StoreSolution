@@ -21,6 +21,10 @@
             .fabric-form:last-child {
                 margin-bottom: 0;
             }
+
+            input:read-only {
+                color: #dddddd !important;
+            }
         </style>
         <!-- 공통 css-->
         <link rel="stylesheet" th:href="@{/css/header.css}">
@@ -42,11 +46,20 @@
                             <div class="value" th:text="${@stringParser.addDashToMobileNumber(counseling.mobile)}"></div>
                         </div>
                         <div class="box other_box">
+                            <h2 class="name">작업방식</h2>
+                            <div class="value">
+                                <select id="workType" name="workType" required>
+                                    <option value="13" th:selected="${counseling.workType == null || counseling.workType == 13}">직봉</option>
+                                    <option value="14" th:selected="${counseling.workType == 14}">초가봉</option>
+                                    <option value="15" th:selected="${counseling.workType == 15}">중가봉</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="box other_box">
                             <h2 class="name">라인</h2>
                             <div class="value">
                                 <select id="factory" name="factory" required>
-                                    <option value="" th:selected="${counseling.factory == null}">-- 선택 --</option>
-                                    <option value="1" th:selected="${counseling.factory == 1}">White</option>
+                                    <option value="1" th:selected="${counseling.factory == null || counseling.factory == 1}">White</option>
                                     <option value="2" th:selected="${counseling.factory == 2}">Black</option>
                                     <option value="3" th:selected="${counseling.factory == 3}">Etc</option>
                                 </select>
@@ -93,10 +106,10 @@
                 </div>
             </div>
             <div class="section_wrap fabric-4" id="fabricForms">
-                <h2 class="title">원단</h2>
+                <h2 class="title">원단 및 주문수량</h2>
                 <div class="apply-all-label-wrap">
                     <label class="apply-all-label">
-                        <input type="checkbox" id="allSameFabric">
+                        <input type="checkbox" id="allSameFabric" name="allSameFabric" value="true" th:checked="${counseling.allSameFabric}">
                         <span>원단 모두 동일</span>
                     </label>
                 </div>
@@ -215,6 +228,8 @@
 </html>
 
 <script>
+    nowParts = 'fabric';
+
     const TYPES = ['jacket', 'pants', 'vest', 'coat'];
 
     const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -224,6 +239,16 @@
         updateFabricForms();
         coatGuard();
         updateAllSameFabricState();
+
+        // ✅ DB에서 true로 체크되어 온 경우 → 리더 자동 선정 및 동기화 수행
+        if ($('#allSameFabric').is(':checked')) {
+            ALL_SAME_LEADER = getLeader();
+            if (ALL_SAME_LEADER) {
+                bindLeaderSync(ALL_SAME_LEADER, true);
+                lockTargets(ALL_SAME_LEADER, true);
+                syncFromLeader(ALL_SAME_LEADER);
+            }
+        }
     });
     // 현재 선택 상태에 맞춰 원단 폼/안내 섹션 표시 업데이트
     function updateFabricForms() {
@@ -387,18 +412,20 @@
         }
     });
 
-    window.addEventListener('beforeunload', function () {
-        showLoadingImage();
-        callService(
-            "POST"
-            , "/counseling/fabric/save"
-            , JSON.stringify(convertFormToJSON($('#dataForm')))
-            , function (response) {
-                if (!response.success) {
-                    alert(response.message);
-                    location.href = '/counseling/customer/list';
+    window.addEventListener("beforeunload", function (e) {
+        if (nextUrl != '/counseling/fabric-item'
+            && nextUrl != '/counseling/design'
+            && nextUrl != '/counseling/size'
+            && nextUrl != '/counseling/complete'
+        ) {
+            callLazyService(
+                "POST"
+                , `/counseling/fabric/save`
+                , JSON.stringify(convertFormToJSON($('#dataForm')))
+                , function (response) {
+
                 }
-            }
-        );
+            );
+        }
     });
 </script>

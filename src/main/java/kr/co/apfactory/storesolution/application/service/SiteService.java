@@ -35,14 +35,11 @@ public class SiteService {
         Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
         SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStore(store);
         if (siteEnvSetting == null) {
-            // 기본값을 Res DTO로 가져온 뒤
-            siteEnvSetting = siteEnvSettingRepository.findByStoreIsNull();
-            ResEnvironmentUpdateDTO defaultDto = siteEnvSetting.toResEnvironmentUpdateDTO();
-
+            siteEnvSetting = SiteEnvSetting.builder()
+                    .store(store)
+                    .build();
             // 새로운 매장용 설정 생성
-            SiteEnvSetting newSetting = defaultDto.toSiteEnvSettingEntity();
-            newSetting.updateStore(store);
-            siteEnvSettingRepository.save(newSetting);
+            siteEnvSettingRepository.save(siteEnvSetting);
         }
         return siteEnvSetting.toResEnvironmentUpdateDTO();
     }
@@ -51,15 +48,10 @@ public class SiteService {
      * 환경설정 저장 (기존 설정 삭제 후 재저장)
      */
     public void updateEnvironment(ReqEnvironmentUpdateDTO dto) {
-        Long storeId = LoginUser.getDetails().getStoreId();
-        Store store = Store.builder().id(storeId).build();
-
-        // 기존 환경설정 삭제
-        siteEnvSettingRepository.deleteByStore(store);
+        SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStoreId(LoginUser.getDetails().getStoreId());
 
         // 새로운 환경설정 저장
-        SiteEnvSetting siteEnvSetting = dto.toSiteEnvSettingEntity();
-        siteEnvSetting.updateStore(store);
+        siteEnvSetting.updateEnvironment(dto);
 
         siteEnvSettingRepository.save(siteEnvSetting);
     }
@@ -78,14 +70,14 @@ public class SiteService {
 
         // 홈 이미지 목록 조회 (null 방어 처리 포함)
         List<StoreFileAttachMaster> storeFileAttachMasterList = storeFileAttachMasterRepository.findAllByStore(store);
-        for (StoreFileAttachMaster storeFileAttachMaster: storeFileAttachMasterList) {
+        for (StoreFileAttachMaster storeFileAttachMaster : storeFileAttachMasterList) {
             List<StoreFileAttach> storeFileAttachList = storeFileAttachRepository.findAllByStoreFileAttachMaster(storeFileAttachMaster);
 
             if (storeFileAttachMaster.getFileType() == 1) {
                 // 홈 이미지
                 resSiteImageDTO.setHomeImageList(
                         storeFileAttachList.stream()
-                        .map(alterObject::toFileDTO)
+                                .map(alterObject::toFileDTO)
                                 .collect(Collectors.toList())
                 );
             } else if (storeFileAttachMaster.getFileType() == 2) {
@@ -95,7 +87,7 @@ public class SiteService {
                 // 상담판 이미지
                 resSiteImageDTO.setConsultingImageList(
                         storeFileAttachList.stream()
-                        .map(alterObject::toFileDTO)
+                                .map(alterObject::toFileDTO)
                                 .collect(Collectors.toList())
                 );
             }
@@ -113,7 +105,7 @@ public class SiteService {
             return null;
         }
         StoreFileAttach storeFileAttach = storeFileAttachRepository.findByStoreFileAttachMaster(storeFileAttachMaster);
-        if  (storeFileAttach == null) {
+        if (storeFileAttach == null) {
             return null;
         }
 

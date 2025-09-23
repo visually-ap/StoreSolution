@@ -40,7 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         anonymous() - 인증되지 않은 유저만 허용합니다.
         denyAll() - 모든 유저에 대해 접근을 허용하지 않습니다.
          */
-        http.authorizeRequests()
+        http
+                .csrf()
+                .ignoringAntMatchers(
+                        "/counseling/fabric/save"
+                        , "/counseling/design/save"
+                        , "/counseling/size/save"
+                )
+                .and()
+                .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/dist/**").permitAll()
                 .antMatchers("/images/**").permitAll()

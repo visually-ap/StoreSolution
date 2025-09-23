@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ImageViewer</title>
+
+    <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+    <script th:src="@{/js/common/url.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!-- Demo styles -->
+    <style>
+        html,
+        body {
+            position: relative;
+            height: 100vh;
+        }
+
+        body {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .action_area {
+            position: fixed;
+            bottom: 2%;
+            right: 1%;
+            z-index: 100;
+            font-size: 24px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .span_link {
+            cursor: pointer;
+            border-radius: 15px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            padding: 0 12px;
+            transition: all .3s;
+            color: #00264b;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .fullscreenButton {
+            background-color: #1e6ceb;
+            color: #fff;
+            border: 1px solid #1e6ceb;
+        }
+        .skipButton {
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+        .skip_icon {
+            background-image: url(/images/icon/skip.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            width: 13px;
+            height: 13px;
+            display: inline-block;
+        }
+        .skipButton:hover {
+            background-color: #f1f1f1;
+            color: #555;
+            border: 1px solid #aaa;
+        }
+        .skipButton:hover .skip_icon {
+            background-image: url(/images/icon/skip_g.png);
+        }
+        .fullscreen_icon {
+            background-image: url(/images/icon/fullscreen_w.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+        }
+        .fullscreenButton:hover {
+            background-color: #004fd0;
+            color: #fff;
+            border: 1px solid #004fd0;
+        }
+
+        /* hidden 속성은 무조건 숨기기 */
+        [hidden] { display: none !important; }
+
+    </style>
+</head>
+<body>
+
+<!-- Swiper -->
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" th:each="image, index : ${imageList}">
+            <img class="cus_image" th:src="@{/about/image/download/{id}(id=${image.fileId})}" alt="">
+        </div>
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+    <div class="action_area">
+        <span class="span_link fullscreenButton" id="fullscreenButton"><i class="fullscreen_icon"></i><span>Fullscreen</span></span>
+        <span class="span_link skipButton" id="skipButton"><span>Skip</span><i class="skip_icon"></i></span>
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let swiper = new Swiper(".mySwiper", {
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            allowTouchMove: true
+        });
+    });
+
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    const FS = {
+        isFull() {
+            return document.fullscreenElement
+                || document.webkitFullscreenElement
+                || document.msFullscreenElement;
+        },
+        async enter() {
+            const el = document.documentElement;
+            const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+            if (!req) throw new Error('Fullscreen API not supported');
+            return req.call(el);
+        },
+        async exit() {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+            if (!exit) return;
+            return exit.call(document);
+        },
+        onChange(handler) {
+            ['fullscreenchange','webkitfullscreenchange','msfullscreenchange']
+                .forEach(evt => document.addEventListener(evt, handler));
+            ['fullscreenerror','webkitfullscreenerror','msfullscreenerror']
+                .forEach(evt => document.addEventListener(evt, handler));
+        }
+    };
+
+    const $btn = document.getElementById('fullscreenButton');
+
+    /** 상태에 따라 버튼 표시/숨김 */
+    function syncFsButton() {
+        const inFull = !!FS.isFull();
+        $btn.hidden = inFull;                 // 전체화면이면 숨김
+        $btn.setAttribute('aria-pressed', inFull ? 'true' : 'false');
+    }
+
+    /** 클릭 시 전체화면 진입 (사용자 제스처 필요) */
+    $btn.addEventListener('click', async () => {
+        try {
+            await FS.enter();
+            // 성공하면 fullscreenchange 이벤트에서 버튼이 숨겨짐
+        } catch (e) {
+            alert('전체화면 실패: ' + (e && e.message ? e.message : e));
+        }
+    });
+
+    /** 전체화면 변경/에러 시 버튼 상태 동기화 */
+    FS.onChange(syncFsButton);
+
+    /** 초기 진입: 전체화면 아니면 버튼 보이기 */
+    window.addEventListener('DOMContentLoaded', () => {
+        syncFsButton();
+    });
+
+    document.getElementById('skipButton').addEventListener('click', function (e) {
+        window.close();
+    });
+</script>
+</body>
+</html>

@@ -80,4 +80,7 @@ public class CommonCodeChild extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     private FileAttach fileAttachRightBlack;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private FileAttach fileAttachStoreSolution;
 }

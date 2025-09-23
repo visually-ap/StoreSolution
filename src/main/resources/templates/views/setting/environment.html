@@ -10,6 +10,16 @@
             <!-- 개별 js-->
             <script th:src="@{/js/common/switch.js}"></script>
 
+            <style>
+                .readonly {
+                    background-color: #dddddd;
+                }
+                .reservation_type_input {
+                    width: 150px;
+                    text-align: center;
+                }
+            </style>
+
             <div class="designPage">
                 <form id="envForm">
                     <section class="section_wrap design_wrap">
@@ -529,10 +539,13 @@
                     </section>
 
                     <section class="section_wrap design_wrap mt-30px">
-                        <h2 class="title">항목별 색상 및 시간 설정</h2>
+                        <div style="padding-bottom: 20px;">
+                            <h2 class="title" style="display: inline;">항목별 색상 및 시간 설정</h2>
+                            <span style="margin-left: 20px;">맞춤상담은 Counseling 목록에 표시될 항목으로 명칭 변경이 불가능합니다.</span>
+                        </div>
                         <div class="type-config-wrap mb-20px">
                             <div class="type-config">
-                                <h3 class="name">상담</h3>
+                                <input type="text" class="reservation_type_input readonly" value="맞춤상담" readonly>
                                 <input type="color" th:field="${dto.typeColor1}">
                                 <select th:field="${dto.typeTime1}">
                                     <option value="10">10분</option>
@@ -550,7 +563,7 @@
                                 </select>
                             </div>
                             <div class="type-config">
-                                <h3 class="name">항목2</h3>
+                                <input type="text" class="reservation_type_input" th:field="${dto.typeName2}" maxlength="8">
                                 <input type="color" th:field="${dto.typeColor2}">
                                 <select th:field="${dto.typeTime2}">
                                     <option value="10">10분</option>
@@ -568,7 +581,7 @@
                                 </select>
                             </div>
                             <div class="type-config">
-                                <h3 class="name">항목3</h3>
+                                <input type="text" class="reservation_type_input" th:field="${dto.typeName3}" maxlength="8">
                                 <input type="color" th:field="${dto.typeColor3}">
                                 <select th:field="${dto.typeTime3}">
                                     <option value="10">10분</option>
@@ -588,7 +601,7 @@
                         </div>
                         <div class="type-config-wrap">
                             <div class="type-config">
-                                <h3 class="name">항목4</h3>
+                                <input type="text" class="reservation_type_input" th:field="${dto.typeName4}" maxlength="8">
                                 <input type="color" th:field="${dto.typeColor4}">
                                 <select th:field="${dto.typeTime4}">
                                     <option value="10">10분</option>
@@ -606,7 +619,7 @@
                                 </select>
                             </div>
                             <div class="type-config">
-                                <h3 class="name">항목5</h3>
+                                <input type="text" class="reservation_type_input" th:field="${dto.typeName5}" maxlength="8">
                                 <input type="color" th:field="${dto.typeColor5}">
                                 <select th:field="${dto.typeTime5}">
                                     <option value="10">10분</option>
@@ -624,7 +637,7 @@
                                 </select>
                             </div>
                             <div class="type-config">
-                                <h3 class="name">항목6</h3>
+                                <input type="text" class="reservation_type_input" th:field="${dto.typeName6}" maxlength="8">
                                 <input type="color" th:field="${dto.typeColor6}">
                                 <select th:field="${dto.typeTime6}">
                                     <option value="10">10분</option>

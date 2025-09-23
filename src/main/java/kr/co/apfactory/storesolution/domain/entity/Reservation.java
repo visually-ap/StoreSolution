@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +42,7 @@ public class Reservation extends BaseEntity {
     private Boolean allDay;
 
     @Column(columnDefinition = "tinyint", nullable = false)
-    @Comment("예약 종류 (1:상담)")
+    @Comment("예약 종류 (1:맞춤예약, 2~6:매장 커스텀)")
     private Integer type;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,40 +69,28 @@ public class Reservation extends BaseEntity {
     @Comment("상담 완료 여부")
     private Boolean completed;
 
-    public void updateCustomer(Customer customer) {
-        this.customer = customer;
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("상담 완료 직원")
+    private User completedUser;
+
+    public void completeCounseling(User user) {
+        this.completed = true;
+        this.completedUser = user;
     }
 
-    public void updateReservationManager(User reservationManager) {
-        this.reservationManager = reservationManager;
-    }
+    public void updateReservation(ReqReservationUpdateDTO dto) {
+        this.reservationManager = User.builder().id(dto.getReservationManager()).build();
+        this.consultingManager = User.builder().id(dto.getConsultingManager()).build();
+        this.allDay = dto.getIsAllday();
+        this.consultingDate = dto.getConsultingDate();
+        this.type = dto.getType();
 
-    public void updateConsultingManager(User consultingManager) {
-        this.consultingManager = consultingManager;
-    }
-
-    public void updateConsultingDatetime(String consultingHour, String consultingMinute, Integer consultingTime) {
-        int hour = parseOrDefault(consultingHour, 0);
-        int minute = parseOrDefault(consultingMinute, 0);
-
-        this.consultingDatetimeFrom = consultingDate.atTime(hour, minute);
-        this.consultingDatetimeTo = consultingDatetimeFrom.plusMinutes(consultingTime);
-    }
-
-    // 유틸: 문자열을 정수로 파싱하되 실패 시 기본값 반환
-    private int parseOrDefault(String value, int defaultValue) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException | NullPointerException e) {
-            return defaultValue;
+        if (!dto.getIsAllday()) {
+            this.consultingDatetimeFrom = dto.getConsultingDatetimeFrom();
+            this.consultingDatetimeTo = dto.getConsultingDatetimeTo();
+        } else {
+            this.consultingDatetimeFrom = null;
+            this.consultingDatetimeTo = null;
         }
-    }
-
-    public void updateConsultingDatetimeFrom(LocalDateTime consultingDatetimeFrom) {
-        this.consultingDatetimeFrom = consultingDatetimeFrom;
-    }
-
-    public void updateConsultingDatetimeTo(LocalDateTime consultingDatetimeTo) {
-        this.consultingDatetimeTo = consultingDatetimeTo;
     }
 }

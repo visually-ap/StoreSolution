@@ -215,6 +215,10 @@
     background: url(../images/icon/size_on.png) no-repeat 19px / 23px;
 }
 
+.left_nav li .order {
+    background: url(../images/icon/order.png) no-repeat 19px / 23px;
+}
+
 .left_nav li a span {
     display: none;
     color: #00264b;

@@ -26,6 +26,14 @@
             input:read-only {
                 background-color: #dddddd;
             }
+
+            .radioLabel {
+                display: inline-flex;      /* 한 줄 정렬 */
+                align-items: center;       /* 세로 가운데 정렬 */
+                gap: 6px;                  /* 버튼과 텍스트 사이 간격 */
+                margin-right: 20px;        /* 항목 간 간격 */
+                cursor: pointer;           /* 클릭 영역 손가락 모양 */
+            }
         </style>
 
         <div class="section_wrap fabric-4">
@@ -41,6 +49,15 @@
                                 <option value="mobile">연락처</option>
                             </select>
                             <input type="text" class="text" maxlength="10" th:field="*{searchDTO.searchKeyword}">
+                            <h2 class="name">상태</h2>
+                            <label for="before" class="radioLabel">
+                                <input type="radio" class="counselingStateFilter" id="before" name="counselingState" value="before" th:checked="${searchDTO.counselingState == 'before'}">
+                                <span>상담전</span>
+                            </label>
+                            <label for="completed" class="radioLabel">
+                                <input type="radio" class="counselingStateFilter" id="completed" name="counselingState" value="completed" th:checked="${searchDTO.counselingState == 'completed'}">
+                                <span>상담완료</span>
+                            </label>
                         </div>
                         <div class="box other_box">
                             <h2 class="name">기간검색</h2>
@@ -87,6 +104,10 @@
 
                     return true;
                 }
+
+                $(document).on('change', '.counselingStateFilter', function () {
+                    $('.search_form').submit();
+                });
             </script>
         </div>
 
@@ -135,7 +156,7 @@
                     <th>상담예약</th>
                     <th>비고</th>
                 </tr>
-                <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.reservationId}">
+                <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.reservationId}" th:data-completed="${item.completed}">
                     <td th:text="${item.name1}"></td>
                     <td th:text="${item.mobile1}"></td>
                     <td th:text="${item.photoDate}"></td>
@@ -160,8 +181,13 @@
     });
 
     $(document).on('click', '.gotoDetail', function () {
-        window.open(`/counseling/about?reservationId=${$(this).data('id')}`, "ImageViewer"
-            , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
-        );
+        const completed = $(this).data('completed');
+        if (completed) {
+            location.href = `/counseling/fabric-item?reservationId=${$(this).data('id')}&completed=${completed}`;
+        } else {
+            window.open(`/counseling/about?reservationId=${$(this).data('id')}&completed=${completed}`, "ImageViewer"
+                , `left=0, top=0, width=${screen.availWidth}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
+            );
+        }
     });
 </script>

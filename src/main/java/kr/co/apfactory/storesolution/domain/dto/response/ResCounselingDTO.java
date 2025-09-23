@@ -18,12 +18,15 @@ public class ResCounselingDTO {
     private String name;
     private String mobile;
 
+    private Long workType;
     private Integer factory;
 
     private Boolean jacket = false;
     private Boolean pants = false;
     private Boolean vest = false;
     private Boolean coat = false;
+    private Boolean allSameFabric = false;
+
     private String fabricCompanyJacket;
     private String fabricPatternJacket;
     private String fabricColorJacket;
@@ -39,6 +42,8 @@ public class ResCounselingDTO {
     private String fabricCompanyCoat;
     private String fabricPatternCoat;
     private String fabricColorCoat;
+
+    private Boolean saved;
 
 
     public void updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO){

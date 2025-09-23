@@ -10,6 +10,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_counseling_common")
@@ -114,18 +118,24 @@ public class CounselingCommon extends BaseEntity {
     @Comment("조끼 원단 색상")
     private String fabricColorCoat;
 
-    public void updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO) {
-        this.factory = reqFabricSaveDTO.getFactory();
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean allSameFabric;
 
-        this.jacket = reqFabricSaveDTO.getJacket();
-        this.pants = reqFabricSaveDTO.getPants();
-        this.vest = reqFabricSaveDTO.getVest();
-        this.coat = reqFabricSaveDTO.getCoat();
+    public void updateFabricData(ReqFabricSaveDTO dto) {
+        this.workType = CodeType.builder().id(dto.getWorkType()).build();
+        this.factory = dto.getFactory();
+
+        this.jacket = dto.getJacket();
+        this.pants = dto.getPants();
+        this.vest = dto.getVest();
+        this.coat = dto.getCoat();
+
+        this.allSameFabric = dto.getAllSameFabric();
 
         if (this.jacket) {
-            this.fabricCompanyJacket = reqFabricSaveDTO.getFabricCompanyJacket();
-            this.fabricPatternJacket = reqFabricSaveDTO.getFabricPatternJacket();
-            this.fabricColorJacket = reqFabricSaveDTO.getFabricColorJacket();
+            this.fabricCompanyJacket = dto.getFabricCompanyJacket();
+            this.fabricPatternJacket = dto.getFabricPatternJacket();
+            this.fabricColorJacket = dto.getFabricColorJacket();
         } else {
             this.fabricCompanyJacket = null;
             this.fabricPatternJacket = null;
@@ -133,9 +143,9 @@ public class CounselingCommon extends BaseEntity {
         }
 
         if (this.pants) {
-            this.fabricCompanyPants = reqFabricSaveDTO.getFabricCompanyPants();
-            this.fabricPatternPants = reqFabricSaveDTO.getFabricPatternPants();
-            this.fabricColorPants = reqFabricSaveDTO.getFabricColorPants();
+            this.fabricCompanyPants = dto.getFabricCompanyPants();
+            this.fabricPatternPants = dto.getFabricPatternPants();
+            this.fabricColorPants = dto.getFabricColorPants();
         } else {
             this.fabricCompanyPants = null;
             this.fabricPatternPants = null;
@@ -143,9 +153,9 @@ public class CounselingCommon extends BaseEntity {
         }
 
         if (this.vest) {
-            this.fabricCompanyVest = reqFabricSaveDTO.getFabricCompanyVest();
-            this.fabricPatternVest = reqFabricSaveDTO.getFabricPatternVest();
-            this.fabricColorVest = reqFabricSaveDTO.getFabricColorVest();
+            this.fabricCompanyVest = dto.getFabricCompanyVest();
+            this.fabricPatternVest = dto.getFabricPatternVest();
+            this.fabricColorVest = dto.getFabricColorVest();
         } else {
             this.fabricCompanyVest = null;
             this.fabricPatternVest = null;
@@ -153,13 +163,84 @@ public class CounselingCommon extends BaseEntity {
         }
 
         if (this.coat) {
-            this.fabricCompanyCoat = reqFabricSaveDTO.getFabricCompanyCoat();
-            this.fabricPatternCoat = reqFabricSaveDTO.getFabricPatternCoat();
-            this.fabricColorCoat = reqFabricSaveDTO.getFabricColorCoat();
+            this.fabricCompanyCoat = dto.getFabricCompanyCoat();
+            this.fabricPatternCoat = dto.getFabricPatternCoat();
+            this.fabricColorCoat = dto.getFabricColorCoat();
         } else {
             this.fabricCompanyCoat = null;
             this.fabricPatternCoat = null;
             this.fabricColorCoat = null;
         }
+    }
+
+    public String getFabricCompanyFromCounseling() {
+        if (this.getJacket()) {
+            return this.getFabricCompanyJacket();
+        } else if (this.getPants()) {
+            return this.getFabricCompanyPants();
+        } else if (this.getVest()) {
+            return this.getFabricCompanyVest();
+        } else if (this.getCoat()) {
+            return this.getFabricCompanyCoat();
+        } else {
+            return null;
+        }
+    }
+
+    public String getFabricPatternFromCounseling() {
+        if (this.getJacket()) {
+            return this.getFabricPatternJacket();
+        } else if (this.getPants()) {
+            return this.getFabricPatternPants();
+        } else if (this.getVest()) {
+            return this.getFabricPatternVest();
+        } else if (this.getCoat()) {
+            return this.getFabricPatternCoat();
+        } else {
+            return null;
+        }
+    }
+
+    public String getFabricColorFromCounseling() {
+        if (this.getJacket()) {
+            return this.getFabricColorJacket();
+        } else if (this.getPants()) {
+            return this.getFabricColorPants();
+        } else if (this.getVest()) {
+            return this.getFabricColorVest();
+        } else if (this.getCoat()) {
+            return this.getFabricColorCoat();
+        } else {
+            return null;
+        }
+    }
+
+    private String makeFabricKey(String company, String pattern, String color) {
+        if (company == null || pattern == null || color == null) {
+            return null;
+        }
+        return company + "_" + pattern + "_" + color;
+    }
+
+    public List<String> extractFabricKeys() {
+        List<String> keys = new ArrayList<>();
+
+        if (Boolean.TRUE.equals(this.jacket)) {
+            keys.add(makeFabricKey(fabricCompanyJacket, fabricPatternJacket, fabricColorJacket));
+        }
+        if (Boolean.TRUE.equals(this.pants)) {
+            keys.add(makeFabricKey(fabricCompanyPants, fabricPatternPants, fabricColorPants));
+        }
+        if (Boolean.TRUE.equals(this.vest)) {
+            keys.add(makeFabricKey(fabricCompanyVest, fabricPatternVest, fabricColorVest));
+        }
+        if (Boolean.TRUE.equals(this.coat)) {
+            keys.add(makeFabricKey(fabricCompanyCoat, fabricPatternCoat, fabricColorCoat));
+        }
+
+        return keys.stream()
+                .filter(Objects::nonNull)   // null 제외
+                .distinct()                 // 중복 제거
+                .collect(Collectors.toList());
     }
 }

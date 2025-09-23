@@ -4,12 +4,14 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.entity.QCounselingCommon;
 import kr.co.apfactory.storesolution.domain.entity.QCustomer;
 import kr.co.apfactory.storesolution.domain.entity.QReservation;
 import kr.co.apfactory.storesolution.domain.entity.QStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.function.Supplier;
 
 import static com.querydsl.core.types.dsl.Expressions.stringPath;
@@ -77,10 +79,24 @@ public class FilterManager {
     }
 
     public BooleanBuilder getReservationCustomerListBooleanBuilderByKeyword(String searchKeyword) {
-        return nullSafeBuilder(() ->
-                queryStringEq(QCustomer.customer.name1, searchKeyword)
-                        .or(queryStringEq(QCustomer.customer.name2, searchKeyword))
-        );
+        if (!"".equals(searchKeyword)) {
+            return nullSafeBuilder(() ->
+                    queryStringEq(QCustomer.customer.name1, searchKeyword)
+                            .or(queryStringEq(QCustomer.customer.name2, searchKeyword))
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getReservationCustomerListBooleanBuilderByDate(LocalDate searchDate) {
+        if (searchDate != null) {
+            return nullSafeBuilder(() ->
+                    QReservation.reservation.consultingDate.eq(searchDate)
+            );
+        } else {
+            return null;
+        }
     }
 
     public BooleanBuilder getCounselingCustomerListBooleanBuilderByKeyword(SearchDTO searchDTO) {
@@ -106,6 +122,28 @@ public class FilterManager {
             }
         } else {
             return null;
+        }
+    }
+
+    public BooleanBuilder getCounselingCustomerListBooleanBuilderByState(SearchDTO searchDTO) {
+        if (!"".equals(searchDTO.getCounselingState())) {
+            if ("before".equals(searchDTO.getCounselingState())) {
+                return nullSafeBuilder(() ->
+                        QReservation.reservation.completed.isFalse()
+                );
+            } else if ("completed".equals(searchDTO.getCounselingState())) {
+                return nullSafeBuilder(() ->
+                        QReservation.reservation.completed.isTrue()
+                );
+            } else {
+                return nullSafeBuilder(() ->
+                        QReservation.reservation.completed.isFalse()
+                );
+            }
+        } else {
+            return nullSafeBuilder(() ->
+                    QReservation.reservation.completed.isFalse()
+            );
         }
     }
 

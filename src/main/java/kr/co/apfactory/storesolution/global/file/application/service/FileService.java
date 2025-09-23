@@ -6,6 +6,7 @@ import kr.co.apfactory.storesolution.domain.entity.Store;
 import kr.co.apfactory.storesolution.global.file.domain.dto.DownloadFileDTO;
 import kr.co.apfactory.storesolution.global.file.domain.dto.UploadFilesDTO;
 import kr.co.apfactory.storesolution.global.file.domain.dto.UploadResultDTO;
+import kr.co.apfactory.storesolution.global.file.domain.entity.FileAttach;
 import kr.co.apfactory.storesolution.global.file.domain.entity.StoreFileAttach;
 import kr.co.apfactory.storesolution.global.file.domain.entity.StoreFileAttachMaster;
 import kr.co.apfactory.storesolution.global.file.domain.repository.FileAttachMasterRepository;
@@ -147,5 +148,20 @@ public class FileService {
                     .build());
         }
         return fileList;
+    }
+
+    public void downloadFile(HttpServletResponse response, Long id, boolean isImage, String path) {
+        // 파일 엔티티 검색
+        FileAttach fileAttach = fileAttachRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+
+        // 파일 정보 빌드
+        DownloadFileDTO dto = DownloadFileDTO.builder()
+                .uploadedPathFile(fileAttach.getUploadedFullPath(path))
+                .filename(fileAttach.getOriginalFileName())
+                .isImage(isImage)
+                .build();
+
+        // 파일 다운로드
+        fileManager.downloadFile(response, dto);
     }
 }

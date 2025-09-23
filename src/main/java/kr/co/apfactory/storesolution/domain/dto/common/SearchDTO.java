@@ -24,4 +24,6 @@ public class SearchDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateTo;
+
+    private String counselingState = "before";
 }

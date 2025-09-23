@@ -825,3 +825,20 @@ input::placeholder {
 /*.fc .fc-daygrid-body {*/
 /*    height: 100%;*/
 /*}*/
+
+.positive_number_color {
+    color: rgba(0, 0, 255) !important;
+}
+
+.negative_number_color {
+    color: #eb2020 !important;
+}
+
+.select_readonly {
+    pointer-events: none;
+    background-color: #dddddd;
+}
+
+select:focus {
+    background-color: #fffbef;
+}

@@ -54,13 +54,45 @@
                 font-size: 12px;
                 padding: 4px;
             }
+
+            .type_list {
+                font-size: 14px !important;
+                font-weight: 400;
+            }
+
+            .showSchedule {
+                cursor: pointer;
+            }
+            .showSchedule:hover {
+                background-color: #1e6ceb;
+                color: #fff;
+            }
+
+            .tableStyle.listT td {
+                font-size: 14px !important;
+            }
+
+            .allday-cell {
+                text-align: center;
+                padding: 8px 4px;   /* 상하 8px, 좌우 4px */
+                line-height: 2.5;   /* 줄 간격 */
+            }
+
+            .select_readonly {
+                pointer-events: none;
+                background-color: #dddddd;
+            }
+
+            .customerDetail, .reservationDetail {
+                cursor: pointer;
+            }
         </style>
 
         <div class="info_calendar">
             <div class="left_area">
                 <div class="customer_info_btn">
                     <a href="#" class="page_btn active">기존 고객 정보</a>
-                    <a href="/reservation/register" class="page_btn">신규 고객 정보</a>
+                    <a href="/reservation/register" class="page_btn">신규 고객 등록</a>
                 </div>
 
                 <div class="info_wrap">
@@ -72,9 +104,35 @@
                             <button type="button" class="search_btn" id="searchButton" style="background:#1e6ceb">
                                 <img th:src="@{/images/icon/search_w.png}" alt="검색 아이콘" class="search_icon">
                             </button>
+                            <button type="button" class="search_btn" id="initButton" style="background:#ffffff">
+                                <img th:src="@{/images/icon/reset.png}" alt="검색 아이콘" class="search_icon">
+                            </button>
                         </div>
                     </div>
-                    <div class="search_style_1 mt-20px scroll-box">
+                    <div id="customerListWrap" class="search_style_1 mt-20px scroll-box">
+                        <div class="top_line flex between">
+                            <h3 class="title">고객 목록</h3>
+                        </div>
+                        <table class="tableStyle listT">
+                            <thead>
+                            <colgroup>
+                                <col style="width: 20%">
+                                <col style="width: 25%">
+                                <col style="width: 30%">
+                                <col style="width: 20%">
+                            </colgroup>
+                            <tr class="title_tr">
+                                <th>구분</th>
+                                <th>이름</th>
+                                <th>휴대전화</th>
+                                <th>상담일</th>
+                            </tr>
+                            </thead>
+                            <tbody id="customerListBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="customerDetailWrap" class="search_style_1 mt-20px scroll-box">
                         <form id="dataForm">
                             <input type="hidden" id="reservationId" name="reservationId">
                             <div class="top_line flex between">
@@ -142,21 +200,39 @@
                                         </select>
                                     </div>
                                     <div class="half-line">
+                                        <h4 class="inner_title">예약구분</h4>
+                                        <select name="type" id="type" class="t-center">
+                                            <option value="1" selected>맞춤예약</option>
+                                            <option value="2" th:text="${siteEnvDto.typeName2}"></option>
+                                            <option value="3" th:text="${siteEnvDto.typeName3}"></option>
+                                            <option value="4" th:text="${siteEnvDto.typeName4}"></option>
+                                            <option value="5" th:text="${siteEnvDto.typeName5}"></option>
+                                            <option value="6" th:text="${siteEnvDto.typeName6}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="one-line mb-5px w_100">
+                                    <div class="half-line">
                                         <h4 class="inner_title">상담담당</h4>
                                         <select name="consultingManager" id="consultingManager" class="t-center">
                                             <option value="" selected>-- 선택 --</option>
                                             <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}"></option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="one-line consultReserve-line">
                                     <div class="half-line">
-                                        <h4 class="inner_title">상담예약</h4>
+                                        <h4 class="inner_title">예약날짜</h4>
                                         <div class="input-with-icon">
                                             <input type="text" name="consultingDate" id="consultingDate" class="datepicker reservationDatetime" placeholder="날짜선택" readonly>
                                         </div>
                                     </div>
-                                    <div class="half-line">
+                                </div>
+                                <div class="one-line">
+                                    <div class="one-line">
+                                        <h4 class="inner_title">예약시간</h4>
+                                        <label for="isAllday">
+                                            <input type="checkbox" name="isAllday" id="isAllday" value="true">
+                                            미정
+                                        </label>
                                         <select class="reservationDatetime" name="consultingHour" id="consultingHour">
                                             <option value="">선택</option>
                                             <option value="09">09</option>
@@ -177,7 +253,7 @@
                                         시&nbsp;
                                         <select class="reservationDatetime" name="consultingMinute" id="consultingMinute">
                                             <option value="">선택</option>
-                                            <option value="00">0</option>
+                                            <option value="00">00</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="30">30</option>
@@ -207,12 +283,12 @@
             <div class="right_area">
                 <div class="flex between">
                     <ul class="date-line flex flex-start align-center">
-                        <li th:style="${'color: ' + siteEnvDto.typeColor1}">상담</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor2}">항목2</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor3}">항목3</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor4}">항목4</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor5}">항목5</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor6}">항목6</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor1}">맞춤상담</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor2}" th:text="${siteEnvDto.typeName2}">항목2</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor3}" th:text="${siteEnvDto.typeName3}">항목3</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor4}" th:text="${siteEnvDto.typeName4}">항목4</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor5}" th:text="${siteEnvDto.typeName5}">항목5</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor6}" th:text="${siteEnvDto.typeName6}">항목6</li>
                     </ul>
                     <div class="date-line flex flex-end align-center">
                         <button class="prev-btn btn" id="prevBtn"> < </button>
@@ -236,35 +312,206 @@
     </th:block>
 </th:block>
 
-<div class="modal_window modal_style" id="customerListModal">
+<div class="modal_window modal_style" id="reservationDetailModal">
     <div class="inner_box">
-        <h2 class="title">고객 검색 결과</span></h2>
+        <h2 class="title">예약 정보</h2>
         <div class="data_box">
-            <table>
-                <thead>
-                <tr>
-                    <th>고객명1</th>
-                    <th>연락처1</th>
-                    <th>고객명2</th>
-                    <th>연락처2</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody id="customerListBody">
-                <!-- JS로 생성 -->
-                </tbody>
-            </table>
+            <div>
+                담당자 : 아무개
+            </div>
+            <div>
+                고객명 : 홍길동
+            </div>
+            <div>
+                컨설팅 : ?
+            </div>
+            <div>
+                날짜 : <input type="text">
+            </div>
+            <div>
+                구분
+                <select name="" id="">
+                    <option value="">선택</option>
+                    <option value="">선택</option>
+                </select>
+            </div>
+            <div>
+                내용
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+            </div>
+            <div>
+                상태
+                <label for="radioComplete">
+                    <input type="radio" id="radioComplete">완료
+                </label>
+                <label for="radioIncomplete">
+                    <input type="radio" id="radioIncomplete">완료
+                </label>
+            </div>
+            <div>
+                계약여부
+                <label for="radioContracted">
+                    <input type="radio" id="radioContracted">계약
+                </label>
+                <label for="radioTour">
+                    <input type="radio" id="radioTour">투어
+                </label>
+                <label for="radioCancel">
+                    <input type="radio" id="radioCancel">투어
+                </label>
+                <label for="radioNa">
+                    <input type="radio" id="radioNa">해당없음
+                </label>
+            </div>
         </div>
         <div class="btn_wrap center mt-40px">
             <div class="innerBtn_box">
-                <button id="updatePasswordButton" class="btnColor_1 btn_2">변경</button>
-                <button class="closeModalButton btn_2" data-label="#customerListModal" onclick="closeModal($(this).data('label'), initModal)">닫기</button>
+                <button id="updateButton" class="btnColor_1 btn_2">저장</button>
+                <button class="closeModalButton btn_2" data-label="#reservationDetailModal" onclick="closeModal($(this).data('label'), initReservationDetailModal)">닫기</button>
             </div>
         </div>
     </div>
 </div>
 
 <script th:inline="javascript">
+    let siteEnv = [[${siteEnvDto}]];
+
+    let todayString = getToday('YYYY-MM-DD');
+    let momentDate = moment(todayString);
+
+    $(document).ready(function () {
+        const fp = standardPickerWithMinDate($('.datepicker'));
+
+        // 금일 타임 테이블 로드
+        getCustomerList('', todayString);
+        renderTimeTable('custom-schedule-table', todayString);
+
+        $('#searchInput').focus();
+
+        $('#customerDetailWrap').hide();
+    });
+
+    $(document).on('click', '#isAllday', function () {
+        if ($(this).is(':checked')) {
+            $('#consultingHour').val('');
+            $('#consultingMinute').val('');
+            setReadonlySelect($('#consultingHour'), true);
+            setReadonlySelect($('#consultingMinute'), true);
+        } else {
+            setReadonlySelect($('#consultingHour'), false);
+            setReadonlySelect($('#consultingMinute'), false);
+        }
+    });
+
+    function setReadonlySelect($obj, state) {
+        if (state) {
+            $obj.addClass('select_readonly');
+        } else {
+            $obj.removeClass('select_readonly');
+        }
+    }
+
+    function renderCustomerList(reservationList) {
+        $('#customerListBody').empty();
+        if (reservationList.length == 0) {
+            $('#customerListBody').append(`
+            <tr>
+                <td colspan="5">상담 고객이 존재하지 않습니다.</td>
+            </tr>
+            `);
+        } else {
+            reservationList.forEach(function (reservation) {
+                const name = isEmpty(reservation.name2) ? reservation.name1 : `${reservation.name1}<br>(${reservation.name2})`
+                const mobile = isEmpty(reservation.name2) ? addDashToMobileNumber(reservation.mobile1) : `${addDashToMobileNumber(reservation.mobile1)}<br>(${addDashToMobileNumber(reservation.mobile2)})`
+                $('#customerListBody').append(`
+                <tr class="showSchedule" data-reservationid="${reservation.reservationId}">
+                    <td>${reservation.reservationTypeString}</td>
+                    <td>${name}</td>
+                    <td>${mobile}</td>
+                    <td>${reservation.consultingDate == null ? '' : reservation.consultingDate}</td>
+                </tr>
+                `);
+            });
+        }
+
+        $('#customerDetailWrap').hide();
+        $('#customerListWrap').show();
+    }
+
+    function setCustomerData(data) {
+        $('#reservationId').val(data.reservationId);
+
+        $('#name1').val(data.name1);
+        $('#mobile1').val(data.mobile1);
+        $('#name2').val(data.name2);
+        $('#mobile2').val(data.mobile2);
+
+        $('#photoDate').val(data.photoDate);
+        $('#photoPlace').val(data.photoPlace);
+        $('#weddingDate').val(data.weddingDate);
+        $('#weddingPlace').val(data.weddingPlace);
+
+        $('#reservationManager').val(data.reservationManagerId);
+        $('#type').val(data.type);
+        $('#consultingManager').val(data.consultingManagerId);
+        $('#consultingDate').val(data.consultingDate);
+        $('#consultingHour').val(data.consultingHour);
+        $('#consultingMinute').val(data.consultingMinute);
+
+        $('#memo').val(data.memo);
+        $('#customerDetailWrap').show();
+        $('#customerListWrap').hide();
+        $('#isAllday').prop('checked', data.isAllday);
+        setReadonlySelect($('#consultingHour'), data.isAllday);
+        setReadonlySelect($('#consultingMinute'), data.isAllday);
+    }
+
+    function setReservationText() {
+        // 이름
+        let name1 = $('#name1').val();
+        if (isEmpty(name1)) {
+            name1 = 'OOO'
+        }
+        $('#resultName').text(name1);
+
+        // 날짜
+        let dateArray = isEmpty($('#consultingDate').val()) ? 'XXXX-XX-XX'.split('-') : $('#consultingDate').val().split('-');
+        let year = dateArray[0];
+        let month = dateArray[1];
+        let date = dateArray[2];
+        let hour = isEmpty($('#consultingHour').val()) ? 'XX' : $('#consultingHour').val();
+        let minute = isEmpty($('#consultingMinute').val()) ? 'XX' : $('#consultingMinute').val();
+
+        $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
+
+        // 담당자 이름
+        let consultManager = $('#consultingManager option:selected').text();
+        if (isEmpty(consultManager)) {
+            consultManager = 'OOO'
+        }
+        $('#resultManager').text(consultManager);
+    }
+
+    function getCustomerList(searchKeyword, searchDate) {
+        showLoadingImage();
+
+        callService(
+            "GET"
+            , `/reservation/customer/list?searchKeyword=${searchKeyword}&searchDate=${searchDate}`
+            , {}
+            , function (response) {
+                renderCustomerList(response.result);
+            }
+        );
+    }
+
+    function scrollToHour(hour) {
+        const target = document.getElementById("time-" + String(hour).padStart(2, '0'));
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+
     $(function () {
         callValidationFormService(
             $('#dataForm')
@@ -308,6 +555,8 @@
                     , JSON.stringify(convertFormToJSON(form))
                     , function (response) {
                         alert(response.message);
+                        initTimeTable('custom-schedule-table');
+                        renderTimeTable('custom-schedule-table', $('#consultingDate').val());
                     }
                 );
             }
@@ -342,25 +591,15 @@
             return;
         }
 
-        showLoadingImage();
-
-        callService(
-            "GET"
-            , "/reservation/customer/list?searchKeyword=" + inputValue
-            , {}
-            , function (response) {
-                if (response.success) {
-                    openModal('#customerListModal', initModal);
-                    renderCustomerList(response.result);
-                } else {
-                    alert('등록된 고객이 존재하지 않습니다.');
-                }
-            }
-        );
+        getCustomerList(inputValue, '');
     });
 
-    $(document).on('click', '.selectCustomer', function () {
-        const reservationId = $(this).data('reservation');
+    $(document).on('click', '#initButton', function () {
+        location.replace('/reservation/main');
+    });
+
+    $(document).on('click', '.showSchedule', function () {
+        const reservationId = $(this).data('reservationid');
 
         showLoadingImage();
 
@@ -371,7 +610,7 @@
             , function (response) {
                 if (response.success) {
                     setCustomerData(response.result);
-                    closeModal('#customerListModal', initModal);
+
                     $('#registerButton').show();
                     setReservationText();
 
@@ -379,65 +618,17 @@
 
                     initTimeTable('custom-schedule-table');
                     renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+
+                    if (!response.result.isAllday) {
+                        setTimeout(() => {
+                            scrollToHour(response.result.consultingHour);
+                        }, 100);
+                    }
                 } else {
-                    alert(`${response.message}`)
+                    alert(`${response.message}`);
                 }
             }
         );
-    });
-
-    function initModal() {
-        $('#customerListBody').empty();
-    }
-
-    function renderCustomerList(customerList) {
-        customerList.forEach(function (customer) {
-            $('#customerListBody').append(`
-            <tr>
-                <td>${customer.name1}</td>
-                <td>${customer.mobile1}</td>
-                <td>${customer.name2}</td>
-                <td>${customer.mobile2}</td>
-                <td>${customer.completed ? '상담완료' : '상담전'}</td>
-                <td class="selectCustomer" data-reservation="${customer.reservationId}" style="cursor: pointer">선택</td>
-            </tr>
-            `);
-        });
-    }
-
-    function setCustomerData(data) {
-        $('#reservationId').val(data.reservationId);
-
-        $('#name1').val(data.name1);
-        $('#mobile1').val(data.mobile1);
-        $('#name2').val(data.name2);
-        $('#mobile2').val(data.mobile2);
-
-        $('#photoDate').val(data.photoDate);
-        $('#photoPlace').val(data.photoPlace);
-        $('#weddingDate').val(data.weddingDate);
-        $('#weddingPlace').val(data.weddingPlace);
-
-        $('#reservationManager').val(data.reservationManagerId);
-        $('#consultingManager').val(data.consultingManagerId);
-        $('#consultingDate').val(data.consultingDate);
-        $('#consultingHour').val(data.consultingHour);
-        $('#consultingMinute').val(data.consultingMinute);
-
-        $('#memo').val(data.memo);
-    }
-
-    let siteEnv = [[${siteEnvDto}]];
-
-    let todayString = getToday('YYYY-MM-DD');
-    let momentDate = moment(todayString);
-
-    $(document).ready(function () {
-        const fp = standardPickerWithMinDate($('.datepicker'));
-
-        renderTimeTable('custom-schedule-table', todayString);
-
-        $('#searchInput').focus();
     });
 
     $(document).on('change', '#consultingDate, #timetableDatepicker', function() {
@@ -474,30 +665,19 @@
         setReservationText();
     });
 
-    function setReservationText() {
-        // 이름
-        let name1 = $('#name1').val();
-        if (isEmpty(name1)) {
-            name1 = 'OOO'
-        }
-        $('#resultName').text(name1);
+    $(document).on('click', '.customerDetail', function() {
+        // openModal('#customerDetailModal', initReservationDetailModal);
+        window.open(`/popup/customer/detail?customerId=1`, "ImageViewer"
+            , `left=0, top=0, width=${screen.availWidth}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
+        );
+    });
 
-        // 날짜
-        let dateArray = isEmpty($('#consultingDate').val()) ? 'XXXX-XX-XX'.split('-') : $('#consultingDate').val().split('-');
-        let year = dateArray[0];
-        let month = dateArray[1];
-        let date = dateArray[2];
-        let hour = isEmpty($('#consultingHour').val()) ? 'XX' : $('#consultingHour').val();
-        let minute = isEmpty($('#consultingMinute').val()) ? 'XX' : $('#consultingMinute').val();
+    $(document).on('click', '.reservationDetail', function() {
+        openModal('#reservationDetailModal', initReservationDetailModal);
+    });
 
-        $('#resultDatetime').text(`${year}년 ${month}월 ${date}일 ${hour}시 ${minute}분`);
+    function initReservationDetailModal() {
 
-        // 담당자 이름
-        let consultManager = $('#consultingManager option:selected').text();
-        if (isEmpty(consultManager)) {
-            consultManager = 'OOO'
-        }
-        $('#resultManager').text(consultManager);
     }
 </script>
 

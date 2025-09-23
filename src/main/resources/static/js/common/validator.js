@@ -188,7 +188,7 @@ const validationObject = {
     }
     , consultingHour: {
         rules : {
-            required: true,
+            required: false,
         }
         , message: {
             required: "상담예약시간(시)를 선택해 주세요.",
@@ -196,7 +196,7 @@ const validationObject = {
     }
     , consultingMinute: {
         rules : {
-            required: true,
+            required: false,
         }
         , message: {
             required: "상담예약시간(분)을 선택해 주세요.",

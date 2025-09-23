@@ -71,7 +71,7 @@
         .action_area {
             position: fixed;
             bottom: 2%;
-            left: 1%;
+            right: 1%;
             z-index: 100;
             font-size: 24px;
             display: flex;
@@ -133,6 +133,10 @@
             color: #fff;
             border: 1px solid #004fd0;
         }
+
+        /* hidden 속성은 무조건 숨기기 */
+        [hidden] { display: none !important; }
+
     </style>
 </head>
 <body>
@@ -169,6 +173,22 @@
             },
             allowTouchMove: true
         });
+
+        const target = `/counseling/fabric-item?reservationId=${getParamValue('reservationId')}&completed=${getParamValue('completed')}`;
+
+        try {
+            if (window.opener && !window.opener.closed) {
+                // 동일 출처라면 직접 이동
+                try {
+                    window.opener.location.href = target;
+                } catch (err) {
+                    // 교차 출처 등으로 직접 접근 불가 → postMessage로 부모에 요청
+                    const origin = location.origin; // 부모 도메인으로 정확히 지정 권장
+                    window.opener.postMessage({ type: 'NAVIGATE_AND_CLOSE', url: target }, origin);
+                }
+            }
+        } finally {
+        }
     });
 
     function isMobileDevice() {
@@ -228,26 +248,7 @@
     });
 
     document.getElementById('skipButton').addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = '/counseling/fabric-item?reservationId=' + getParamValue('reservationId');
-
-        try {
-            if (window.opener && !window.opener.closed) {
-                // 동일 출처라면 직접 이동
-                try {
-                    window.opener.location.href = target;
-                    // 선택: 부모창 포커스
-                    window.opener.focus?.();
-                } catch (err) {
-                    // 교차 출처 등으로 직접 접근 불가 → postMessage로 부모에 요청
-                    const origin = location.origin; // 부모 도메인으로 정확히 지정 권장
-                    window.opener.postMessage({ type: 'NAVIGATE_AND_CLOSE', url: target }, origin);
-                }
-            }
-        } finally {
-            // 팝업은 스크립트로 연 열린 창일 때만 닫힘
-            window.close();
-        }
+        window.close();
     });
 </script>
 </body>

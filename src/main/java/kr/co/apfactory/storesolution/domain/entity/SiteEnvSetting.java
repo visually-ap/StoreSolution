@@ -1,5 +1,6 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
+import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.global.file.domain.entity.FileAttach;
 import kr.co.apfactory.storesolution.global.file.domain.entity.FileAttachMaster;
@@ -233,53 +234,151 @@ public class SiteEnvSetting {
     @Comment("코트 추가옵션2")
     private Boolean coatAddOption2;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#007BFF'")
     @Comment("상담예약 색상")
     private String typeColor1;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("상담예약 시간")
     private Integer typeTime1;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '항목2'")
+    @Comment("항목2 이름")
+    private String typeName2;
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#FF6F00'")
     @Comment("항목2 색상")
     private String typeColor2;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("항목2 시간")
     private Integer typeTime2;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '항목3'")
+    @Comment("항목3 이름")
+    private String typeName3;
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#28A745'")
     @Comment("항목3 색상")
     private String typeColor3;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("항목3 시간")
     private Integer typeTime3;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '항목4'")
+    @Comment("항목4 이름")
+    private String typeName4;
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#6F42C1'")
     @Comment("항목4 색상")
     private String typeColor4;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("항목4 시간")
     private Integer typeTime4;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '항목5'")
+    @Comment("항목5 이름")
+    private String typeName5;
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#DC3545'")
     @Comment("항목5 색상")
     private String typeColor5;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("항목5 시간")
     private Integer typeTime5;
 
-    @Column(length = 10, nullable = false)
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '항목6'")
+    @Comment("항목6 이름")
+    private String typeName6;
+
+    @Column(length = 10, nullable = false, columnDefinition = "varchar(10) default '#6C757D'")
     @Comment("항목6 색상")
     private String typeColor6;
 
-    @Column(columnDefinition = "boolean default 10", nullable = false)
+    @Column(columnDefinition = "int default 10", nullable = false)
     @Comment("항목6 시간")
     private Integer typeTime6;
+
+    public void updateEnvironment(ReqEnvironmentUpdateDTO dto) {
+        this.jacketStyle = dto.getJacketStyle();
+        this.jacketButtonCount = dto.getJacketButtonCount();
+        this.jacketChestPocket = dto.getJacketChestPocket();
+        this.jacketShoulder = dto.getJacketShoulder();
+        this.jacketLeftPad = dto.getJacketLeftPad();
+        this.jacketRightPad = dto.getJacketRightPad();
+        this.jacketBackSlit = dto.getJacketBackSlit();
+        this.jacketSleeveButton = dto.getJacketSleeveButton();
+        this.jacketLapel = dto.getJacketLapel();
+        this.jacketSleeve = dto.getJacketSleeve();
+        this.jacketTuxedo = dto.getJacketTuxedo();
+        this.jacketAmf = dto.getJacketAmf();
+        this.jacketLapelQ = dto.getJacketLapelQ();
+        this.jacketLining = dto.getJacketLining();
+        this.jacketCheckFabric = dto.getJacketCheckFabric();
+        this.jacketAddOption = dto.getJacketAddOption();
+
+        this.pantsPocket = dto.getPantsPocket();
+        this.pantsCheckFabric = dto.getPantsCheckFabric();
+        this.pantsBeltLoop = dto.getPantsBeltLoop();
+        this.pantsFlap = dto.getPantsFlap();
+        this.pantsFlapLength = dto.getPantsFlapLength();
+        this.pantsHemShape = dto.getPantsHemShape();
+        this.pantsHemThickness = dto.getPantsHemThickness();
+        this.pantsAddOption1 = dto.getPantsAddOption1();
+        this.pantsAddOption2 = dto.getPantsAddOption2();
+        this.pantsAddOption3 = dto.getPantsAddOption3();
+
+        this.vestFrontPocket = dto.getVestFrontPocket();
+        this.vestChestPocket = dto.getVestChestPocket();
+        this.vestBack = dto.getVestBack();
+        this.vestAmf = dto.getVestAmf();
+        this.vestLapel = dto.getVestLapel();
+
+        this.coatStyle = dto.getCoatStyle();
+        this.coatButtonCount = dto.getCoatButtonCount();
+        this.coatChestPocket = dto.getCoatChestPocket();
+        this.coatShoulder = dto.getCoatShoulder();
+        this.coatFrontPocket = dto.getCoatFrontPocket();
+        this.coatLeftPad = dto.getCoatLeftPad();
+        this.coatRightPad = dto.getCoatRightPad();
+        this.coatBackSlit = dto.getCoatBackSlit();
+        this.coatSleeveButton = dto.getCoatSleeveButton();
+        this.coatLapel = dto.getCoatLapel();
+        this.coatSleeve = dto.getCoatSleeve();
+        this.coatAmf = dto.getCoatAmf();
+        this.coatLapelQ = dto.getCoatLapelQ();
+        this.coatLining = dto.getCoatLining();
+        this.coatCheckFabric = dto.getCoatCheckFabric();
+        this.coatAddOption1 = dto.getCoatAddOption1();
+        this.coatAddOption2 = dto.getCoatAddOption2();
+
+        this.typeColor1 = dto.getTypeColor1();
+        this.typeTime1 = dto.getTypeTime1();
+        this.typeName2 = dto.getTypeName2();
+        this.typeColor2 = dto.getTypeColor2();
+        this.typeTime2 = dto.getTypeTime2();
+        this.typeName3 = dto.getTypeName3();
+        this.typeColor3 = dto.getTypeColor3();
+        this.typeTime3 = dto.getTypeTime3();
+        this.typeName4 = dto.getTypeName4();
+        this.typeColor4 = dto.getTypeColor4();
+        this.typeTime4 = dto.getTypeTime4();
+        this.typeName5 = dto.getTypeName5();
+        this.typeColor5 = dto.getTypeColor5();
+        this.typeTime5 = dto.getTypeTime5();
+        this.typeName6 = dto.getTypeName6();
+        this.typeColor6 = dto.getTypeColor6();
+        this.typeTime6 = dto.getTypeTime6();
+    }
 
     public ResEnvironmentUpdateDTO toResEnvironmentUpdateDTO() {
         return ResEnvironmentUpdateDTO.builder()
@@ -334,14 +433,19 @@ public class SiteEnvSetting {
                 .coatAddOption2(this.coatAddOption2)
                 .typeColor1(this.typeColor1)
                 .typeTime1(this.typeTime1)
+                .typeName2(this.typeName2)
                 .typeColor2(this.typeColor2)
                 .typeTime2(this.typeTime2)
+                .typeName3(this.typeName3)
                 .typeColor3(this.typeColor3)
                 .typeTime3(this.typeTime3)
+                .typeName4(this.typeName4)
                 .typeColor4(this.typeColor4)
                 .typeTime4(this.typeTime4)
+                .typeName5(this.typeName5)
                 .typeColor5(this.typeColor5)
                 .typeTime5(this.typeTime5)
+                .typeName6(this.typeName6)
                 .typeColor6(this.typeColor6)
                 .typeTime6(this.typeTime6)
                 .build();
@@ -349,5 +453,23 @@ public class SiteEnvSetting {
 
     public void updateStore(Store store) {
         this.store = store;
+    }
+
+    public int getMinuteByType(int type) {
+        if (type == 1) {
+            return typeTime1;
+        } else if (type == 2) {
+            return typeTime2;
+        } else if (type == 3) {
+            return typeTime3;
+        } else if (type == 4) {
+            return typeTime4;
+        } else if (type == 5) {
+            return typeTime5;
+        } else if (type == 6) {
+            return typeTime6;
+        } else {
+            return 0;
+        }
     }
 }

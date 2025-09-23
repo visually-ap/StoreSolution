@@ -51,6 +51,22 @@
                 font-size: 12px;
                 padding: 4px;
             }
+
+            .type_list {
+                font-size: 14px !important;
+                font-weight: 400;
+            }
+
+            .allday-cell {
+                text-align: center;
+                padding: 8px 4px;   /* 상하 8px, 좌우 4px */
+                line-height: 1.6;   /* 줄 간격 */
+            }
+
+            .select_readonly {
+                pointer-events: none;
+                background-color: #dddddd;
+            }
         </style>
 
         <div class="info_calendar">
@@ -120,7 +136,7 @@
                                 <h3 class="title">예약 정보</h3>
                             </div>
                             <div class="inner_bg inner_style_1 column">
-                                <div class="one-line mb-5px w_100">
+                                <div class="one-line mb-5px">
                                     <div class="half-line">
                                         <h4 class="inner_title">예약담당</h4>
                                         <select name="reservationManager" id="reservationManager" class="t-center">
@@ -128,21 +144,39 @@
                                         </select>
                                     </div>
                                     <div class="half-line">
+                                        <h4 class="inner_title">예약구분</h4>
+                                        <select name="type" id="type" class="t-center">
+                                            <option value="1" selected>맞춤예약</option>
+                                            <option value="2" th:text="${siteEnvDto.typeName2}"></option>
+                                            <option value="3" th:text="${siteEnvDto.typeName3}"></option>
+                                            <option value="4" th:text="${siteEnvDto.typeName4}"></option>
+                                            <option value="5" th:text="${siteEnvDto.typeName5}"></option>
+                                            <option value="6" th:text="${siteEnvDto.typeName6}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="one-line mb-5px">
+                                    <div class="half-line">
                                         <h4 class="inner_title">상담담당</h4>
                                         <select name="consultingManager" id="consultingManager" class="t-center">
                                             <option value="" selected>-- 선택 --</option>
                                             <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}"></option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="one-line consultReserve-line">
                                     <div class="half-line">
-                                        <h4 class="inner_title">상담예약</h4>
+                                        <h4 class="inner_title">예약날짜</h4>
                                         <div class="input-with-icon">
                                             <input type="text" name="consultingDate" id="consultingDate" class="datepicker reservationDatetime" placeholder="날짜선택" readonly>
                                         </div>
                                     </div>
-                                    <div class="half-line">
+                                </div>
+                                <div class="one-line">
+                                    <div class="one-line">
+                                        <h4 class="inner_title">예약시간</h4>
+                                        <label for="isAllday">
+                                            <input type="checkbox" name="isAllday" id="isAllday" value="true">
+                                            미정
+                                        </label>
                                         <select class="reservationDatetime" name="consultingHour" id="consultingHour">
                                             <option value="">선택</option>
                                             <option value="09">09</option>
@@ -163,7 +197,7 @@
                                         시&nbsp;
                                         <select class="reservationDatetime" name="consultingMinute" id="consultingMinute">
                                             <option value="">선택</option>
-                                            <option value="00">0</option>
+                                            <option value="00">00</option>
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="30">30</option>
@@ -193,12 +227,12 @@
             <div class="right_area">
                 <div class="flex between">
                     <ul class="date-line flex flex-start align-center">
-                        <li th:style="${'color: ' + siteEnvDto.typeColor1}">상담</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor2}">항목2</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor3}">항목3</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor4}">항목4</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor5}">항목5</li>
-                        <li th:style="${'color: ' + siteEnvDto.typeColor6}">항목6</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor1}">맞춤상담</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor2}" th:text="${siteEnvDto.typeName2}">항목2</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor3}" th:text="${siteEnvDto.typeName3}">항목3</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor4}" th:text="${siteEnvDto.typeName4}">항목4</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor5}" th:text="${siteEnvDto.typeName5}">항목5</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor6}" th:text="${siteEnvDto.typeName6}">항목6</li>
                     </ul>
                     <div class="date-line flex flex-end align-center">
                         <button class="prev-btn btn" id="prevBtn"> < </button>
@@ -322,6 +356,26 @@
     $(document).on('change', '#consultingManager', function() {
         setReservationText();
     });
+
+    $(document).on('click', '#isAllday', function () {
+        if ($(this).is(':checked')) {
+            $('#consultingHour').val('');
+            $('#consultingMinute').val('');
+            setReadonlySelect($('#consultingHour'), true);
+            setReadonlySelect($('#consultingMinute'), true);
+        } else {
+            setReadonlySelect($('#consultingHour'), false);
+            setReadonlySelect($('#consultingMinute'), false);
+        }
+    });
+
+    function setReadonlySelect($obj, state) {
+        if (state) {
+            $obj.addClass('select_readonly');
+        } else {
+            $obj.removeClass('select_readonly');
+        }
+    }
 
     function setReservationText() {
         // 이름

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>고객 상세 정보</title>
+
+    <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
+    <script th:src="@{/js/common/url.js}"></script>
+
+    <!-- modal -->
+    <script th:src="@{/js/modal.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+
+    <style>
+        .buyDetail {
+            cursor: pointer;
+        }
+
+        .buyDetail:hover {
+            background-color: #004fd0;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <h1>고객정보</h1>
+        <div>
+            <div>
+                <span>고객명1</span><span th:text="${'홍길동'}"></span>
+                <span>연락처</span><span th:text="${'010-2222-3333'}"></span>
+            </div>
+            <div>
+                <span>고객명1</span><span th:text="${'홍길동1'}"></span>
+                <span>연락처</span><span th:text="${'010-2222-4444'}"></span>
+            </div>
+            <div>
+                <span>촬영일</span><span th:text="${'2025-09-17'}"></span>
+                <span>장소</span><span th:text="${'대구'}"></span>
+            </div>
+            <div>
+                <span>본식일</span><span th:text="${'2025-09-17'}"></span>
+                <span>장소</span><span th:text="${'서울'}"></span>
+            </div>
+        </div>
+    </div>
+    <div>
+        컨설팅정보
+        <div class="data_box">
+            <div>
+                <span>업체명</span><span th:text="${'테스트업체'}"></span>
+                <span>담당자</span><span th:text="${'김새롬'}"></span>
+                <span>연락처</span><span th:text="${'010-9999-9999'}"></span>
+            </div>
+            <div>
+                <span>비고</span>
+<!--                여기 textarea로 적인 내용 표시될 거임-->
+                <div th:text="${'1231243246425365246254673547345673567635473567357'}"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1>구매내역</h1>
+        <button id="buyRegisterModalOpenButton">등록</button>
+        <table>
+            <tr>
+                <th>구매일</th>
+                <th>상품구분</th>
+                <th>구매내역</th>
+                <th>구매금액</th>
+                <th>수수료율</th>
+                <th></th>
+            </tr>
+            <tr class="buyDetail">
+                <td th:text="${'2025-09-17'}"></td>
+                <td th:text="${'맞춤정장'}"></td>
+                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
+                <td th:text="${'1,500,000'}"></td>
+                <td th:text="${'30%'}"></td>
+                <td>삭제</td>
+            </tr>
+            <tr class="buyDetail">
+                <td th:text="${'2025-09-17'}"></td>
+                <td th:text="${'맞춤정장'}"></td>
+                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
+                <td th:text="${'1,500,000'}"></td>
+                <td th:text="${'30%'}"></td>
+                <td>삭제</td>
+            </tr>
+            <tr class="buyDetail">
+                <td th:text="${'2025-09-17'}"></td>
+                <td th:text="${'맞춤정장'}"></td>
+                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
+                <td th:text="${'1,500,000'}"></td>
+                <td th:text="${'30%'}"></td>
+                <td>삭제</td>
+            </tr>
+            <tr class="buyDetail">
+                <td th:text="${'2025-09-17'}"></td>
+                <td th:text="${'맞춤정장'}"></td>
+                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
+                <td th:text="${'1,500,000'}"></td>
+                <td th:text="${'30%'}"></td>
+                <td>삭제</td>
+            </tr>
+            <tr class="buyDetail">
+                <td th:text="${'2025-09-17'}"></td>
+                <td th:text="${'맞춤정장'}"></td>
+                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
+                <td th:text="${'1,500,000'}"></td>
+                <td th:text="${'30%'}"></td>
+                <td>삭제</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<!--구매내역 상세 및 등록 모달-->
+<div class="modal_window modal_style" id="buyModal">
+    <div class="inner_box">
+        <div>
+            구매 내역
+        </div>
+        <div>
+            구매일
+            <input type="text">
+        </div>
+        <div>
+            상품구분
+            <select name="" id="">
+                <option value="">선택</option>
+            </select>
+        </div>
+        <div>
+            구매내역
+            <input type="text">
+        </div>
+        <div>
+            구매금액
+            <input type="text">
+        </div>
+        <div>
+            수수료율
+            <span th:text="${'15 %'}"></span>
+        </div>
+        <div>
+            <button id="buyModalRegisterButton">등록</button>
+            <button id="buyModalUpdateButton">저장</button>
+            <button class="closeModalButton btn_2" data-label="#buyModal" onclick="closeModal($(this).data('label'), initBuyModal)">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initBuyModal() {
+
+    }
+
+    $(document).on('click', '#buyRegisterModalOpenButton', function() {
+        openModal('#buyModal', initBuyModal);
+        $('#buyModalRegisterButton').show();
+        $('#buyModalUpdateButton').show();
+    });
+
+    $(document).on('click', '.buyDetail', function() {
+        openModal('#buyModal', initBuyModal);
+        $('#buyModalRegisterButton').hide();
+        $('#buyModalUpdateButton').show();
+    });
+</script>
+</body>
+</html>

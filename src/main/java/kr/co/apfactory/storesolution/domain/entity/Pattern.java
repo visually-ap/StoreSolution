@@ -63,6 +63,9 @@ public class Pattern extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private FileAttach fileAttachRightBlack;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private FileAttach fileAttachStoreSolution;
+
     @Column(columnDefinition = "tinyint default 99", nullable = false)
     @Comment("노출 순서")
     private Integer showSequence;

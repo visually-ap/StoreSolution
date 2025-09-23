@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SiteEnvSettingRepository extends JpaRepository<SiteEnvSetting, Long>, EnvironmentSupportRepository {
     SiteEnvSetting findByStore(Store store);
+    SiteEnvSetting findByStoreId(Long storeId);
 
     SiteEnvSetting findByStoreIsNull();
 

@@ -41,10 +41,19 @@ public class ResCustomerDTO {
 
     private Boolean completed;
 
+    private String insertDate;
+    private String reservationTypeString;
+    private Integer type;
+
+    private Boolean isAllday;
+
     public void setConsultingDatetime() {
-        if (this.consultingDatetimeFrom != null) {
+        if (!this.isAllday) {
             this.consultingHour = String.format("%02d", this.consultingDatetimeFrom.getHour());
             this.consultingMinute = String.format("%02d", this.consultingDatetimeFrom.getMinute());
+        } else {
+            this.consultingHour = "";
+            this.consultingMinute = "";
         }
     }
 }

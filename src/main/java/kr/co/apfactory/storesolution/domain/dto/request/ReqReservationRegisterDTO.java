@@ -2,11 +2,12 @@ package kr.co.apfactory.storesolution.domain.dto.request;
 
 import kr.co.apfactory.storesolution.domain.entity.Customer;
 import kr.co.apfactory.storesolution.domain.entity.Reservation;
+import kr.co.apfactory.storesolution.domain.entity.User;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class ReqReservationRegisterDTO {
@@ -33,6 +34,13 @@ public class ReqReservationRegisterDTO {
 
     private String memo;
 
+    private Integer type;
+
+    private LocalDateTime consultingDatetimeFrom;
+    private LocalDateTime consultingDatetimeTo;
+
+    private Boolean isAllday = false;
+
     public Customer toCustomerEntity() {
         return Customer.builder()
                 .name1(this.name1)
@@ -47,15 +55,33 @@ public class ReqReservationRegisterDTO {
                 .build();
     }
 
-    public Reservation toReservationEntity(int type) {
+    public Reservation toReservationEntity(Customer customer) {
         return Reservation.builder()
-                .allDay(isAllDay())
-                .consultingDate(consultingDate)
-                .type(type)
+                .customer(customer)
+                .reservationManager(User.builder().id(this.getReservationManager()).build())
+                .consultingManager(User.builder().id(this.getConsultingManager()).build())
+                .allDay(this.isAllday)
+                .type(this.type)
+                .consultingDate(this.consultingDate)
+                .consultingDatetimeFrom(this.isAllday ? null : this.consultingDatetimeFrom)
+                .consultingDatetimeTo(this.isAllday ? null : this.consultingDatetimeTo)
                 .build();
     }
 
-    public boolean isAllDay() {
-        return StringUtils.isEmpty(this.consultingHour) ? true : false;
+    public void updateConsultingDatetime(Integer consultingTime) {
+        int hour = parseOrDefault(this.consultingHour, 0);
+        int minute = parseOrDefault(this.consultingMinute, 0);
+
+        this.consultingDatetimeFrom = consultingDate.atTime(hour, minute);
+        this.consultingDatetimeTo = consultingDatetimeFrom.plusMinutes(consultingTime);
+    }
+
+    // 유틸: 문자열을 정수로 파싱하되 실패 시 기본값 반환
+    private int parseOrDefault(String value, int defaultValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            return defaultValue;
+        }
     }
 }

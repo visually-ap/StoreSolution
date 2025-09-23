@@ -2,70 +2,58 @@ package kr.co.apfactory.storesolution.application.service;
 
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqFabricSaveDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.*;
-import kr.co.apfactory.storesolution.global.i18n.I18nUtility;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    private final PasswordEncoder passwordEncoder;
-
-    private final I18nUtility i18nUtility;
-
-    private final StoreRepository storeRepository;
-
-    private final UserRepository userRepository;
-
     private final CustomerRepository customerRepository;
-
     private final ReservationRepository reservationRepository;
-
     private final SiteEnvSettingRepository siteEnvSettingRepository;
-
     private final CounselingCommonRepository counselingCommonRepository;
+    private final CounselingJacketRepository counselingJacketRepository;
+    private final CounselingPantsRepository counselingPantsRepository;
+    private final CounselingVestRepository counselingVestRepository;
+    private final CounselingCoatRepository counselingCoatRepository;
 
     public ResponseDTO registerCustomerReservation(ReqReservationRegisterDTO reqReservationRegisterDTO) {
-        // 등록가능한 일정인지부터 확인해보자
-        LocalDateTime consultingDatetime = reqReservationRegisterDTO.getConsultingDate().atTime(Integer.parseInt(reqReservationRegisterDTO.getConsultingHour()), Integer.parseInt(reqReservationRegisterDTO.getConsultingMinute()));
-        if (reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanEqualAndConsultingDatetimeToGreaterThan(User.builder().id(reqReservationRegisterDTO.getConsultingManager()).build(), consultingDatetime, consultingDatetime) > 0) {
-            return ResponseDTO.builder()
-                    .message("등록할 수 없는 일정입니다.\n상담담당의 일정을 확인하시기 바랍니다.")
-                    .build();
-        }
-
         Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
+
+        if (!reqReservationRegisterDTO.getIsAllday()) {
+            SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStore(store);
+            reqReservationRegisterDTO.updateConsultingDatetime(siteEnvSetting.getMinuteByType(reqReservationRegisterDTO.getType()));
+            // 등록 가능한 일정인지 먼저 확인
+            if (reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanAndConsultingDatetimeToGreaterThan(
+                    User.builder().id(reqReservationRegisterDTO.getConsultingManager()).build()
+                    , reqReservationRegisterDTO.getConsultingDatetimeTo()
+                    , reqReservationRegisterDTO.getConsultingDatetimeFrom()) > 0) {
+                return ResponseDTO.builder()
+                        .message("등록할 수 없는 일정입니다.\n상담담당의 일정을 확인하시기 바랍니다.")
+                        .build();
+            }
+        }
 
         // 고객정보 등록
         Customer customer = reqReservationRegisterDTO.toCustomerEntity();
         customer.updateStore(store);
-
         customerRepository.save(customer);
 
         // 예약 정보 등록
-        Reservation reservation = reqReservationRegisterDTO.toReservationEntity(1);
-        reservation.updateCustomer(customer);
-        reservation.updateReservationManager(User.builder().id(reqReservationRegisterDTO.getReservationManager()).build());
-        reservation.updateConsultingManager(User.builder().id(reqReservationRegisterDTO.getConsultingManager()).build());
-        if (!reservation.getAllDay()) {
-            SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStore(store);
-            reservation.updateConsultingDatetime(reqReservationRegisterDTO.getConsultingHour(), reqReservationRegisterDTO.getConsultingMinute(), siteEnvSetting.getTypeTime1());
-        }
-
+        Reservation reservation = reqReservationRegisterDTO.toReservationEntity(customer);
         reservationRepository.save(reservation);
 
         return ResponseDTO.builder()
@@ -74,8 +62,8 @@ public class CustomerService {
                 .build();
     }
 
-    public ResponseDTO getCustomerList(String searchKeyword) {
-        List<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(searchKeyword, LoginUser.getDetails().getStoreId());
+    public ResponseDTO getCustomerList(String searchKeyword, LocalDate searchDate, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
+        List<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(searchKeyword, searchDate, LoginUser.getDetails().getStoreId(), resEnvironmentUpdateDTO);
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .result(resCustomerList)
@@ -98,8 +86,19 @@ public class CustomerService {
                 .build();
     }
 
-    public ResponseDTO updateConsultingReservation(ReqReservationUpdateDTO  reqReservationUpdateDTO) {
-        Store store = Store.builder().id(LoginUser.getDetails().getStoreId()).build();
+    public ResponseDTO updateConsultingReservation(ReqReservationUpdateDTO reqReservationUpdateDTO) {
+        SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStoreId(LoginUser.getDetails().getStoreId());
+        reqReservationUpdateDTO.updateConsultingDatetime(siteEnvSetting.getMinuteByType(reqReservationUpdateDTO.getType()));
+        // 등록 가능한 일정인지 먼저 확인
+        if (!reqReservationUpdateDTO.getIsAllday() && reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanAndConsultingDatetimeToGreaterThan(
+                User.builder().id(reqReservationUpdateDTO.getConsultingManager()).build()
+                , reqReservationUpdateDTO.getConsultingDatetimeTo()
+                , reqReservationUpdateDTO.getConsultingDatetimeFrom()) > 0
+        ) {
+            return ResponseDTO.builder()
+                    .message("등록할 수 없는 일정입니다.\n상담담당의 일정을 확인하시기 바랍니다.")
+                    .build();
+        }
 
         Reservation reservation = reservationRepository.findById(reqReservationUpdateDTO.getReservationId()).orElseThrow(IllegalAccessError::new);
         if (reservation == null) {
@@ -113,34 +112,8 @@ public class CustomerService {
         customer.updateCustomerInfo(reqReservationUpdateDTO);
         customerRepository.save(customer);
 
-        LocalDateTime consultingDatetimeFrom = reservation.getConsultingDatetimeFrom();
-        LocalDateTime consultingDatetimeTo = reservation.getConsultingDatetimeTo();
-
-        // 이전 상담 일정 내용 저장 후 지우고
-        reservation.updateConsultingDatetimeFrom(null);
-        reservation.updateConsultingDatetimeTo(null);
-
-        // 등록가능한 일정인지 확인해보자
-        LocalDateTime consultingDatetime = reqReservationUpdateDTO.getConsultingDate().atTime(Integer.parseInt(reqReservationUpdateDTO.getConsultingHour()), Integer.parseInt(reqReservationUpdateDTO.getConsultingMinute()));
-        if (reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanEqualAndConsultingDatetimeToGreaterThan(User.builder().id(reqReservationUpdateDTO.getConsultingManager()).build(), consultingDatetime, consultingDatetime) > 0) {
-            // 등록할 수 없는 일정이라면 원래대로 원복한다.
-            reservation.updateConsultingDatetimeFrom(consultingDatetimeFrom);
-            reservation.updateConsultingDatetimeTo(consultingDatetimeTo);
-
-            reservationRepository.save(reservation);
-
-            return ResponseDTO.builder()
-                    .message("등록할 수 없는 일정입니다.\n상담담당의 일정을 확인하시기 바랍니다.")
-                    .build();
-        }
-
         // 예약 정보 등록
-        reservation.updateReservationManager(User.builder().id(reqReservationUpdateDTO.getReservationManager()).build());
-        reservation.updateConsultingManager(User.builder().id(reqReservationUpdateDTO.getConsultingManager()).build());
-        if (!reservation.getAllDay()) {
-            SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStore(store);
-            reservation.updateConsultingDatetime(reqReservationUpdateDTO.getConsultingHour(), reqReservationUpdateDTO.getConsultingMinute(), siteEnvSetting.getTypeTime1());
-        }
+        reservation.updateReservation(reqReservationUpdateDTO);
 
         return ResponseDTO.builder()
                 .isSuccess(true)
@@ -151,39 +124,5 @@ public class CustomerService {
     public Page<ResCustomerDTO>  getCustomerList(Pageable pageable, SearchDTO searchDTO) {
         Page<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(pageable, searchDTO, LoginUser.getDetails().getStoreId());
         return resCustomerList;
-    }
-
-    public ResCounselingDTO getCounselingDetail(Long reservationId) {
-        ResCounselingDTO resCounselingDTO = customerRepository.selectCounselingDetail(LoginUser.getDetails().getStoreId(), reservationId);
-        if (resCounselingDTO == null) {
-            return null;
-        }
-
-        if (resCounselingDTO.getCounselingCommonId() == null) {
-            counselingCommonRepository.save(CounselingCommon.builder()
-                    .store(Store.builder().id(LoginUser.getDetails().getStoreId()).build())
-                    .reservation(Reservation.builder().id(resCounselingDTO.getReservationId()).build())
-                    .build()
-            );
-        }
-
-        return resCounselingDTO;
-    }
-
-    public ResponseDTO updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO) {
-        CounselingCommon counselingCommon = counselingCommonRepository.findByStoreIdAndReservationId(LoginUser.getDetails().getStoreId(), reqFabricSaveDTO.getReservationId());
-        if (counselingCommon == null) {
-            return ResponseDTO.builder()
-                    .message("잘못된 접근입니다.")
-                    .build();
-        }
-
-        counselingCommon.updateFabricData(reqFabricSaveDTO);
-
-        counselingCommonRepository.save(counselingCommon);
-
-        return ResponseDTO.builder()
-                .isSuccess(true)
-                .build();
     }
 }

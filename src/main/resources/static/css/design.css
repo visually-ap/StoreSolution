@@ -6,13 +6,15 @@
 }
 
 .designTabs {
-    border-bottom: 1px solid #d1d3d4;
+    gap: 15px;
     margin-bottom: 25px;
 }
 
 .designTabs .tab-link {
     cursor: pointer;
-    border-top: 1px solid #d1d3d4;
+    border: 1px solid #d1d3d4;
+    border-radius: 7px;
+    box-shadow: 3px 3px 11px 1px rgba(0, 0, 0, .09);
     background: #fff;
     font-weight: 600;
     height: 50px;
@@ -60,10 +62,12 @@
     border-radius: 7px;
     padding: 0 20px;
     box-shadow: 3px 3px 11px 1px rgba(0, 0, 0, .09);
+    min-width: 7.26%;
+    cursor: pointer;
 }
 .sub-tabs li.current {
-    background: #7991b9;
-    background: #80cbc4;
+    background: #1e6ceb;
+    border: 1px solid #1e6ceb;
     color: #fff;
 }
 
@@ -102,6 +106,12 @@
     box-sizing: border-box;
     background: #fff;
     height: 500px;
+    cursor: pointer;
+}
+
+.img-frame.selectedImage {
+    border-color: #1e6ceb;
+    border-width: 3px;
 }
 
 .img-frame img {
@@ -120,7 +130,8 @@
 
 @media all and (max-width: 1500px) {
     .img-frame {
-        height: 40vh;
+        /*height: 40vh;*/
+        height: 70vh;
     }
 }
 
@@ -139,6 +150,8 @@
         height: 45px;
         line-height: 45px;
         font-size: 16px;
+        min-width: 7.26%;
+        cursor: pointer;
     }
     .article-img-frame {
         width: 32.4%;
@@ -147,7 +160,8 @@
         gap: 10px;
     }
     .img-frame {
-        height: 25vh;
+        /*height: 25vh;*/
+        height: 70vh;
     }
 }
 

@@ -79,4 +79,9 @@ public class CommonController {
     public String gotoDenyPage() {
         return "error/deny";
     }
+
+    @GetMapping("/popup/customer/detail")
+    public String openCustomerDetailPopup() {
+        return "views/popup/customerDetail";
+    }
 }

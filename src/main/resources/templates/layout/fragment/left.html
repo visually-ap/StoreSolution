@@ -2,14 +2,86 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="leftFragment">
     <script>
+        let nextUrl = '';
+        let nowParts = '';
+        const completed = getParamValue('completed');
+
         function openAboutPopup() {
-            window.open(`/counseling/about?id=${getParamValue('id')}`, "ImageViewer"
-                , 'fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no'
+            window.open(`/counseling/re-about?reservationId=${getParamValue('reservationId')}`, "ImageViewer"
+                , `left=0, top=0, width=${screen.availWidth}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
             );
         }
 
         function gotoSubPage(url) {
-            location.href = `${url}?reservationId=${getParamValue('reservationId')}`;
+            nextUrl = url;
+            if (completed == 'true') {
+                location.href = `${url}?reservationId=${getParamValue('reservationId')}&completed=${completed}`;
+            } else {
+                if (nowParts == 'fabric') {
+                    if (isEmpty($('#workType').val())) {
+                        alert('작업방식 선택 후 디자인 또는 사이즈 페이지로 이동할 수 있습니다.');
+                        return;
+                    }
+
+                    if (isEmpty($('#factory').val())) {
+                        alert('라인 선택 후 디자인 또는 사이즈 페이지로 이동할 수 있습니다.');
+                        return;
+                    }
+
+                    if ($('#jacket').val() == 'false' && $('#pants').val() == 'false' && $('#vest').val() == 'false' && $('#coat').val() == 'false') {
+                        alert('품목 선택 후 디자인 또는 사이즈 페이지로 이동할 수 있습니다.');
+                        return;
+                    }
+                }
+
+                showLoadingImage();
+                callService(
+                    "POST"
+                    , `/counseling/${nowParts}/save`
+                    , JSON.stringify(convertFormToJSON($('#dataForm')))
+                    , function (response) {
+                        if (!response.success) {
+                            alert(response.message);
+                            location.href = '/counseling/customer/list';
+                        } else {
+                            location.href = `${url}?reservationId=${getParamValue('reservationId')}&completed=${completed}`;
+                        }
+                    }
+                );
+            }
+        }
+
+        function completeCounseling() {
+            if (!confirm('상담을 완료하시겠습니까?\n완료 시 상담완료 상태로 변경됩니다.\nWhite, Black 라인 선택 시 주문 대기 목록으로 이동합니다.')) {
+                return;
+            }
+
+            nextUrl = '/counseling/complete';
+            showLoadingImage();
+            callService(
+                "POST"
+                , `/counseling/${nowParts}/save`
+                , JSON.stringify(convertFormToJSON($('#dataForm')))
+                , function (response) {
+                    if (!response.success) {
+                        alert(response.message);
+                        location.href = '/counseling/customer/list';
+                    } else {
+                        showLoadingImage();
+                        callService(
+                            "POST"
+                            , `/counseling/complete?reservationId=${getParamValue('reservationId')}`
+                            , {}
+                            , function (response) {
+                                alert(response.message);
+                                if (response.success) {
+                                    location.href = '/counseling/customer/list';
+                                }
+                            }
+                        );
+                    }
+                }
+            );
         }
     </script>
 
@@ -19,14 +91,14 @@
         <ul class="left_nav" th:if="${pathname.startsWith('/counseling') && pathname != '/counseling/customer/list'}">
             <!-- about -->
             <th:block th:if="${pathname == '/counseling/about'}">
-                <li class="on">
+                <li class="on hideTarget">
                     <a href="javascript: return;" class="about">
                         <span>About</span>
                     </a>
                 </li>
             </th:block>
             <th:block th:unless="${pathname == '/counseling/about'}">
-                <li>
+                <li class="hideTarget">
                     <a href="javascript: openAboutPopup();" class="about">
                         <span>About</span>
                     </a>
@@ -62,9 +134,6 @@
                     </a>
                 </li>
             </th:block>
-            <script>
-
-            </script>
             <!-- Size -->
             <th:block th:if="${pathname == '/counseling/size'}">
                 <li class="on">
@@ -80,7 +149,18 @@
                     </a>
                 </li>
             </th:block>
+            <li class="hideTarget" style="margin-top: 50px;">
+                <a href="javascript: completeCounseling()" class="order">
+                    <span>Completion</span>
+                </a>
+            </li>
         </ul>
+
+        <script>
+            if (completed == 'true') {
+                $('.hideTarget').hide();
+            }
+        </script>
 
         <!-- Store Management -->
         <ul class="left_nav" th:if="${pathname.startsWith('/setting')}">
@@ -149,14 +229,13 @@
             </th:block>
 
 
-
-<!--            <li>-->
-<!--                <a href="">-->
-<!--                    <img th:src="@{/images/icon/size.png}" alt="size 아이콘" style="display: block;">-->
-<!--                    <img th:src="@{/images/icon/size_on.png}" alt="size 아이콘" style="display: none;">-->
-<!--                    <span>Size</span>-->
-<!--                </a>-->
-<!--            </li>-->
+            <!--            <li>-->
+            <!--                <a href="">-->
+            <!--                    <img th:src="@{/images/icon/size.png}" alt="size 아이콘" style="display: block;">-->
+            <!--                    <img th:src="@{/images/icon/size_on.png}" alt="size 아이콘" style="display: none;">-->
+            <!--                    <span>Size</span>-->
+            <!--                </a>-->
+            <!--            </li>-->
         </ul>
     </div>
 </th:block>

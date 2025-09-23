@@ -1,12 +1,14 @@
 package kr.co.apfactory.storesolution.domain.repository.support.impl;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.*;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.support.CustomerSupportRepository;
 import kr.co.apfactory.storesolution.domain.repository.util.FilterManager;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -29,9 +32,9 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     private final FilterManager filterManager;
 
     @Override
-    public List<ResCustomerDTO> selectCustomerList(String searchKeyword, Long storeId) {
-        QCustomer customer = QCustomer.customer;
+    public List<ResCustomerDTO> selectCustomerList(String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
         QReservation reservation = QReservation.reservation;
+        QCustomer customer = QCustomer.customer;
 
         List<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -41,16 +44,31 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.mobile1
                                 , customer.name2
                                 , customer.mobile2
+                                , customer.photoDate
+                                , customer.weddingDate
+                                , Expressions.stringTemplate("DATE_FORMAT({0}, {1})", reservation.insertDatetime, ConstantImpl.create("%Y-%m-%d")).as("insertDate")
+                                , reservation.consultingDate
+                                , reservation.consultingDate
                                 , reservation.completed
                                 , reservation.id.as("reservationId")
+                                , new CaseBuilder()
+                                        .when(reservation.type.eq(1)).then(Expressions.constant("맞춤상담"))
+                                        .when(reservation.type.eq(2)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName2()))
+                                        .when(reservation.type.eq(3)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName3()))
+                                        .when(reservation.type.eq(4)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName4()))
+                                        .when(reservation.type.eq(5)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName5()))
+                                        .when(reservation.type.eq(6)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName6()))
+                                        .otherwise(Expressions.constant("맞춤상담"))
+                                        .as("reservationTypeString")
                         )
                 )
-                .from(customer)
-                .leftJoin(reservation).on(customer.eq(reservation.customer))
+                .from(reservation)
+                .innerJoin(customer).on(reservation.customer.eq(customer))
                 .where(
                         customer.deleted.eq(false)
                                 .and(customer.store.id.eq(storeId))
                                 .and(filterManager.getReservationCustomerListBooleanBuilderByKeyword(searchKeyword))
+                                .and(filterManager.getReservationCustomerListBooleanBuilderByDate(searchDate))
                 )
                 .orderBy()
                 .fetch();
@@ -82,6 +100,8 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , reservation.consultingDatetimeFrom
                                 , reservation.completed
                                 , reservation.id.as("reservationId")
+                                , reservation.type
+                                , reservation.allDay.as("isAllday")
                         )
                 )
                 .from(reservation)
@@ -102,6 +122,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
         QReservation reservation = QReservation.reservation;
         QUser reservationManger = new QUser("reservationManger");
         QUser consultingManger = new QUser("consultingManger");
+        QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
 
         QueryResults<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -120,6 +141,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , consultingManger.name.as("consultingManagerName")
                                 , reservation.id.as("reservationId")
                                 , reservation.consultingDate
+                                , reservation.completed
                         )
                 )
                 .from(customer)
@@ -128,64 +150,14 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                 .innerJoin(consultingManger).on(reservation.reservationManager.eq(consultingManger))
                 .where(
                         customer.deleted.eq(false)
-                                .and(reservation.completed.isFalse())
                                 .and(customer.store.id.eq(storeId))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByKeyword(searchDTO))
+                                .and(filterManager.getCounselingCustomerListBooleanBuilderByState(searchDTO))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByPeriod(searchDTO))
                 )
                 .orderBy(reservation.insertDatetime.desc())
                 .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
-    }
-
-    @Override
-    public ResCounselingDTO selectCounselingDetail(Long storeId, Long reservationId) {
-        QCustomer customer = QCustomer.customer;
-        QReservation reservation = QReservation.reservation;
-        QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
-
-        ResCounselingDTO result = queryFactory.select(
-                        Projections.fields(
-                                ResCounselingDTO.class
-                                , customer.id.as("customerId")
-                                , reservation.id.as("reservationId")
-                                , counselingCommon.id.as("counselingCommonId")
-                                , customer.name1.as("name")
-                                , customer.mobile1.as("mobile")
-                                , counselingCommon.factory
-                                , counselingCommon.jacket
-                                , counselingCommon.pants
-                                , counselingCommon.vest
-                                , counselingCommon.coat
-                                , counselingCommon.fabricCompanyJacket
-                                , counselingCommon.fabricPatternJacket
-                                , counselingCommon.fabricColorJacket
-                                , counselingCommon.fabricCompanyPants
-                                , counselingCommon.fabricPatternPants
-                                , counselingCommon.fabricColorPants
-                                , counselingCommon.fabricCompanyVest
-                                , counselingCommon.fabricPatternVest
-                                , counselingCommon.fabricColorVest
-                                , counselingCommon.fabricCompanyCoat
-                                , counselingCommon.fabricPatternCoat
-                                , counselingCommon.fabricColorCoat
-                        )
-                )
-                .from(reservation)
-                .innerJoin(customer).on(customer.eq(reservation.customer))
-                .leftJoin(counselingCommon).on(
-                        reservation.eq(counselingCommon.reservation)
-                                .and(counselingCommon.canceled.isFalse())
-                                .and(counselingCommon.store.id.eq(storeId))
-                )
-                .where(
-                        customer.deleted.eq(false)
-                                .and(reservation.id.eq(reservationId))
-                )
-                .orderBy()
-                .fetchOne();
-
-        return result;
     }
 }

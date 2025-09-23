@@ -9,12 +9,15 @@ import java.time.LocalDate;
 public class ReqFabricSaveDTO {
     private Long reservationId;
 
+    private Long workType;
     private Integer factory;
 
     private Boolean jacket = false;
     private Boolean pants = false;
     private Boolean vest = false;
     private Boolean coat = false;
+
+    private Boolean allSameFabric = false;
 
     private String fabricCompanyJacket;
     private String fabricPatternJacket;

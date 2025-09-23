@@ -6,6 +6,7 @@ import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationRegisterDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -44,8 +45,9 @@ public class ReservationRestController {
     }
 
     @GetMapping("/customer/list")
-    public ResponseEntity<ResponseDTO> getCustomerList(String searchKeyword) {
-        return ResponseEntity.ok(customerService.getCustomerList(searchKeyword));
+    public ResponseEntity<ResponseDTO> getCustomerList(String searchKeyword, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        ResEnvironmentUpdateDTO resEnvironmentUpdateDTO = siteService.getSiteEnvironment();
+        return ResponseEntity.ok(customerService.getCustomerList(searchKeyword, searchDate, resEnvironmentUpdateDTO));
     }
 
     @GetMapping("/customer/detail")

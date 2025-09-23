@@ -72,14 +72,19 @@ public class ResEnvironmentUpdateDTO {
     // 항목별 색상 및 시간 설정
     private String typeColor1;
     private Integer typeTime1;
+    private String typeName2;
     private String typeColor2;
     private Integer typeTime2;
+    private String typeName3;
     private String typeColor3;
     private Integer typeTime3;
+    private String typeName4;
     private String typeColor4;
     private Integer typeTime4;
+    private String typeName5;
     private String typeColor5;
     private Integer typeTime5;
+    private String typeName6;
     private String typeColor6;
     private Integer typeTime6;
 
@@ -136,14 +141,19 @@ public class ResEnvironmentUpdateDTO {
                 .coatAddOption2(this.coatAddOption2)
                 .typeColor1(this.typeColor1)
                 .typeTime1(this.typeTime1)
+                .typeName2(this.typeName2)
                 .typeColor2(this.typeColor2)
                 .typeTime2(this.typeTime2)
+                .typeName3(this.typeName3)
                 .typeColor3(this.typeColor3)
                 .typeTime3(this.typeTime3)
+                .typeName4(this.typeName4)
                 .typeColor4(this.typeColor4)
                 .typeTime4(this.typeTime4)
+                .typeName5(this.typeName5)
                 .typeColor5(this.typeColor5)
                 .typeTime5(this.typeTime5)
+                .typeName6(this.typeName6)
                 .typeColor6(this.typeColor6)
                 .typeTime6(this.typeTime6)
                 .build();

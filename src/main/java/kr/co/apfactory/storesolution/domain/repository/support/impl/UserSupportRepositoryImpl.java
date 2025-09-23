@@ -207,12 +207,13 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
                                         , GroupBy.list(
                                                 Projections.fields(
                                                         ResReservationDTO.class
-                                                        , reservation.id
+                                                        , reservation.id.as("reservationId")
                                                         , reservation.allDay
                                                         , reservation.consultingDatetimeFrom
                                                         , reservation.consultingDatetimeTo
                                                         , reservation.type
                                                         , customer.name1.as("customerName")
+                                                        , customer.id.as("customerId")
                                                 )
                                         ).as("reservationList")
                                 )
@@ -221,7 +222,7 @@ public class UserSupportRepositoryImpl implements UserSupportRepository {
 
         for (ResEmployeeScheduleDTO dto : results) {
             List<ResReservationDTO> filtered = dto.getReservationList().stream()
-                    .filter(res -> res.getId() != null)
+                    .filter(res -> res.getReservationId() != null)
                     .collect(Collectors.toList());
             dto.setReservationList(filtered);
         }

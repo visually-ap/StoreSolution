@@ -19,7 +19,6 @@ function renderTimeTable(tableId, date) {
         , {}
         , function (response) {
             const fp1 = standardPicker($('.timetable_datepicker'));
-
             fp1.setDate(date);
 
             let employeeList = response.result;
@@ -41,6 +40,44 @@ function renderTimeTable(tableId, date) {
                 theadRow.appendChild(th);
             });
 
+            /** ----------------------------
+             * 1. 시간 미정 Row 추가
+             * ---------------------------- */
+            const trAllDay = document.createElement('tr');
+
+            // 첫 두 칸(시간, 분) 합쳐서 "시간 미정"
+            const allDayTh = document.createElement('th');
+            allDayTh.colSpan = 2;
+            allDayTh.textContent = "미정";
+            trAllDay.appendChild(allDayTh);
+
+            // 직원별 칸
+            employeeList.forEach(employee => {
+                const td = document.createElement('td');
+                td.className = 'schedule-cell allday-cell';
+
+                // 해당 직원의 allday 예약 찾기
+                const alldayReservations = (employee.reservationList || []).filter(res => res.allDay);
+
+                if (alldayReservations.length > 0) {
+                    // td.style.backgroundColor = '#666';
+                    // td.style.color = 'white';
+                    // td.style.fontWeight = 'bold';
+
+                    // 고객명을 줄바꿈으로 표시
+                    td.innerHTML = alldayReservations
+                        .map(res => `<span style="color:${getCellBackgroundColor(res.type)}"><span class="customerDetail">[${res.customerName}]</span>님 <span class="reservationDetail">예약</span></span>`)
+                        .join('<br>');
+                }
+
+                trAllDay.appendChild(td);
+            });
+
+            tbody.appendChild(trAllDay);
+
+            /** ----------------------------
+             * 2. 기존 타임테이블 (09:00 ~ 23:00)
+             * ---------------------------- */
             const startHour = 9;
             const endHour = 23;
             const skipMap = {}; // rowIdx-empIdx 키
@@ -56,6 +93,10 @@ function renderTimeTable(tableId, date) {
                         const hourTh = document.createElement('th');
                         hourTh.rowSpan = 6;
                         hourTh.textContent = `${String(hour).padStart(2, '0')}시`;
+
+                        // ★ 시간별 id 추가 (예: time-09, time-10 ...)
+                        hourTh.id = "time-" + String(hour).padStart(2, '0');
+
                         tr.appendChild(hourTh);
                     }
 
@@ -69,7 +110,9 @@ function renderTimeTable(tableId, date) {
 
                         const currentTime = new Date(`2000-01-01T${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`);
 
+                        // allDay 예약은 시간표에서는 제외
                         const reservation = (employee.reservationList || []).find(res => {
+                            if (res.allDay) return false;
                             const from = new Date(res.consultingDatetimeFrom);
                             return from.getHours() === currentTime.getHours()
                                 && from.getMinutes() === currentTime.getMinutes();
@@ -89,7 +132,7 @@ function renderTimeTable(tableId, date) {
                             td.style.backgroundColor = getCellBackgroundColor(reservation.type);
                             td.style.color = 'white';
                             td.style.fontWeight = 'bold';
-                            td.textContent = `[${reservation.customerName}]님 예약`;
+                            td.innerHTML = `<span class="customerDetail">[${reservation.customerName}]</span>님 <span class="reservationDetail">예약</span>`;
 
                             // 중복 셀 제거용 skipMap 세팅
                             for (let j = 1; j < rowspan; j++) {

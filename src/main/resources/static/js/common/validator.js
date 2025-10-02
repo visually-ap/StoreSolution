@@ -202,5 +202,175 @@ const validationObject = {
             required: "상담예약시간(분)을 선택해 주세요.",
         }
     }
+    , consultingPartnerName: {
+        rules : {
+            required: true,
+            regexp: "^.{1,30}$",
+        }
+        , message: {
+            required: "업체명은 필수 입력 항목입니다.",
+            regexp: "업체명은 30자 이내로 입력해 주세요.",
+        }
+    }
+    , consultingPartnerPic: {
+        rules : {
+            required: true,
+            regexp: "^.{1,30}$",
+        }
+        , message: {
+            required: "담당자는 필수 입력 항목입니다.",
+            regexp: "담당자는 30자 이내로 입력해 주세요.",
+        }
+    }
+    , consultingPartnerContact: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,12}$",
+        }
+        , message: {
+            required: "연락처는 필수 입력 항목입니다.",
+            regexp: "연락처는 12자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+    , consultingPartnerCharge: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,2}$",
+        }
+        , message: {
+            required: "수수료율은 필수 입력 항목입니다.",
+            regexp: "수수료율은 2자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+    , purchaseDate: {
+        rules : {
+            required: true,
+        }
+        , message: {
+            required: "구매일을 선택해 주세요.",
+        }
+    }
+    , purchaseMemo: {
+        rules : {
+            required: true,
+            regexp: "^.{1,50}$",
+        }
+        , message: {
+            required: "구매내역은 필수 입력 항목입니다.",
+            regexp: "구매내역은 50자 이내로 입력해 주세요.",
+        }
+    }
+    , purchasePrice: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,8}$",
+        }
+        , message: {
+            required: "구매금액은 필수 입력 항목입니다.",
+            regexp: "구매금액은 8자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+
+    , paymentDate: {
+        rules : {
+            required: true,
+        }
+        , message: {
+            required: "결제일을 선택해 주세요.",
+        }
+    }
+    , paymentPic: {
+        rules : {
+            required: true,
+            regexp: "^.{1,50}$",
+        }
+        , message: {
+            required: "담당자는 필수 입력 항목입니다.",
+            regexp: "담당자는 50자 이내로 입력해 주세요.",
+        }
+    }
+    , paymentAmount: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,8}$",
+        }
+        , message: {
+            required: "결제금액은 필수 입력 항목입니다.",
+            regexp: "결제금액은 8자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+    , paymentOutstanding: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,8}$",
+        }
+        , message: {
+            required: "미수금은 필수 입력 항목입니다.",
+            regexp: "미수금은 8자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+    , paymentMemo: {
+        rules : {
+            required: false,
+            regexp1: "^.{1,50}$",
+        }
+        , message: {
+            regexp1: "비고는 50자 이내로 입력해 주세요.",
+        }
+    }
+    , rentalItemName: {
+        rules : {
+            required: true,
+            regexp: "^.{1,10}$",
+        }
+        , message: {
+            required: "상품명은 필수 입력 항목입니다.",
+            regexp: "상품명은 30자 이내로 입력해 주세요.",
+        }
+    }
+    , rentalItemSize: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,3}$",
+        }
+        , message: {
+            required: "사이즈는 필수 입력 항목입니다.",
+            regexp: "사이즈는 3자 이내의 숫자로 입력해 주세요.",
+        }
+    }
+    , rentalItemMemo: {
+        rules : {
+            required: false,
+            regexp1: "^.{1,50}$",
+        }
+        , message: {
+            regexp1: "비고는 50자 이내로 입력해 주세요.",
+        }
+    }
+    , rentalFromDate: {
+        rules : {
+            required: true,
+        }
+        , message: {
+            required: "대여일을 선택해 주세요.",
+        }
+    }
+    , rentalRequestDate: {
+        rules : {
+            required: true,
+        }
+        , message: {
+            required: "반납예정일을 선택해 주세요.",
+        }
+    }
+    , rentalMemo: {
+        rules : {
+            required: false,
+            regexp1: "^.{1,50}$",
+        }
+        , message: {
+            regexp1: "비고는 50자 이내로 입력해 주세요.",
+        }
+    }
 }
 

@@ -1,6 +1,8 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
+import kr.co.apfactory.storesolution.domain.dto.request.ReqCustomerReservationDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
+import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,6 +75,14 @@ public class Reservation extends BaseEntity {
     @Comment("상담 완료 직원")
     private User completedUser;
 
+    @Column(columnDefinition = "tinyint default 0", nullable = false)
+    @Comment("계약 여부 (0:미해당, 1:계약, 2:투어, 3:취소)")
+    private Integer contract;
+
+    @Column(length = 1000)
+    @Comment("비고")
+    private String memo;
+
     public void completeCounseling(User user) {
         this.completed = true;
         this.completedUser = user;
@@ -92,5 +102,28 @@ public class Reservation extends BaseEntity {
             this.consultingDatetimeFrom = null;
             this.consultingDatetimeTo = null;
         }
+    }
+
+    public void updateReservation(ReqCustomerReservationDTO dto) {
+        this.reservationManager = User.builder().id(LoginUser.getDetails().getId()).build();
+        this.consultingManager = User.builder().id(dto.getConsultingManager()).build();
+        this.allDay = dto.getIsAllday();
+        this.consultingDate = dto.getConsultingDate();
+        this.type = dto.getReservationType();
+
+        if (!dto.getIsAllday()) {
+            this.consultingDatetimeFrom = dto.getConsultingDatetimeFrom();
+            this.consultingDatetimeTo = dto.getConsultingDatetimeTo();
+        } else {
+            this.consultingDatetimeFrom = null;
+            this.consultingDatetimeTo = null;
+        }
+
+        this.contract = dto.getReservationContract();
+        this.memo = dto.getReservationMemo();
+    }
+
+    public void updateMemo(String memo) {
+        this.memo = memo;
     }
 }

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!-- jquery-validation -->
+        <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+        <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+        <script th:src="@{/js/common/validator.js}"></script>
+
+        <div class="section_wrap detailPage">
+            <h2 class="title">대여복 상세 정보<span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
+
+            <form id="dataForm">
+                <div class="boxStyle_1">
+                    <div class="line mb-20px">
+                        <div class="box">
+                            <h2 class="name">상품명<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+                                <input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line mb-20px">
+                        <div class="box">
+                            <h2 class="name">사이즈<span class="pointColor_1">*</span></h2>
+                            <div class="value">
+                                <input inputmode="numeric" id="size" name="size" maxlength="3" placeholder="숫자만 입력" th:value="${item.size}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line mb-20px">
+                        <div class="box">
+                            <h2 class="name">비고</h2>
+                            <div class="value">
+                                <textarea name="memo" id="memo" placeholder="대여복 메모">[[${item.memo}]]</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="rentalItemId" th:value="${item.rentalItemId}"/>
+
+                <div class="btn_wrap between">
+                    <div class="innerBtn_box">
+                        <button type="button" id="cancelButton" class="btn_2">목록</button>
+                    </div>
+                    <div class="innerBtn_box">
+                        <button type="button" id="updateButton" class="btn_2 btnColor_1">수정</button>
+                        <button type="button" id="deleteButton" class="btn_2">삭제</button>
+                    </div>
+                </div>
+            </form>
+
+            <script>
+                const gotoList = function () {
+                    document.location.href = ("[[${ session['gotoList_/setting/rental/list'] != null ?  session['gotoList_/setting/rental/list'] : '/setting/rental/list' }]]").replace(/&amp;/g, '&');
+                }
+            </script>
+
+            <script th:inline="javascript">
+                $(function () {
+                    callValidationFormService(
+                        $('#dataForm')
+                        , {
+                            name: validationObject.rentalItemName.rules
+                            , size: validationObject.rentalItemSize.rules
+                            , memo: validationObject.rentalItemMemo.rules
+                        }
+                        , {
+                            name: validationObject.rentalItemName.message
+                            , size: validationObject.rentalItemSize.message
+                            , memo: validationObject.rentalItemMemo.message
+                        }
+                        , function (form) {
+                            if (doubleClick.isDouble()) {
+                                return false;
+                            }
+
+                            if (!confirm("대여복 정보를 수정하시겠습니까?")) {
+                                doubleClick.initFlag();
+                                return;
+                            }
+
+                            showLoadingImage();
+
+                            callService(
+                                "POST"
+                                , "/setting/rental/update"
+                                , JSON.stringify(convertFormToJSON(form))
+                                , function (response) {
+                                    alert(response.message);
+                                    if (response.success) {
+                                        location.reload();
+                                    }
+                                }
+                            );
+                        }
+                    );
+                });
+
+                $(document).on('click', '#deleteButton', function () {
+                    if (doubleClick.isDouble()) {
+                        return false;
+                    }
+
+                    if (!confirm("대여복 정보를 삭제하시겠습니까?")) {
+                        doubleClick.initFlag();
+                        return;
+                    }
+
+                    showLoadingImage();
+
+                    callService(
+                        "POST"
+                        , `/setting/rental/delete/${getParamValue('rentalItemId')}`
+                        , {}
+                        , function (response) {
+                            alert(response.message);
+                            if (response.success) {
+                                gotoList();
+                            }
+                        }
+                    );
+                });
+
+                $(document).on('click', '#cancelButton', function () {
+                    gotoList();
+                });
+
+                $(document).on('click', '#updateButton', function () {
+                    $('#dataForm').submit();
+                });
+            </script>
+        </div>
+
+    </th:block>
+</th:block>
+</html>

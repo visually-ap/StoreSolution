@@ -1,6 +1,9 @@
 package kr.co.apfactory.storesolution.domain.repository.support.impl;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.response.*;
 import kr.co.apfactory.storesolution.domain.entity.*;
@@ -10,6 +13,7 @@ import kr.co.apfactory.storesolution.domain.repository.util.SortManager;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 // querydsl 사용
@@ -449,5 +453,51 @@ public class CounselingSupportRepositoryImpl implements CounselingSupportReposit
                 .fetchOne();
 
         return result;
+    }
+
+    @Override
+    public List<ResCounselingDTO> selectCounselingList(Long customerId, Long storeId) {
+        QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
+        QReservation reservation = QReservation.reservation;
+        QCustomer customer = QCustomer.customer;
+        QOrderCommon orderCommon = QOrderCommon.orderCommon;
+
+        List<ResCounselingDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResCounselingDTO.class
+                                , counselingCommon.id.as("counselingCommonId")
+                                , reservation.id.as("reservationId")
+                                , counselingCommon.jacket
+                                , counselingCommon.pants
+                                , counselingCommon.vest
+                                , counselingCommon.coat
+                                , counselingCommon.allSameFabric
+                                , counselingCommon.fabricCompanyJacket
+                                , counselingCommon.fabricPatternJacket
+                                , counselingCommon.fabricColorJacket
+                                , counselingCommon.fabricCompanyPants
+                                , counselingCommon.fabricPatternPants
+                                , counselingCommon.fabricColorPants
+                                , counselingCommon.fabricCompanyVest
+                                , counselingCommon.fabricPatternVest
+                                , counselingCommon.fabricColorVest
+                                , counselingCommon.fabricCompanyCoat
+                                , counselingCommon.fabricPatternCoat
+                                , counselingCommon.fabricColorCoat
+                                , orderCommon.id.as("orderCommonId")
+                                , orderCommon.orderingDate
+                        )
+                )
+                .from(counselingCommon)
+                .innerJoin(reservation).on(counselingCommon.reservation.eq(reservation).and(reservation.deleted.isFalse()))
+                .innerJoin(customer).on(reservation.customer.eq(customer).and(customer.id.eq(customerId)))
+                .leftJoin(orderCommon).on(counselingCommon.orderCommon.eq(orderCommon))
+                .where(
+                        counselingCommon.canceled.isFalse()
+                )
+                .orderBy()
+                .fetch();
+
+        return results;
     }
 }

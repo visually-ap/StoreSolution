@@ -3,23 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+
     <title>고객 상세 정보</title>
+
+    <!-- moment.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     <script th:src="@{/plugins/jquery/js/jquery.min.js}"></script>
     <script th:src="@{/js/common/url.js}"></script>
+    <script th:src="@{/js/common/string.js}"></script>
+    <script th:src="@{/js/common/ajax.js}"></script>
+    <script th:src="@{/js/common/json.js}"></script>
+    <script th:src="@{/js/common/doubleClick.js}"></script>
+    <script th:src="@{/js/common/date.js}"></script>
+
+    <!-- 기능 -->
+    <script th:src="@{/js/customer/partner.js}"></script>
+    <script th:src="@{/js/customer/purchase.js}"></script>
+    <script th:src="@{/js/customer/payment.js}"></script>
+    <script th:src="@{/js/customer/rental.js}"></script>
+
+    <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+    <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+    <script th:src="@{/js/common/validator.js}"></script>
+
+    <!-- datepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" th:href="@{/plugins/flatpickr/css/dark.css}">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 
     <!-- modal -->
     <script th:src="@{/js/modal.js}"></script>
     <link rel="stylesheet" th:href="@{/css/modal.css}">
 
+    <!-- ajax 로딩 바 -->
+    <script th:src="@{/plugins/loading/js/loading.js}"></script>
+    <link rel="stylesheet" th:href="@{/plugins/loading/css/loading.css}">
+
     <style>
-        .buyDetail {
+        .purchaseDetail, .paymentDetail, .rentalDetail, .reservationDetail {
             cursor: pointer;
         }
 
-        .buyDetail:hover {
-            background-color: #004fd0;
-            color: #fff;
+        .select_readonly {
+            pointer-events: none;
+            background-color: #dddddd;
         }
     </style>
 </head>
@@ -29,41 +63,50 @@
         <h1>고객정보</h1>
         <div>
             <div>
-                <span>고객명1</span><span th:text="${'홍길동'}"></span>
-                <span>연락처</span><span th:text="${'010-2222-3333'}"></span>
+                <span>고객명1</span> : <span th:text="${customerInfo.name1}"></span>
+                <span>연락처</span> : <span th:text="${customerInfo.mobile1}"></span>
             </div>
             <div>
-                <span>고객명1</span><span th:text="${'홍길동1'}"></span>
-                <span>연락처</span><span th:text="${'010-2222-4444'}"></span>
+                <span>고객명2</span> : <span th:text="${customerInfo.name2}"></span>
+                <span>연락처</span> : <span th:text="${customerInfo.mobile2}"></span>
             </div>
             <div>
-                <span>촬영일</span><span th:text="${'2025-09-17'}"></span>
-                <span>장소</span><span th:text="${'대구'}"></span>
+                <span>촬영일</span> : <span th:text="${customerInfo.photoDate}"></span>
+                <span>장소</span> : <span th:text="${customerInfo.photoPlace}"></span>
             </div>
             <div>
-                <span>본식일</span><span th:text="${'2025-09-17'}"></span>
-                <span>장소</span><span th:text="${'서울'}"></span>
+                <span>본식일</span> : <span th:text="${customerInfo.weddingDate}"></span>
+                <span>장소</span> : <span th:text="${customerInfo.weddingPlace}"></span>
             </div>
         </div>
     </div>
     <div>
-        컨설팅정보
+        컨설팅 업체
         <div class="data_box">
             <div>
-                <span>업체명</span><span th:text="${'테스트업체'}"></span>
-                <span>담당자</span><span th:text="${'김새롬'}"></span>
-                <span>연락처</span><span th:text="${'010-9999-9999'}"></span>
+                <span>업체명</span>
+                <select id="consultingPartner" th:field="*{customerInfo.consultingPartnerId}">
+                    <option value="" selected>-- 선택 --</option>
+                    <option th:each="partner : ${partnerList}" th:value="${partner.partnerId}"
+                            th:text="${partner.name}"></option>
+                </select>
+            </div>
+            <div>
+                <span>담당자</span> : <span id="partnerPic"></span>
+                <span>연락처</span> : <span id="partnerContact"></span>
             </div>
             <div>
                 <span>비고</span>
-<!--                여기 textarea로 적인 내용 표시될 거임-->
-                <div th:text="${'1231243246425365246254673547345673567635473567357'}"></div>
+                <!--                여기 textarea로 적인 내용 표시될 거임-->
+                <div>
+                    <pre id="partnerMemo"></pre>
+                </div>
             </div>
         </div>
     </div>
     <div>
         <h1>구매내역</h1>
-        <button id="buyRegisterModalOpenButton">등록</button>
+        <button id="purchaseRegisterModalOpenButton">등록</button>
         <table>
             <tr>
                 <th>구매일</th>
@@ -73,103 +116,600 @@
                 <th>수수료율</th>
                 <th></th>
             </tr>
-            <tr class="buyDetail">
-                <td th:text="${'2025-09-17'}"></td>
-                <td th:text="${'맞춤정장'}"></td>
-                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
-                <td th:text="${'1,500,000'}"></td>
-                <td th:text="${'30%'}"></td>
-                <td>삭제</td>
+            <th:block th:if="${purchaseList.size() > 0}">
+                <tr class="purchaseDetail" th:each="purchase : ${purchaseList}"
+                    th:data-purchaseid="${purchase.purchaseId}">
+                    <td th:text="${purchase.purchaseDate}"></td>
+                    <td th:text="${purchase.typeString}"></td>
+                    <td th:text="${purchase.purchaseMemo}"></td>
+                    <td th:text="${@stringParser.addCommaToNumber(purchase.price)}"></td>
+                    <td class="purchaseCharge" th:text="${purchase.charge + '%'}"></td>
+                    <td class="purchaseDeleteButton">삭제</td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${purchaseList.size() > 0}">
+                <tr>
+                    <td colspan="6">구매 내역이 없습니다.</td>
+                </tr>
+            </th:block>
+
+        </table>
+    </div>
+    <div>
+        <h1>결제 내역</h1>
+        <button id="paymentRegisterModalOpenButton">등록</button>
+        <table>
+            <tr>
+                <th>결제일</th>
+                <th>구분</th>
+                <th>담당자</th>
+                <th>결제방식</th>
+                <th>금액</th>
+                <th>미수금</th>
+                <th>비고</th>
+                <th></th>
             </tr>
-            <tr class="buyDetail">
-                <td th:text="${'2025-09-17'}"></td>
-                <td th:text="${'맞춤정장'}"></td>
-                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
-                <td th:text="${'1,500,000'}"></td>
-                <td th:text="${'30%'}"></td>
-                <td>삭제</td>
+            <th:block th:if="${paymentList.size() > 0}">
+                <tr class="paymentDetail" th:each="payment : ${paymentList}" th:data-paymentid="${payment.paymentId}">
+                    <td th:text="${payment.paymentDate}"></td>
+                    <td th:text="${payment.typeString}"></td>
+                    <td th:text="${payment.pic}"></td>
+                    <td th:text="${payment.methodString}"></td>
+                    <td th:text="${@stringParser.addCommaToNumber(payment.amount)}"></td>
+                    <td th:text="${@stringParser.addCommaToNumber(payment.outstanding)}"></td>
+                    <td th:text="${payment.paymentMemo}"></td>
+                    <td class="paymentDeleteButton">삭제</td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${paymentList.size() > 0}">
+                <tr>
+                    <td colspan="8">결제 내역이 없습니다.</td>
+                </tr>
+            </th:block>
+
+        </table>
+    </div>
+    <div>
+        <h1>상품 내역</h1>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>상의</th>
+                <th>하의</th>
+                <th>조끼</th>
+                <th>코트</th>
+                <th>원단명</th>
+                <th>상태</th>
+                <th>제작현황</th>
             </tr>
-            <tr class="buyDetail">
-                <td th:text="${'2025-09-17'}"></td>
-                <td th:text="${'맞춤정장'}"></td>
-                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
-                <td th:text="${'1,500,000'}"></td>
-                <td th:text="${'30%'}"></td>
-                <td>삭제</td>
+            <th:block th:if="${counselingList.size() > 0}">
+                <tr class="counselingDetail" th:each="counseling : ${counselingList}"
+                    th:data-counselingid="${counseling.counselingCommonId}">
+                    <td th:text="${counseling.coat ? '코트' : '수트'}"></td>
+                    <td th:text="${counseling.jacket ? '1' : ''}"></td>
+                    <td th:text="${counseling.pants ? '1' : ''}"></td>
+                    <td th:text="${counseling.vest ? '1' : ''}"></td>
+                    <td th:text="${counseling.coat ? '1' : ''}"></td>
+                    <td th:utext="${counseling.fabricInfo}"></td>
+                    <td th:text="${counseling.orderCommonId == null ? '미발주' : '발주'}"></td>
+                    <td th:text="${counseling.orderingDate == null ? '-' : '제작중'}"></td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${counselingList.size() > 0}">
+                <tr>
+                    <td colspan="8">상품 내역이 없습니다.</td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+    <div>
+        <h1>대여 정보</h1>
+        <button id="rentalRegisterModalOpenButton">대여등록</button>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>대여일</th>
+                <th>반납예정일</th>
+                <th>반납일</th>
+                <th>상품명</th>
+                <th>비고</th>
+                <th>대여상태</th>
+                <th></th>
             </tr>
-            <tr class="buyDetail">
-                <td th:text="${'2025-09-17'}"></td>
-                <td th:text="${'맞춤정장'}"></td>
-                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
-                <td th:text="${'1,500,000'}"></td>
-                <td th:text="${'30%'}"></td>
-                <td>삭제</td>
+            <th:block th:if="${rentalList.size() > 0}">
+                <tr class="rentalDetail" th:each="rental : ${rentalList}" th:data-rentalid="${rental.rentalId}">
+                    <td th:text="${rental.typeString}"></td>
+                    <td th:text="${rental.fromDate}"></td>
+                    <td th:text="${rental.requestDate}"></td>
+                    <td th:text="${rental.toDate}"></td>
+                    <td th:text="${rental.rentalItemName}"></td>
+                    <td th:text="${rental.memo}"></td>
+                    <td th:text="${rental.rentingState}"></td>
+                    <td class="rentalDeleteButton">삭제</td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${rentalList.size() > 0}">
+                <tr>
+                    <td colspan="8">대여 내역이 없습니다.</td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+    <div>
+        <h1>매장스케줄</h1>
+        <button id="reservationRegisterModalOpenButton">등록</button>
+        <table>
+            <tr>
+                <th>날짜</th>
+                <th>시간</th>
+                <th>구분</th>
+                <th>진행상태</th>
+                <th>상담담당</th>
+                <th>계약여부</th>
+                <th>상담내용</th>
             </tr>
-            <tr class="buyDetail">
-                <td th:text="${'2025-09-17'}"></td>
-                <td th:text="${'맞춤정장'}"></td>
-                <td th:text="${'카노니코 상1하1, 구1, 셔1, 넥1'}"></td>
-                <td th:text="${'1,500,000'}"></td>
-                <td th:text="${'30%'}"></td>
-                <td>삭제</td>
-            </tr>
+            <th:block th:if="${reservationList.size() > 0}">
+                <tr class="reservationDetail" th:each="reservation : ${reservationList}" th:data-reservationid="${reservation.reservationId}">
+                    <td th:text="${reservation.consultingDate}"></td>
+                    <td th:text="${reservation.allDay ? '미정' : #temporals.format(reservation.consultingDatetimeFrom, 'HH:mm') + '~' + #temporals.format(reservation.consultingDatetimeTo, 'HH:mm')}"></td>
+                    <td th:text="${reservation.typeString}"></td>
+                    <td th:text="${reservation.completed ? '완료' : '미완료'}"></td>
+                    <td th:text="${reservation.consultingManagerName}"></td>
+                    <td th:text="${reservation.contractString}"></td>
+                    <td th:text="${reservation.memo}"></td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${reservationList.size() > 0}">
+                <tr>
+                    <td colspan="7">스케줄 내역이 없습니다.</td>
+                </tr>
+            </th:block>
         </table>
     </div>
 </div>
 
 
 <!--구매내역 상세 및 등록 모달-->
-<div class="modal_window modal_style" id="buyModal">
+<div class="modal_window modal_style" id="purchaseModal">
     <div class="inner_box">
-        <div>
-            구매 내역
-        </div>
-        <div>
-            구매일
-            <input type="text">
-        </div>
-        <div>
-            상품구분
-            <select name="" id="">
-                <option value="">선택</option>
-            </select>
-        </div>
-        <div>
-            구매내역
-            <input type="text">
-        </div>
-        <div>
-            구매금액
-            <input type="text">
-        </div>
-        <div>
-            수수료율
-            <span th:text="${'15 %'}"></span>
-        </div>
-        <div>
-            <button id="buyModalRegisterButton">등록</button>
-            <button id="buyModalUpdateButton">저장</button>
-            <button class="closeModalButton btn_2" data-label="#buyModal" onclick="closeModal($(this).data('label'), initBuyModal)">닫기</button>
-        </div>
+        <form id="purchaseForm">
+            <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
+            <input type="hidden" name="purchaseId" id="purchaseId">
+            <div>
+                구매 내역
+            </div>
+            <div>
+                구매일*
+                <input type="text" id="purchaseDate" name="purchaseDate" readonly>
+            </div>
+            <div>
+                상품구분
+                <select name="purchaseType" id="purchaseType">
+                    <option value="0" selected>지정안함</option>
+                    <option value="1">맞춤정장</option>
+                </select>
+            </div>
+            <div>
+                구매내역*
+                <input type="text" id="purchaseMemo" name="purchaseMemo" maxlength="50" placeholder="50자 이내로 입력">
+            </div>
+            <div>
+                구매금액*
+                <input type="text" id="purchasePrice" name="purchasePrice" maxlength="8" placeholder="숫자만 입력">
+            </div>
+            <div>
+                <button type="button" id="purchaseModalRegisterButton">등록</button>
+                <button type="button" id="purchaseModalUpdateButton">수정</button>
+                <button type="button" data-label="#purchaseModal"
+                        onclick="closeModal($(this).data('label'), initCustomerPurchaseInfo)">닫기
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
-<script>
-    function initBuyModal() {
+<!--결제내역 상세 및 등록 모달-->
+<div class="modal_window modal_style" id="paymentModal">
+    <div class="inner_box">
+        <form id="paymentForm">
+            <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
+            <input type="hidden" name="paymentId" id="paymentId">
+            <div>
+                결제 내역
+            </div>
+            <div>
+                결제일*
+                <input type="text" id="paymentDate" name="paymentDate" readonly>
+            </div>
+            <div>
+                구분
+                <select name="paymentType" id="paymentType">
+                    <option value="0" selected>기타</option>
+                    <option value="1">선금</option>
+                    <option value="2">중도금</option>
+                    <option value="3">잔금</option>
+                </select>
+            </div>
+            <div>
+                담당자*
+                <input type="text" id="paymentPic" name="paymentPic" maxlength="50" placeholder="50자 이내로 입력">
+            </div>
+            <div>
+                결제방식
+                <select name="paymentMethod" id="paymentMethod">
+                    <option value="0" selected>기타</option>
+                    <option value="1">카드</option>
+                    <option value="2">계좌이체</option>
+                    <option value="3">현금</option>
+                </select>
+            </div>
+            <div>
+                금액*
+                <input type="text" id="paymentAmount" name="paymentAmount" maxlength="8" placeholder="숫자만 입력">
+            </div>
+            <div>
+                미수금*
+                <input type="text" id="paymentOutstanding" name="paymentOutstanding" maxlength="8" placeholder="숫자만 입력">
+            </div>
+            <div>
+                비고사항
+                <input type="text" id="paymentMemo" name="paymentMemo" maxlength="50" placeholder="50자 이내로 입력">
+            </div>
+            <div>
+                <button type="button" id="paymentModalRegisterButton">등록</button>
+                <button type="button" id="paymentModalUpdateButton">수정</button>
+                <button type="button" data-label="#paymentModal"
+                        onclick="closeModal($(this).data('label'), initCustomerPaymentInfo)">닫기
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
+<!--대여 상세 및 등록 모달-->
+<div class="modal_window modal_style" id="rentalModal">
+    <div class="inner_box">
+        <form id="rentalForm">
+            <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
+            <input type="hidden" name="rentalId" id="rentalId">
+            <div>
+                대여 정보 <span id="rentingStateWrap"></span>
+            </div>
+            <div>
+                구분
+                <select name="rentalType" id="rentalType">
+                    <option value="0" selected>기타</option>
+                </select>
+            </div>
+            <div>
+                대여일*
+                <input type="text" id="fromDate" name="fromDate" readonly>
+            </div>
+            <div>
+                반납예정일*
+                <input type="text" id="requestDate" name="requestDate" readonly>
+            </div>
+            <div>
+                상품명*
+                <input type="text" id="rentalItemName" maxlength="10" placeholder="검색키워드">
+                <input type="hidden" id="rentalItemId" name="rentalItemId">
+                <button type="button" id="rentalItemSearchButton">검색</button>
+            </div>
+            <div id="rentalItemSearchResultWrap">
+                <h1>검색결과</h1>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>사이즈</th>
+                        <th>비고</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rentalItemListBody">
+
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                비고
+                <input type="text" id="rentalMemo" name="rentalMemo" maxlength="50" placeholder="50자 이내로 입력">
+            </div>
+            <div id="rentalItemToDateWrap">
+                반납일
+                <input type="text" id="toDate" name="toDate" readonly>
+            </div>
+            <div>
+                <button type="button" id="rentalModalRegisterButton">등록</button>
+                <button type="button" id="rentalModalUpdateButton">수정</button>
+                <button type="button" id="rentalModalRentalCompleteButton">대여완료</button>
+                <button type="button" id="rentalModalRentalCancelButton">대여취소</button>
+                <button type="button" id="rentalModalBackCompleteButton">반납완료</button>
+                <button type="button" id="rentalModalBackCancelButton">반납취소</button>
+                <button type="button" data-label="#rentalModal"
+                        onclick="closeModal($(this).data('label'), initCustomerRentalInfo)">닫기
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--스케줄 모달-->
+<div class="modal_window modal_style" id="reservationModal">
+    <div class="inner_box">
+        <form id="reservationForm">
+            <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
+            <input type="hidden" name="reservationId" id="reservationId">
+            <div>
+                매장스케줄
+            </div>
+            <div>
+                예약구분
+                <select name="reservationType" id="reservationType">
+                    <option value="1" selected>맞춤예약</option>
+                    <option value="2" th:text="${siteEnvDto.typeName2}"></option>
+                    <option value="3" th:text="${siteEnvDto.typeName3}"></option>
+                    <option value="4" th:text="${siteEnvDto.typeName4}"></option>
+                    <option value="5" th:text="${siteEnvDto.typeName5}"></option>
+                    <option value="6" th:text="${siteEnvDto.typeName6}"></option>
+                </select>
+            </div>
+            <div>
+                상담담당
+                <select name="consultingManager" id="consultingManager" class="t-center">
+                    <option value="" selected>-- 선택 --</option>
+                    <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}"></option>
+                </select>
+            </div>
+            <div>
+                상담예약일
+                <input type="text" id="consultingDate" name="consultingDate" readonly>
+            </div>
+            <div>
+                예약시간
+                <label for="isAllday">
+                    <input type="checkbox" name="isAllday" id="isAllday" value="true">
+                    미정
+                </label>
+                <select class="reservationDatetime" name="consultingHour" id="consultingHour">
+                    <option value="">선택</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                </select>
+                시&nbsp;
+                <select class="reservationDatetime" name="consultingMinute" id="consultingMinute">
+                    <option value="">선택</option>
+                    <option value="00">00</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                    <option value="50">50</option>
+                </select>
+                분
+            </div>
+            <div>
+                계약여부
+                <select name="reservationContract" id="reservationContract">
+                    <option value="0" selected>미해당</option>
+                    <option value="1">계약</option>
+                    <option value="2">투어</option>
+                    <option value="3">취소</option>
+                </select>
+            </div>
+            <div>
+                상담내용
+                <textarea name="reservationMemo" id="reservationMemo"></textarea>
+            </div>
+            <div>
+                <button type="button" id="reservationModalRegisterButton">등록</button>
+                <button type="button" id="reservationModalUpdateButton">수정</button>
+                <button type="button" id="reservationModalCompleteButton">완료</button>
+                <button type="button" data-label="#reservationModal"
+                        onclick="closeModal($(this).data('label'), initCustomerReservationInfo)">닫기
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    const fp = standardPicker($('#purchaseDate'));
+    const fp1 = standardPicker($('#paymentDate'));
+    const fp2 = standardPicker($('#fromDate'));
+    const fp3 = standardPicker($('#requestDate'));
+    const fp4 = standardPicker($('#toDate'));
+    const fp5 = standardPicker($('#consultingDate'));
+
+    $(document).ready(function () {
+        getConsultingPartnerInfo($('#consultingPartner').val());
+
+        hideReservationModalElements();
+    });
+
+    $(function () {
+        callValidationFormService(
+            $('#reservationForm')
+            , {
+                consultingManager: validationObject.consultingManager.rules
+                , consultingDate: validationObject.consultingDate.rules
+                , consultingHour: validationObject.consultingHour.rules
+                , consultingMinute: validationObject.consultingMinute.rules
+            }
+            , {
+                consultingManager: validationObject.consultingManager.message
+                , consultingDate: validationObject.consultingDate.message
+                , consultingHour: validationObject.consultingHour.message
+                , consultingMinute: validationObject.consultingMinute.message
+            }
+            , function (form) {
+                if (doubleClick.isDouble()) {
+                    return false;
+                }
+
+                if (!confirm($(form).data('message'))) {
+                    doubleClick.initFlag();
+                    return;
+                }
+
+                showLoadingImage();
+
+                callService(
+                    "POST"
+                    , $(form).data('url')
+                    , JSON.stringify(convertFormToJSON(form))
+                    , function (response) {
+                        alert(response.message);
+                        if (response.success) {
+                            location.reload();
+                        }
+                    }
+                );
+            }
+        );
+    });
+
+    $(document).on('click', '#reservationModalRegisterButton', function() {
+        $('#reservationForm').attr('data-url', '/reservation/customer/reservation/register');
+        $('#reservationForm').attr('data-message', '등록하시겠습니까?');
+        $('#reservationForm').submit();
+    });
+
+    $(document).on('click', '#reservationModalUpdateButton', function() {
+        $('#reservationForm').attr('data-url', '/reservation/customer/reservation/update');
+        $('#reservationForm').attr('data-message', '수정하시겠습니까?');
+        $('#reservationForm').submit();
+    });
+
+    $(document).on('click', '#reservationRegisterModalOpenButton', function () {
+        openModal('#reservationModal', initCustomerReservationInfo);
+        $('#reservationModalRegisterButton').show();
+    });
+
+    $(document).on('click', '.reservationDetail', function () {
+        if (doubleClick.isDouble()) {
+            return;
+        }
+
+        callLazyService(
+            "GET"
+            , `/reservation/customer/reservation/detail?reservationId=${$(this).data('reservationid')}`
+            , {}
+            , function (response) {
+                if (response.success) {
+                    openModal('#reservationModal', initCustomerReservationInfo);
+                    $('#reservationModalUpdateButton').show();
+                    if (response.result.type != 1 && !response.result.completed) {
+                        $('#reservationModalCompleteButton').show();
+                    }
+                    setCustomerReservationInfo(response.result);
+                } else {
+                    alert(response.message);
+                }
+            }
+        );
+    });
+
+    $(document).on('click', '#isAllday', function () {
+        if ($(this).is(':checked')) {
+            $('#consultingHour').val('');
+            $('#consultingMinute').val('');
+            setReadonlySelect($('#consultingHour'), true);
+            setReadonlySelect($('#consultingMinute'), true);
+        } else {
+            setReadonlySelect($('#consultingHour'), false);
+            setReadonlySelect($('#consultingMinute'), false);
+        }
+    });
+
+    $(document).on('click', '#reservationModalCompleteButton', function () {
+        if (doubleClick.isDouble()) {
+            return;
+        }
+
+        if (!confirm('완료처리 하시겠습니까?')) {
+            doubleClick.initFlag();
+            return;
+        }
+
+        showLoadingImage();
+
+        callService(
+            "POST"
+            , `/reservation/customer/reservation/complete?reservationId=${$('#reservationId').val()}`
+            , {}
+            , function (response) {
+                alert(response.message);
+                if (response.success) {
+                    location.reload();
+                }
+            }
+        );
+    });
+
+    function setReadonlySelect($obj, state) {
+        if (state) {
+            $obj.addClass('select_readonly');
+        } else {
+            $obj.removeClass('select_readonly');
+        }
     }
 
-    $(document).on('click', '#buyRegisterModalOpenButton', function() {
-        openModal('#buyModal', initBuyModal);
-        $('#buyModalRegisterButton').show();
-        $('#buyModalUpdateButton').show();
-    });
+    function initCustomerReservationInfo() {
+        $('#rentalForm').attr('data-url', '');
+        $('#rentalForm').attr('data-message', '');
 
-    $(document).on('click', '.buyDetail', function() {
-        openModal('#buyModal', initBuyModal);
-        $('#buyModalRegisterButton').hide();
-        $('#buyModalUpdateButton').show();
-    });
+        $('#reservationId').val('')
+        $('#reservationType').val(1);
+        $('#consultingManager').val('');
+        fp5.clear();
+        $('#isAllday').prop('checked', false);
+        $('#consultingHour').val('');
+        $('#consultingMinute').val('');
+        $('#reservationContract').val(0);
+        $('#reservationMemo').val('');
+
+        hideReservationModalElements();
+    }
+
+    function hideReservationModalElements() {
+        $('#reservationModalRegisterButton').hide();
+        $('#reservationModalUpdateButton').hide();
+        $('#reservationModalCompleteButton').hide();
+    }
+
+    function setCustomerReservationInfo(data) {
+        $('#reservationId').val(data.reservationId)
+        $('#reservationType').val(data.type);
+        $('#consultingManager').val(data.consultingManagerId);
+        fp5.setDate(data.consultingDate, true);
+        $('#isAllday').prop('checked', data.allDay);
+        if (data.allDay) {
+            $('#consultingHour').val('');
+            $('#consultingMinute').val('');
+            setReadonlySelect($('#consultingHour'), true);
+            setReadonlySelect($('#consultingMinute'), true);
+        } else {
+            $('#consultingHour').val(data.consultingHour);
+            $('#consultingMinute').val(data.consultingMinute);
+            setReadonlySelect($('#consultingHour'), false);
+            setReadonlySelect($('#consultingMinute'), false);
+        }
+        $('#reservationContract').val(data.contract);
+        $('#reservationMemo').val(data.memo);
+    }
 </script>
 </body>
 </html>

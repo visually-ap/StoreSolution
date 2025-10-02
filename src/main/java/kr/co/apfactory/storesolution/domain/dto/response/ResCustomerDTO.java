@@ -47,6 +47,8 @@ public class ResCustomerDTO {
 
     private Boolean isAllday;
 
+    private Long consultingPartnerId;
+
     public void setConsultingDatetime() {
         if (!this.isAllday) {
             this.consultingHour = String.format("%02d", this.consultingDatetimeFrom.getHour());

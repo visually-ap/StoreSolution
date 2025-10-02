@@ -32,6 +32,10 @@ public class Customer extends BaseEntity {
     @Comment("매장 시퀀스")
     private Store store;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("컨설팅 업체 시퀀스")
+    private ConsultingPartner consultingPartner;
+
     @Column(columnDefinition = "boolean default false", nullable = false)
     @Comment("삭제 여부 (true : 삭제, false : 미삭제)")
     private Boolean deleted;
@@ -86,5 +90,9 @@ public class Customer extends BaseEntity {
         this.weddingDate = dto.getWeddingDate();
         this.weddingPlace = dto.getWeddingPlace();
         this.memo = dto.getMemo();
+    }
+
+    public void updateConsultingPartner(ConsultingPartner consultingPartner) {
+        this.consultingPartner = consultingPartner;
     }
 }

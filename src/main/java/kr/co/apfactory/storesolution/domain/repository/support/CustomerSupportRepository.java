@@ -1,10 +1,8 @@
 package kr.co.apfactory.storesolution.domain.repository.support;
 
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResCounselingDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResPatternListDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqCustomerPurchaseDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +15,18 @@ public interface CustomerSupportRepository {
     ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId);
 
     Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId);
+
+    List<ResCustomerPurchaseListDTO> selectCustomerPurchaseList(Long customerId, Long storeId);
+
+    ResCustomerPurchaseDTO selectCustomerPurchaseDetail(Long purchaseId);
+
+    List<ResCustomerPaymentListDTO> selectCustomerPaymentList(Long customerId, Long storeId);
+
+    ResCustomerPaymentDTO selectCustomerPaymentDetail(Long paymentId);
+
+    List<ResRentalListDTO> selectCustomerRentalList(Long customerId);
+
+    ResRentalDTO selectCustomerRentalDetail(Long rentalId);
+
+    List<ResCustomerReservationDTO> selectCustomerReservationList(Long customerId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO);
 }

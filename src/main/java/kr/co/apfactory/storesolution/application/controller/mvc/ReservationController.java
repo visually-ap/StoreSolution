@@ -1,9 +1,11 @@
 package kr.co.apfactory.storesolution.application.controller.mvc;
 
+import kr.co.apfactory.storesolution.application.service.CustomerService;
 import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.StoreService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,23 +27,37 @@ import javax.servlet.http.HttpServletRequest;
 public class ReservationController {
     private final StoreService storeService;
 
-    private final UserService userService;
-
     private final SiteService siteService;
+
+    private final CustomerService customerService;
 
     @GetMapping("/main")
     public String gotoReservationMainPage(Model model) {
         model.addAttribute("item", storeService.getStoreInfo());
-        model.addAttribute("employeeList", userService.getEmployeeList());
+        model.addAttribute("employeeList", storeService.getEmployeeList());
         model.addAttribute("siteEnvDto", siteService.getSiteEnvironment());
         return "views/reservation/main";
     }
 
     @GetMapping("/register")
     public String gotoNewCustomerRegister(Model model) {
-        model.addAttribute("employeeList", userService.getEmployeeList());
+        model.addAttribute("employeeList", storeService.getEmployeeList());
         model.addAttribute("userId", LoginUser.getDetails().getId());
         model.addAttribute("siteEnvDto", siteService.getSiteEnvironment());
         return "views/reservation/register";
+    }
+
+    @GetMapping("/popup/customer/detail")
+    public String openCustomerDetailPopup(Model model, Long customerId) {
+        model.addAttribute("customerInfo", customerService.getCustomerDetailById(customerId));
+        model.addAttribute("partnerList", storeService.getConsultingPartnerList());
+        model.addAttribute("purchaseList", customerService.getCustomerPurchaseList(customerId));
+        model.addAttribute("paymentList", customerService.getCustomerPaymentList(customerId));
+        model.addAttribute("counselingList", customerService.getCounselingList(customerId));
+        model.addAttribute("rentalList", customerService.getCustomerRentalList(customerId));
+        model.addAttribute("reservationList", customerService.getCustomerReservationList(customerId, siteService.getSiteEnvironment()));
+        model.addAttribute("employeeList", storeService.getEmployeeList());
+        model.addAttribute("siteEnvDto", siteService.getSiteEnvironment());
+        return "views/popup/customerDetail";
     }
 }

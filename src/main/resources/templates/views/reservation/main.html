@@ -666,8 +666,7 @@
     });
 
     $(document).on('click', '.customerDetail', function() {
-        // openModal('#customerDetailModal', initReservationDetailModal);
-        window.open(`/popup/customer/detail?customerId=1`, "ImageViewer"
+        window.open(`/reservation/popup/customer/detail?customerId=${$(this).data('customerid')}`, "ImageViewer"
             , `left=0, top=0, width=${screen.availWidth}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
         );
     });

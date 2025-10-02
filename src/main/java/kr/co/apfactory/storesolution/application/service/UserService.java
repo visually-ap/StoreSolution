@@ -1,17 +1,13 @@
 package kr.co.apfactory.storesolution.application.service;
 
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeRegisterDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqPasswordUpdateDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.*;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeScheduleDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
-import kr.co.apfactory.storesolution.domain.entity.CodeType;
-import kr.co.apfactory.storesolution.domain.entity.Store;
-import kr.co.apfactory.storesolution.domain.entity.User;
-import kr.co.apfactory.storesolution.domain.entity.UserLoginHistory;
+import kr.co.apfactory.storesolution.domain.entity.*;
+import kr.co.apfactory.storesolution.domain.repository.ConsultingPartnerRepository;
 import kr.co.apfactory.storesolution.domain.repository.UserLoginHistoryRepository;
 import kr.co.apfactory.storesolution.domain.repository.UserRepository;
 import kr.co.apfactory.storesolution.global.i18n.I18nUtility;
@@ -38,6 +34,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserLoginHistoryRepository userLoginHistoryRepository;
+
+    private final ConsultingPartnerRepository consultingPartnerRepository;
 
     public void saveLoginHistory() {
         userLoginHistoryRepository.save(UserLoginHistory.builder()
@@ -122,14 +120,6 @@ public class UserService {
                 .build();
     }
 
-    public ResEmployeeDetailDTO getEmployeeDetail(HttpServletRequest request, Long userId) {
-        ResEmployeeDetailDTO dto = userRepository.selectEmployeeDetail(i18nUtility.getLanguage(request), userId, LoginUser.getDetails().getStoreId());
-        if (dto == null) {
-            throw new IllegalArgumentException();
-        }
-        return dto;
-    }
-
     public ResponseDTO resetEmployeePassword(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
 
@@ -170,29 +160,53 @@ public class UserService {
                 .build();
     }
 
-    public List<ResEmployeeListDTO> getEmployeeList() {
-        return userRepository.selectEmployeeList(LoginUser.getDetails().getStoreId());
-    }
+    public ResponseDTO registerConsultingPartner(ReqConsultingPartnerRegisterDTO dto) {
+        ConsultingPartner consultingPartner = dto.toConsultingPartnerEntity();
+        consultingPartner.updateStore(Store.builder().id(LoginUser.getDetails().getStoreId()).build());
 
-    @Transactional
-    public ResponseDTO getEmployeeScheduleList(LocalDate date) {
-        List<ResEmployeeScheduleDTO> scheduleList = userRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId(), date);
-
-        if (scheduleList.size() < 5) {
-            int limit = 5 - scheduleList.size();
-
-            for (int i = 0; i < limit; i++) {
-                scheduleList.add(
-                        ResEmployeeScheduleDTO.builder()
-                                .name("")
-                                .build()
-                );
-            }
-        }
+        consultingPartnerRepository.save(consultingPartner);
 
         return ResponseDTO.builder()
                 .isSuccess(true)
-                .result(scheduleList)
+                .message("업체가 등록되었습니다.")
                 .build();
     }
+
+    public ResponseDTO updateConsultingPartner(ReqConsultingPartnerUpdateDTO dto) {
+        ConsultingPartner consultingPartner = consultingPartnerRepository.findByIdAndStoreIdAndDeletedIsFalse(dto.getPartnerId(), LoginUser.getDetails().getStoreId());
+        if (consultingPartner == null) {
+            return ResponseDTO.builder()
+                    .message("잘못된 접근입니다.")
+                    .build();
+        }
+
+        consultingPartner.updateConsultingPartner(dto);
+
+        consultingPartnerRepository.save(consultingPartner);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("업체 정보를 수정하였습니다.")
+                .build();
+    }
+
+    public ResponseDTO deleteConsultingPartner(Long partnerId) {
+        ConsultingPartner consultingPartner = consultingPartnerRepository.findByIdAndStoreIdAndDeletedIsFalse(partnerId, LoginUser.getDetails().getStoreId());
+        if (consultingPartner == null) {
+            return ResponseDTO.builder()
+                    .message("잘못된 접근입니다.")
+                    .build();
+        }
+
+        consultingPartner.updateDeleted(true);
+
+        consultingPartnerRepository.save(consultingPartner);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("업체정보를 삭제하였습니다.")
+                .build();
+    }
+
+
 }

@@ -66,7 +66,7 @@ function renderTimeTable(tableId, date) {
 
                     // 고객명을 줄바꿈으로 표시
                     td.innerHTML = alldayReservations
-                        .map(res => `<span style="color:${getCellBackgroundColor(res.type)}"><span class="customerDetail">[${res.customerName}]</span>님 <span class="reservationDetail">예약</span></span>`)
+                        .map(res => `<span style="color:${getCellBackgroundColor(res.type)}"><span class="customerDetail" data-customerid="${res.customerId}">[${res.customerName}]</span>님 <span class="reservationDetail">예약</span></span>`)
                         .join('<br>');
                 }
 
@@ -132,7 +132,7 @@ function renderTimeTable(tableId, date) {
                             td.style.backgroundColor = getCellBackgroundColor(reservation.type);
                             td.style.color = 'white';
                             td.style.fontWeight = 'bold';
-                            td.innerHTML = `<span class="customerDetail">[${reservation.customerName}]</span>님 <span class="reservationDetail">예약</span>`;
+                            td.innerHTML = `<span class="customerDetail" data-customerid="${reservation.customerId}">[${reservation.customerName}]</span>님 <span class="reservationDetail">예약</span>`;
 
                             // 중복 셀 제거용 skipMap 세팅
                             for (let j = 1; j < rowspan; j++) {

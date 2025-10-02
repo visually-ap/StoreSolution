@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <div class="section_wrap listPage">
+
+            <h2 class="title">컨설팅 업체 목록</h2>
+
+            <!-- 검색 폼 -->
+            <form id="searchForm" class="" method="get" th:action="@{/setting/partner/list}" onsubmit="return checkDateInputForSearch()">
+                <div class="search_wrap">
+                    <div class="filter_wrap">
+                        <div class="filter filter_1">
+                            <div class="title">상세검색</div>
+                            <div class="filter__">
+                                <select class="select_box" th:field="*{searchDTO.searchCondition}">
+                                    <option value="all" selected>전체</option>
+                                    <option value="name">업체명</option>
+                                    <option value="pic">담당자</option>
+                                    <option value="contact">연락처</option>
+                                </select>
+                                <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
+                            </div>
+                        </div>
+                        <div class="filter filter_2">
+                            <div class="title">기간검색</div>
+                            <div class="filter__">
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
+                                ~
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button_box">
+                        <button type="submit" class="btnColor_1">검색</button>
+                        <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
+                    </div>
+                </div>
+
+                <div class="number_lists result">
+                    <h5 class="total">
+                        <span th:text="${'총 '}"></span>
+                        <span class="people" th:text="${itemList.totalElements} + '곳'"></span>
+                        <span th:text="${'의 업체가 존재합니다.'}"></span>
+                    </h5>
+                    <select id="sort" name="sort" onchange="searchForm.submit();" th:with="sort=${itemList.sort.toString()}">
+                        <option value="regDate,desc" th:selected="${sort == 'regDate: DESC'}">등록일시 최신순</option>
+                        <option value="regDate,asc" th:selected="${sort == 'regDate: ASC'}">등록일시 오래된순</option>
+                    </select>
+                </div>
+            </form>
+
+            <script>
+                periodPicker(document.getElementById('dateFrom'), document.getElementById('dateTo'));
+            </script>
+
+            <!-- 목록 테이블 -->
+            <div>
+                <table class="tableStyle listT">
+                    <thead>
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 20%">
+                        <col style="width: 20%">
+                        <col style="width: 20%">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                    </colgroup>
+                    <tr class="title_tr">
+                        <th>순번</th>
+                        <th>업체명</th>
+                        <th>담당자</th>
+                        <th>연락처</th>
+                        <th>수수료율</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gotoDetail" th:each="item, stat : ${itemList}" th:data-id="${item.partnerId}">
+                        <td th:text="${stat.count}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${item.pic}"></td>
+                        <td th:text="${item.contact}"></td>
+                        <td th:text="${item.charge + ' %'}"></td>
+                        <td th:text="${#temporals.format(item.insertDatetime, 'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 페이징 -->
+                <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
+            </div>
+        </div>
+
+        <div class="listPage_btn btn_wrap right">
+            <button id="registerButton" class="btn_2 btnColor_1 registerBtn">등록</button>
+        </div>
+
+        <script>
+                $(document).on('click', '#registerButton', function () {
+                    location.href = `/setting/partner/register`;
+                });
+
+                $(document).on('click', '.gotoDetail', function () {
+                    const partnerId = $(this).data('id');
+                    location.href = `/setting/partner/detail?partnerId=${partnerId}`;
+                });
+            </script>
+
+    </th:block>
+</th:block>
+</html>

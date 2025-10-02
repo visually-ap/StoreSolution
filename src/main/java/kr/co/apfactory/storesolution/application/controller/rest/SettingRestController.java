@@ -1,11 +1,10 @@
 package kr.co.apfactory.storesolution.application.controller.rest;
 
 import kr.co.apfactory.storesolution.application.service.SiteService;
+import kr.co.apfactory.storesolution.application.service.StoreService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.ResponseDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeRegisterDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqEmployeeUpdateDTO;
-import kr.co.apfactory.storesolution.domain.dto.request.ReqEnvironmentUpdateDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.*;
 import kr.co.apfactory.storesolution.global.file.domain.dto.UploadFilesDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +29,7 @@ public class SettingRestController {
     private final UserService userService;
 
     private final SiteService siteService;
+    private final StoreService storeService;
 
     @PostMapping("/id/check")
     public ResponseEntity<ResponseDTO> checkLoginId(String loginId) {
@@ -64,9 +64,7 @@ public class SettingRestController {
     @PostMapping("/employee/delete/{userId}")
     @Transactional
     public ResponseEntity<ResponseDTO> deleteEmployee(@PathVariable Long userId) {
-        return ResponseEntity.ok(
-                userService.deleteEmployee(userId)
-        );
+        return ResponseEntity.ok(userService.deleteEmployee(userId));
     }
 
     /**
@@ -83,5 +81,41 @@ public class SettingRestController {
                         .message("환경설정이 저장되었습니다.")
                         .build()
         );
+    }
+
+    @PostMapping("/partner/register")
+    @Transactional
+    public ResponseEntity<ResponseDTO> registerConsultingPartner(@RequestBody ReqConsultingPartnerRegisterDTO dto) {
+        return ResponseEntity.ok(userService.registerConsultingPartner(dto));
+    }
+
+    @PostMapping("/partner/update")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateConsultingPartner(@RequestBody ReqConsultingPartnerUpdateDTO dto) {
+        return ResponseEntity.ok(userService.updateConsultingPartner(dto));
+    }
+
+    @PostMapping("/partner/delete/{partnerId}")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateConsultingPartner(@PathVariable Long partnerId) {
+        return ResponseEntity.ok(userService.deleteConsultingPartner(partnerId));
+    }
+
+    @PostMapping("/rental/register")
+    @Transactional
+    public ResponseEntity<ResponseDTO> registerRentalItem(@RequestBody ReqRentalItemDTO dto) {
+        return ResponseEntity.ok(storeService.registerRentalItem(dto));
+    }
+
+    @PostMapping("/rental/update")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateRentalItem(@RequestBody ReqRentalItemDTO dto) {
+        return ResponseEntity.ok(storeService.updateRentalItem(dto));
+    }
+
+    @PostMapping("/rental/delete/{rentalItemId}")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateRentalItem(@PathVariable Long rentalItemId) {
+        return ResponseEntity.ok(storeService.deleteRentalItem(rentalItemId));
     }
 }

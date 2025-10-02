@@ -8,6 +8,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqCustomerPurchaseDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.*;
 import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.support.CustomerSupportRepository;
@@ -122,7 +123,6 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
         QReservation reservation = QReservation.reservation;
         QUser reservationManger = new QUser("reservationManger");
         QUser consultingManger = new QUser("consultingManger");
-        QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
 
         QueryResults<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -159,5 +159,246 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                 .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public List<ResCustomerPurchaseListDTO> selectCustomerPurchaseList(Long customerId, Long storeId) {
+        QCustomer customer = QCustomer.customer;
+        QCustomerPurchase customerPurchase = QCustomerPurchase.customerPurchase;
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+
+        List<ResCustomerPurchaseListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerPurchaseListDTO.class
+                                , customerPurchase.id.as("purchaseId")
+                                , customerPurchase.type
+                                , new CaseBuilder()
+                                        .when(customerPurchase.type.eq(0)).then(Expressions.constant("지정안함"))
+                                        .when(customerPurchase.type.eq(1)).then(Expressions.constant("맞춤정장"))
+                                        .otherwise(Expressions.constant("지정안함"))
+                                        .as("typeString")
+                                , customerPurchase.purchaseMemo
+                                , customerPurchase.price
+                                , customerPurchase.purchaseDate
+                                , consultingPartner.charge
+                        )
+                )
+                .from(customerPurchase)
+                .innerJoin(customer).on(customerPurchase.customer.eq(customer).and(customer.store.id.eq(storeId)))
+                .leftJoin(consultingPartner).on(customer.consultingPartner.eq(consultingPartner))
+                .where(
+                        customerPurchase.deleted.eq(false)
+                                .and(customer.id.eq(customerId))
+                )
+                .orderBy(customerPurchase.insertDatetime.desc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public ResCustomerPurchaseDTO selectCustomerPurchaseDetail(Long purchaseId) {
+        QCustomerPurchase customerPurchase = QCustomerPurchase.customerPurchase;
+
+        ResCustomerPurchaseDTO result = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerPurchaseDTO.class
+                                , customerPurchase.id.as("purchaseId")
+                                , customerPurchase.type
+                                , customerPurchase.purchaseMemo
+                                , customerPurchase.price
+                                , customerPurchase.purchaseDate
+                        )
+                )
+                .from(customerPurchase)
+                .where(
+                        customerPurchase.deleted.eq(false)
+                                .and(customerPurchase.id.eq(purchaseId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResCustomerPaymentListDTO> selectCustomerPaymentList(Long customerId, Long storeId) {
+        QCustomer customer = QCustomer.customer;
+        QCustomerPayment customerPayment = QCustomerPayment.customerPayment;
+
+        List<ResCustomerPaymentListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerPaymentListDTO.class
+                                , customerPayment.id.as("paymentId")
+                                , customerPayment.paymentDate
+                                , customerPayment.type
+                                , new CaseBuilder()
+                                        .when(customerPayment.type.eq(1)).then(Expressions.constant("선금"))
+                                        .when(customerPayment.type.eq(2)).then(Expressions.constant("중도금"))
+                                        .when(customerPayment.type.eq(3)).then(Expressions.constant("잔금"))
+                                        .otherwise(Expressions.constant("기타"))
+                                        .as("typeString")
+                                , customerPayment.pic
+                                , customerPayment.method
+                                , new CaseBuilder()
+                                        .when(customerPayment.method.eq(1)).then(Expressions.constant("카드"))
+                                        .when(customerPayment.method.eq(2)).then(Expressions.constant("계좌이체"))
+                                        .when(customerPayment.method.eq(3)).then(Expressions.constant("현금"))
+                                        .otherwise(Expressions.constant("기타"))
+                                        .as("methodString")
+                                , customerPayment.amount
+                                , customerPayment.outstanding
+                                , customerPayment.memo.as("paymentMemo")
+                        )
+                )
+                .from(customerPayment)
+                .innerJoin(customer).on(customerPayment.customer.eq(customer).and(customer.store.id.eq(storeId)))
+                .where(
+                        customerPayment.deleted.eq(false)
+                                .and(customer.id.eq(customerId))
+                )
+                .orderBy(customerPayment.insertDatetime.desc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public ResCustomerPaymentDTO selectCustomerPaymentDetail(Long paymentId) {
+        QCustomerPayment customerPayment = QCustomerPayment.customerPayment;
+
+        ResCustomerPaymentDTO result = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerPaymentDTO.class
+                                , customerPayment.id.as("paymentId")
+                                , customerPayment.paymentDate
+                                , customerPayment.type
+                                , customerPayment.pic
+                                , customerPayment.method
+                                , customerPayment.amount
+                                , customerPayment.outstanding
+                                , customerPayment.memo
+                        )
+                )
+                .from(customerPayment)
+                .where(
+                        customerPayment.deleted.eq(false)
+                                .and(customerPayment.id.eq(paymentId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResRentalListDTO> selectCustomerRentalList(Long customerId) {
+        QRental rental = QRental.rental;
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+
+        List<ResRentalListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResRentalListDTO.class
+                                , rental.id.as("rentalId")
+                                , rental.type
+                                , new CaseBuilder()
+                                        .when(rental.type.eq(1)).then(Expressions.constant("선금"))
+                                        .otherwise(Expressions.constant("기타"))
+                                        .as("typeString")
+                                , rental.fromDate
+                                , rental.toDate
+                                , rental.memo
+                                , rental.renting
+                                , rental.requestDate
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name.as("rentalItemName")
+                        )
+                )
+                .from(rental)
+                .innerJoin(rentalItem).on(rental.rentalItem.eq(rentalItem))
+                .where(
+                        rental.deleted.eq(false)
+                                .and(rental.customer.id.eq(customerId))
+                )
+                .orderBy(rental.insertDatetime.desc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public ResRentalDTO selectCustomerRentalDetail(Long rentalId) {
+        QRental rental = QRental.rental;
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+
+        ResRentalDTO result = queryFactory.select(
+                        Projections.fields(
+                                ResRentalDTO.class
+                                , rental.id.as("rentalId")
+                                , rental.type
+                                , rental.fromDate
+                                , rental.toDate
+                                , rental.memo
+                                , rental.renting
+                                , rental.requestDate
+                                , rental.toDate
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name.as("rentalItemName")
+                        )
+                )
+                .from(rental)
+                .innerJoin(rentalItem).on(rental.rentalItem.eq(rentalItem))
+                .where(
+                        rental.deleted.eq(false)
+                                .and(rental.id.eq(rentalId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResCustomerReservationDTO> selectCustomerReservationList(Long customerId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
+        QReservation reservation = QReservation.reservation;
+        QUser user = QUser.user;
+
+        List<ResCustomerReservationDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerReservationDTO.class
+                                , reservation.id.as("reservationId")
+                                , reservation.allDay
+                                , reservation.type
+                                , new CaseBuilder()
+                                        .when(reservation.type.eq(2)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName2()))
+                                        .when(reservation.type.eq(3)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName3()))
+                                        .when(reservation.type.eq(4)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName4()))
+                                        .when(reservation.type.eq(5)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName5()))
+                                        .when(reservation.type.eq(6)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName6()))
+                                        .otherwise(Expressions.constant("맞춤상담"))
+                                        .as("typeString")
+                                , user.id.as("consultingManagerId")
+                                , user.name.as("consultingManagerName")
+                                , reservation.consultingDate
+                                , reservation.consultingDatetimeFrom
+                                , reservation.consultingDatetimeTo
+                                , reservation.completed
+                                , reservation.contract
+                                , new CaseBuilder()
+                                        .when(reservation.contract.eq(1)).then(Expressions.constant("계약"))
+                                        .when(reservation.contract.eq(2)).then(Expressions.constant("투어"))
+                                        .when(reservation.contract.eq(3)).then(Expressions.constant("취소"))
+                                        .otherwise(Expressions.constant("미해당"))
+                                        .as("contractString")
+                                , reservation.memo
+                        )
+                )
+                .from(reservation)
+                .innerJoin(user).on(reservation.consultingManager.eq(user))
+                .where(
+                        reservation.deleted.eq(false)
+                                .and(reservation.customer.id.eq(customerId))
+                )
+                .orderBy(reservation.consultingDate.desc(), reservation.consultingDatetimeFrom.desc())
+                .fetch();
+
+        return results;
     }
 }

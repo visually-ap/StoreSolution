@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class StringParser {
 
     // 통화 1000자리 , 파싱
-    public String addCommaToNumber(Integer num) {
+    public static String addCommaToNumber(Integer num) {
         if (num == null || num.equals("")) {
             return "";
         } else {
@@ -17,7 +17,7 @@ public class StringParser {
     }
 
     // 통화 1000자리 , 파싱
-    public String addCommaToNumber(Long num) {
+    public static String addCommaToNumber(Long num) {
         if (num == null || num.equals("")) {
             return "";
         } else {
@@ -26,7 +26,7 @@ public class StringParser {
     }
 
     // 통화 1000자리 , 파싱
-    public String addCommaToNumber(BigDecimal num) {
+    public static String addCommaToNumber(BigDecimal num) {
         if (num == null || num.equals("")) {
             return "";
         } else {

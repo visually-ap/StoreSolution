@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<!-- 개별 css-->
-<link rel="stylesheet" th:href="@{/css/page.css}">
-
 <th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <!-- 개별 css-->
+        <link rel="stylesheet" th:href="@{/css/page.css}">
+
         <div class="section_wrap listPage">
 
             <h2 class="title">직원 목록</h2>
@@ -20,7 +20,7 @@
                                 <select class="select_box" th:field="*{searchDTO.searchCondition}">
                                     <option value="all" selected>전체</option>
                                     <option value="name">이름</option>
-                                    <option value="position">직책</option>
+                                    <option value="mobile">휴대전화번호</option>
                                 </select>
                                 <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
                             </div>

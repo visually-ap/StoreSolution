@@ -4,10 +4,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.entity.QCounselingCommon;
-import kr.co.apfactory.storesolution.domain.entity.QCustomer;
-import kr.co.apfactory.storesolution.domain.entity.QReservation;
-import kr.co.apfactory.storesolution.domain.entity.QStore;
+import kr.co.apfactory.storesolution.domain.entity.*;
+import kr.co.apfactory.storesolution.global.utility.parser.LocalDateParser;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -75,6 +73,40 @@ public class FilterManager {
             return new BooleanBuilder(f.get());
         } catch (Exception e) {
             return new BooleanBuilder();
+        }
+    }
+
+    public BooleanBuilder getEmployeeListBooleanBuilderByKeyword(SearchDTO searchDTO) {
+        if (!"".equals(searchDTO.getSearchKeyword())) {
+            if ("name".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QUser.user.name, searchDTO.getSearchKeyword())
+                );
+            } else if ("mobile".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QUser.user.mobileNumber, searchDTO.getSearchKeyword())
+                );
+            } else {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QUser.user.name, searchDTO.getSearchKeyword())
+                                .or(queryStringEq(QUser.user.mobileNumber, searchDTO.getSearchKeyword()))
+                );
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getEmployeeListBooleanBuilderByPeriod(SearchDTO searchDTO) {
+        if (searchDTO.getDateFrom() != null && searchDTO.getDateTo() != null) {
+            return nullSafeBuilder(() ->
+                    QUser.user.insertDatetime.between(
+                            LocalDateParser.getStartDatetimeFromDate(searchDTO.getDateFrom())
+                            , LocalDateParser.getEndDatetimeFromDate(searchDTO.getDateTo())
+                    )
+            );
+        } else {
+            return null;
         }
     }
 
@@ -164,6 +196,74 @@ public class FilterManager {
             } else {
                 return null;
             }
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getConsultingPartnerListBooleanBuilderByKeyword(SearchDTO searchDTO) {
+        if (!"".equals(searchDTO.getSearchKeyword())) {
+            if ("name".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QConsultingPartner.consultingPartner.name, searchDTO.getSearchKeyword())
+                );
+            } else if ("pic".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword())
+                );
+            } else if ("contact".equals(searchDTO.getSearchCondition())) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword())
+                );
+            } else {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QConsultingPartner.consultingPartner.name, searchDTO.getSearchKeyword())
+                                .or(queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword()))
+                                .or(queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword()))
+                );
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getConsultingPartnerListBooleanBuilderByPeriod(SearchDTO searchDTO) {
+        if (searchDTO.getDateFrom() != null && searchDTO.getDateTo() != null) {
+            return nullSafeBuilder(() ->
+                    QConsultingPartner.consultingPartner.insertDatetime.between(
+                            LocalDateParser.getStartDatetimeFromDate(searchDTO.getDateFrom())
+                            , LocalDateParser.getEndDatetimeFromDate(searchDTO.getDateTo())
+                    )
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getRentalItemListBooleanBuilderByKeyword(String searchKeyword) {
+        if (!"".equals(searchKeyword)) {
+            if ("name".equals(searchKeyword)) {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QRentalItem.rentalItem.name, searchKeyword)
+                );
+            } else {
+                return nullSafeBuilder(() ->
+                        queryStringEq(QRentalItem.rentalItem.name, searchKeyword)
+                );
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public BooleanBuilder getRentalItemListBooleanBuilderByPeriod(SearchDTO searchDTO) {
+        if (searchDTO.getDateFrom() != null && searchDTO.getDateTo() != null) {
+            return nullSafeBuilder(() ->
+                    QRentalItem.rentalItem.insertDatetime.between(
+                            LocalDateParser.getStartDatetimeFromDate(searchDTO.getDateFrom())
+                            , LocalDateParser.getEndDatetimeFromDate(searchDTO.getDateTo())
+                    )
+            );
         } else {
             return null;
         }

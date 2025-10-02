@@ -165,77 +165,46 @@
         <!-- Store Management -->
         <ul class="left_nav" th:if="${pathname.startsWith('/setting')}">
             <!-- 매장 정보 -->
-            <th:block th:if="${pathname == '/setting/store/info'}">
-                <li class="on">
-                    <a th:href="@{/setting/store/info}" class="info">
-                        <span>Information</span>
-                    </a>
-                </li>
-            </th:block>
-            <th:block th:unless="${pathname == '/setting/store/info'}">
-                <li>
-                    <a th:href="@{/setting/store/info}" class="info">
-                        <span>Information</span>
-                    </a>
-                </li>
-            </th:block>
+            <li th:class="${pathname == '/setting/store/info' ? 'on' : ''}">
+                <a th:href="@{/setting/store/info}" class="info">
+                    <span>Information</span>
+                </a>
+            </li>
 
             <!-- 직원관리 -->
-            <th:block th:if="${pathname.startsWith('/setting/employee')}">
-                <li class="on">
-                    <a th:href="@{/setting/employee/list}" class="staff">
-                        <span>Staff</span>
-                    </a>
-                </li>
-            </th:block>
-            <th:block th:unless="${pathname.startsWith('/setting/employee')}">
-                <li>
-                    <a th:href="@{/setting/employee/list}" class="staff">
-                        <span>Staff</span>
-                    </a>
-                </li>
-            </th:block>
+            <li th:class="${pathname.startsWith('/setting/employee') ? 'on' : ''}">
+                <a th:href="@{/setting/employee/list}" class="staff">
+                    <span>Staff</span>
+                </a>
+            </li>
+
+            <!-- 컨설팅 업체 관리 -->
+            <li th:class="${pathname.startsWith('/setting/partner') ? 'on' : ''}">
+                <a th:href="@{/setting/partner/list}" class="staff">
+                    <span>Consulting Partner</span>
+                </a>
+            </li>
+
+            <!-- 대여복 관리 -->
+            <li th:class="${pathname.startsWith('/setting/rental') ? 'on' : ''}">
+                <a th:href="@{/setting/rental/list}" class="staff">
+                    <span>Rental</span>
+                </a>
+            </li>
 
             <!-- 환경설정 -->
-            <th:block th:if="${pathname == '/setting/environment'}">
-                <li class="on">
-                    <a th:href="@{/setting/environment}" class="template">
-                        <span>Environment Setup</span>
-                    </a>
-                </li>
-            </th:block>
-            <th:block th:unless="${pathname == '/setting/environment'}">
-                <li>
-                    <a th:href="@{/setting/environment}" class="template">
-                        <span>Environment Setup</span>
-                    </a>
-                </li>
-            </th:block>
+            <li th:class="${pathname == '/setting/environment' ? 'on' : ''}">
+                <a th:href="@{/setting/environment}" class="template">
+                    <span>Environment Setup</span>
+                </a>
+            </li>
 
             <!-- 이미지설정 -->
-            <th:block th:if="${pathname == '/setting/images'}">
-                <li class="on">
-                    <a th:href="@{/setting/images}" class="design">
-                        <span>Image Setup</span>
-                    </a>
-                </li>
-            </th:block>
-            <th:block th:unless="${pathname == '/setting/images'}">
-                <li>
-                    <a th:href="@{/setting/images}" class="design">
-                        <span>Image Setup</span>
-                    </a>
-                </li>
-            </th:block>
-
-
-            <!--            <li>-->
-            <!--                <a href="">-->
-            <!--                    <img th:src="@{/images/icon/size.png}" alt="size 아이콘" style="display: block;">-->
-            <!--                    <img th:src="@{/images/icon/size_on.png}" alt="size 아이콘" style="display: none;">-->
-            <!--                    <span>Size</span>-->
-            <!--                </a>-->
-            <!--            </li>-->
+            <li th:class="${pathname == '/setting/images' ? 'on' : ''}">
+                <a th:href="@{/setting/images}" class="design">
+                    <span>Image Setup</span>
+                </a>
+            </li>
         </ul>
     </div>
 </th:block>

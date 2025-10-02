@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 public class SettingController {
     private final StoreService storeService;
 
-    private final UserService userService;
-
     private final SiteService siteService;
 
     @GetMapping("/store/info")
@@ -50,7 +48,7 @@ public class SettingController {
 
     @GetMapping("/employee/detail")
     public String gotoEmployeeDetail(Long userId, HttpServletRequest request, Model model) {
-        model.addAttribute("item", userService.getEmployeeDetail(request, userId));
+        model.addAttribute("item", storeService.getEmployeeDetail(request, userId));
         return "views/setting/employee/detail";
     }
 
@@ -67,5 +65,43 @@ public class SettingController {
     public String gotoSiteImagesDetail(Model model) {
         model.addAttribute("dto", siteService.getSiteImages());
         return "views/setting/images";
+    }
+
+    @GetMapping("/partner/list")
+    public String gotoConsultingPartnerList(@PageableDefault(page = 0, size = 10, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable
+            , @ModelAttribute SearchDTO searchDTO
+            , HttpServletRequest request, Model model) {
+        model.addAttribute("itemList", storeService.getConsultingPartnerList(request, pageable, searchDTO));
+        return "views/setting/partner/list";
+    }
+
+    @GetMapping("/partner/register")
+    public String gotoConsultingPartnerRegister() {
+        return "views/setting/partner/register";
+    }
+
+    @GetMapping("/partner/detail")
+    public String gotoConsultingPartnerDetail(Long partnerId, Model model) {
+        model.addAttribute("item", storeService.getConsultingPartnerDetail(partnerId));
+        return "views/setting/partner/detail";
+    }
+
+    @GetMapping("/rental/list")
+    public String gotoRentalItemList(@PageableDefault(page = 0, size = 10, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable
+            , @ModelAttribute SearchDTO searchDTO
+            , Model model) {
+        model.addAttribute("itemList", storeService.getRentalItemList(pageable, searchDTO));
+        return "views/setting/rental/list";
+    }
+
+    @GetMapping("/rental/register")
+    public String gotoRentalItemRegister() {
+        return "views/setting/rental/register";
+    }
+
+    @GetMapping("/rental/detail")
+    public String gotoRentalItemDetail(Long rentalItemId, Model model) {
+        model.addAttribute("item", storeService.getRentalItemDetail(rentalItemId));
+        return "views/setting/rental/detail";
     }
 }

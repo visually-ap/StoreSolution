@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- 개별 css-->
+<link rel="stylesheet" th:href="@{/css/page.css}">
+
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <div class="section_wrap listPage">
+
+            <h2 class="title">대여복 목록</h2>
+
+            <!-- 검색 폼 -->
+            <form id="searchForm" class="" method="get" th:action="@{/setting/rental/list}" onsubmit="return checkDateInputForSearch()">
+                <div class="search_wrap">
+                    <div class="filter_wrap">
+                        <div class="filter filter_1">
+                            <div class="title">상품명 검색</div>
+                            <div class="filter__">
+                                <input type="hidden" name="searchCondition" value="name">
+                                <input type="text" placeholder="검색어 입력" maxlength="10" th:field="*{searchDTO.searchKeyword}">
+                            </div>
+                        </div>
+                        <div class="filter filter_2">
+                            <div class="title">기간검색</div>
+                            <div class="filter__">
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateFrom}" readonly>
+                                ~
+                                <input type="text" class="searchDatePicker" th:field="${searchDTO.dateTo}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button_box">
+                        <button type="submit" class="btnColor_1">검색</button>
+                        <button type="button" onclick="resetSearchForm()"><span>초기화</span></button>
+                    </div>
+                </div>
+
+                <div class="number_lists result">
+                    <h5 class="total">
+                        <span th:text="${'총 '}"></span>
+                        <span class="people" th:text="${itemList.totalElements} + '개'"></span>
+                        <span th:text="${'의 대여복이 존재합니다.'}"></span>
+                    </h5>
+                    <select id="sort" name="sort" onchange="searchForm.submit();" th:with="sort=${itemList.sort.toString()}">
+                        <option value="regDate,desc" th:selected="${sort == 'regDate: DESC'}">등록일시 최신순</option>
+                        <option value="regDate,asc" th:selected="${sort == 'regDate: ASC'}">등록일시 오래된순</option>
+                        <option value="name,desc" th:selected="${sort == 'name: DESC'}">상품명 내림차순</option>
+                        <option value="name,asc" th:selected="${sort == 'name: ASC'}">상품명 오름차순</option>
+                    </select>
+                </div>
+            </form>
+
+            <script>
+                periodPicker(document.getElementById('dateFrom'), document.getElementById('dateTo'));
+            </script>
+
+            <!-- 목록 테이블 -->
+            <div>
+                <table class="tableStyle listT">
+                    <thead>
+                    <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 25%">
+                        <col style="width: 10%">
+                        <col style="width: 30%">
+                        <col style="width: 10%">
+                        <col style="width: 15%">
+                    </colgroup>
+                    <tr class="title_tr">
+                        <th>순번</th>
+                        <th>상품명</th>
+                        <th>사이즈</th>
+                        <th>비고</th>
+                        <th>대여상태</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="gotoDetail" th:each="item, stat : ${itemList}" th:data-id="${item.rentalItemId}">
+                        <td th:text="${stat.count}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${item.size}"></td>
+                        <td th:text="${item.memo}"></td>
+                        <td th:text="${item.renting ? '대여중' : '미대여'}"></td>
+                        <td th:text="${#temporals.format(item.insertDatetime, 'yyyy-MM-dd')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 페이징 -->
+                <th:block th:replace="/layout/fragment/pagination :: pagination(${itemList})"></th:block>
+            </div>
+        </div>
+
+        <div class="listPage_btn btn_wrap right">
+            <button id="registerButton" class="btn_2 btnColor_1 registerBtn">등록</button>
+        </div>
+
+        <script>
+                $(document).on('click', '#registerButton', function () {
+                    location.href = `/setting/rental/register`;
+                });
+
+                $(document).on('click', '.gotoDetail', function () {
+                    const rentalItemId = $(this).data('id');
+                    location.href = `/setting/rental/detail?rentalItemId=${rentalItemId}`;
+                });
+            </script>
+
+    </th:block>
+</th:block>
+</html>

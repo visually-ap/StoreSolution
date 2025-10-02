@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 // jpa 사용
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>, CustomerSupportRepository {
-
+    Customer findByIdAndStoreId(Long customerId, Long storeId);
 }

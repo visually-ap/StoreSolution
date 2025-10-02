@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class ResCounselingDTO {
     private Long customerId;
     private Long reservationId;
     private Long counselingCommonId;
+    private Long orderCommonId;
 
     private String name;
     private String mobile;
@@ -44,6 +47,8 @@ public class ResCounselingDTO {
     private String fabricColorCoat;
 
     private Boolean saved;
+    private LocalDate orderingDate;
+    private String fabricInfo;
 
 
     public void updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO){
@@ -69,5 +74,35 @@ public class ResCounselingDTO {
         this.fabricCompanyCoat = reqFabricSaveDTO.getFabricCompanyCoat();
         this.fabricPatternCoat = reqFabricSaveDTO.getFabricPatternCoat();
         this.fabricColorCoat = reqFabricSaveDTO.getFabricColorCoat();
+    }
+
+    public void setFabricInfo() {
+        if (this.allSameFabric) {
+            if (this.jacket) {
+                this.fabricInfo = this.fabricCompanyJacket + " " + this.fabricPatternJacket + " " + this.fabricColorJacket;
+            } else if (this.pants) {
+                this.fabricInfo = this.fabricCompanyPants + " " + this.fabricPatternPants + " " + this.fabricColorPants;
+            } else if (this.vest) {
+                this.fabricInfo = this.fabricCompanyVest + " " + this.fabricPatternVest + " " + this.fabricColorVest;
+            } else if (this.coat) {
+                this.fabricInfo = this.fabricCompanyCoat + " " + this.fabricPatternCoat + " " + this.fabricColorCoat;
+            }
+        } else {
+            this.fabricInfo = "";
+            if (this.jacket) {
+                this.fabricInfo += this.fabricCompanyJacket + " " + this.fabricPatternJacket + " " + this.fabricColorJacket + "\n";
+            }
+            if (this.pants) {
+                this.fabricInfo += this.fabricCompanyPants + " " + this.fabricPatternPants + " " + this.fabricColorPants + "\n";
+            }
+            if (this.vest) {
+                this.fabricInfo += this.fabricCompanyVest + " " + this.fabricPatternVest + " " + this.fabricColorVest + "\n";
+            }
+            if (this.coat) {
+                this.fabricInfo += this.fabricCompanyCoat + " " + this.fabricPatternCoat + " " + this.fabricColorCoat + "\n";
+            }
+            this.fabricInfo.trim();
+            this.fabricInfo.replaceAll("\n", "<br>");
+        }
     }
 }

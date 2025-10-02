@@ -1,31 +1,26 @@
 package kr.co.apfactory.storesolution.domain.repository.support.impl;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeDetailDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
-import kr.co.apfactory.storesolution.domain.dto.response.ResStoreInfoDTO;
-import kr.co.apfactory.storesolution.domain.entity.QCodeType;
-import kr.co.apfactory.storesolution.domain.entity.QStore;
-import kr.co.apfactory.storesolution.domain.entity.QUser;
+import kr.co.apfactory.storesolution.domain.dto.response.*;
+import kr.co.apfactory.storesolution.domain.entity.*;
 import kr.co.apfactory.storesolution.domain.repository.support.StoreSupportRepository;
 import kr.co.apfactory.storesolution.domain.repository.util.FilterManager;
 import kr.co.apfactory.storesolution.domain.repository.util.SortManager;
-import kr.co.apfactory.storesolution.global.security.dto.LoginInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
-
-import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.EMPLOYEE;
-import static kr.co.apfactory.storesolution.global.enums.AuthorityEnum.USER;
+import java.util.stream.Collectors;
 
 
 // querydsl 사용
@@ -65,5 +60,339 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                 .fetchOne();
 
         return result;
+    }
+
+    @Override
+    public ResEmployeeDetailDTO selectEmployeeDetail(String lang, Long userId, Long storeId) {
+        QUser user = QUser.user;
+        QCodeType position = QCodeType.codeType;
+
+        ResEmployeeDetailDTO result = queryFactory
+                .select(
+                        Projections.fields(
+                                ResEmployeeDetailDTO.class
+                                , user.id.as("userId")
+                                , user.loginId
+                                , user.name
+                                , user.mobileNumber
+                                , position.id.as("position")
+                                , filterManager.getLanguageStringPath(lang, position, "typeName").coalesce("").as("positionName")
+                                , user.enabled
+                                , user.insertDatetime
+                        )
+                )
+                .from(user)
+                .leftJoin(user.position, position)
+                .where(
+                        user.deleted.isFalse()
+                                .and(user.store.id.eq(storeId))
+                                .and(user.id.eq(userId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResEmployeeListDTO> selectEmployeeList(Long storeId) {
+        QUser user = QUser.user;
+        QStore store = QStore.store;
+
+        List<ResEmployeeListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResEmployeeListDTO.class
+                                , user.id.as("userId")
+                                , user.name
+                        )
+                )
+                .from(user)
+                .innerJoin(store).on(user.store.eq(store))
+                .where(
+                        user.deleted.eq(false)
+                                .and(user.store.id.eq(storeId))
+                )
+                .orderBy(user.name.desc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public List<ResEmployeeScheduleDTO> selectEmployeeScheduleList(Long storeId, LocalDate date) {
+        QUser user = QUser.user;
+        QStore store = QStore.store;
+        QReservation reservation = QReservation.reservation;
+        QCustomer customer = QCustomer.customer;
+
+        List<ResEmployeeScheduleDTO> results = queryFactory
+                .from(user)
+                .innerJoin(store).on(user.store.eq(store))
+                .leftJoin(reservation).on(user.eq(reservation.consultingManager).and(reservation.deleted.isFalse()).and(reservation.consultingDate.eq(date)))
+                .leftJoin(customer).on(reservation.customer.eq(customer))
+                .where(
+                        user.deleted.eq(false)
+                                .and(user.store.id.eq(storeId))
+                )
+                .orderBy(user.name.asc(), reservation.consultingDatetimeFrom.asc())
+                .transform(
+                        GroupBy.groupBy(user.id).list(
+                                Projections.fields(
+                                        ResEmployeeScheduleDTO.class
+                                        , user.id.as("userId")
+                                        , user.name
+                                        , GroupBy.list(
+                                                Projections.fields(
+                                                        ResReservationDTO.class
+                                                        , reservation.id.as("reservationId")
+                                                        , reservation.allDay
+                                                        , reservation.consultingDatetimeFrom
+                                                        , reservation.consultingDatetimeTo
+                                                        , reservation.type
+                                                        , customer.name1.as("customerName")
+                                                        , customer.id.as("customerId")
+                                                )
+                                        ).as("reservationList")
+                                )
+                        )
+                );
+
+        for (ResEmployeeScheduleDTO dto : results) {
+            List<ResReservationDTO> filtered = dto.getReservationList().stream()
+                    .filter(res -> res.getReservationId() != null)
+                    .collect(Collectors.toList());
+            dto.setReservationList(filtered);
+        }
+
+        return results;
+    }
+
+    @Override
+    public Page<ResEmployeeListDTO> selectEmployeeList(String lang, Pageable pageable, SearchDTO searchDTO, Long storeId) {
+        QUser user = QUser.user;
+        QStore store = QStore.store;
+        QCodeType position = QCodeType.codeType;
+
+        List<OrderSpecifier> ORDERS = sortManager.getEmployeeListOrderSpecifiers(pageable);
+
+        QueryResults<ResEmployeeListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResEmployeeListDTO.class
+                                , user.id.as("userId")
+                                , user.loginId
+                                , user.mobileNumber
+                                , user.insertDatetime
+                                , user.name
+                                , filterManager.getLanguageStringPath(lang, position, "typeName").coalesce("").as("position")
+                        )
+                )
+                .from(user)
+                .innerJoin(store).on(user.store.eq(store))
+                .leftJoin(position).on(user.position.eq(position))
+                .where(
+                        user.deleted.eq(false)
+                                .and(user.store.id.eq(storeId))
+                                .and(filterManager.getEmployeeListBooleanBuilderByKeyword(searchDTO))
+                                .and(filterManager.getEmployeeListBooleanBuilderByPeriod(searchDTO))
+                )
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public Page<ResConsultingPartnerListDTO> selectConsultingPartnerList(String lang, Pageable pageable, SearchDTO searchDTO, Long storeId) {
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+
+        List<OrderSpecifier> ORDERS = sortManager.getConsultingPartnerListOrderSpecifiers(pageable);
+
+        QueryResults<ResConsultingPartnerListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResConsultingPartnerListDTO.class
+                                , consultingPartner.id.as("partnerId")
+                                , consultingPartner.name
+                                , consultingPartner.pic
+                                , consultingPartner.contact
+                                , consultingPartner.charge
+                                , consultingPartner.insertDatetime
+                        )
+                )
+                .from(consultingPartner)
+                .where(
+                        consultingPartner.deleted.eq(false)
+                                .and(consultingPartner.store.id.eq(storeId))
+                                .and(filterManager.getConsultingPartnerListBooleanBuilderByKeyword(searchDTO))
+                                .and(filterManager.getConsultingPartnerListBooleanBuilderByPeriod(searchDTO))
+                )
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public ResConsultingPartnerDetailDTO selectConsultingPartnerDetail(Long partnerId, Long storeId) {
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+
+        ResConsultingPartnerDetailDTO result = queryFactory
+                .select(
+                        Projections.fields(
+                                ResConsultingPartnerDetailDTO.class
+                                , consultingPartner.id.as("partnerId")
+                                , consultingPartner.name
+                                , consultingPartner.pic
+                                , consultingPartner.contact
+                                , consultingPartner.charge
+                                , consultingPartner.memo
+                        )
+                )
+                .from(consultingPartner)
+                .where(
+                        consultingPartner.deleted.isFalse()
+                                .and(consultingPartner.store.id.eq(storeId))
+                                .and(consultingPartner.id.eq(partnerId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResConsultingPartnerListDTO> selectConsultingPartnerList(Long storeId) {
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+
+        List<ResConsultingPartnerListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResConsultingPartnerListDTO.class
+                                , consultingPartner.id.as("partnerId")
+                                , consultingPartner.name
+                                , consultingPartner.pic
+                                , consultingPartner.contact
+                                , consultingPartner.charge
+                                , consultingPartner.insertDatetime
+                        )
+                )
+                .from(consultingPartner)
+                .where(
+                        consultingPartner.deleted.eq(false)
+                                .and(consultingPartner.store.id.eq(storeId))
+                )
+                .orderBy(consultingPartner.name.asc())
+                .fetch();
+        return results;
+    }
+
+    @Override
+    public Page<ResRentalItemListDTO> selectRentalItemList(Pageable pageable, SearchDTO searchDTO, Long storeId) {
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+
+        List<OrderSpecifier> ORDERS = sortManager.getRentalItemListOrderSpecifiers(pageable);
+
+        QueryResults<ResRentalItemListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResRentalItemListDTO.class
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name
+                                , rentalItem.size
+                                , rentalItem.barcode
+                                , rentalItem.renting
+                                , rentalItem.name
+                                , rentalItem.insertDatetime
+                        )
+                )
+                .from(rentalItem)
+                .where(
+                        rentalItem.deleted.eq(false)
+                                .and(rentalItem.store.id.eq(storeId))
+                                .and(filterManager.getRentalItemListBooleanBuilderByKeyword(searchDTO.getSearchKeyword()))
+                                .and(filterManager.getRentalItemListBooleanBuilderByPeriod(searchDTO))
+                )
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
+
+    @Override
+    public ResRentalItemDTO selectRentalItemDetail(Long rentalItemId, Long storeId) {
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+
+        ResRentalItemDTO result = queryFactory
+                .select(
+                        Projections.fields(
+                                ResRentalItemDTO.class
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name
+                                , rentalItem.size
+                                , rentalItem.barcode
+                                , rentalItem.renting
+                                , rentalItem.memo
+                        )
+                )
+                .from(rentalItem)
+                .where(
+                        rentalItem.deleted.isFalse()
+                                .and(rentalItem.store.id.eq(storeId))
+                                .and(rentalItem.id.eq(rentalItemId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    public List<ResRentalItemListDTO> selectRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword, Long storeId) {
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+        QRental rental = QRental.rental;
+
+        List<ResRentalItemListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResRentalItemListDTO.class
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name
+                                , rentalItem.size
+                                , rentalItem.barcode
+                                , rentalItem.renting
+                                , rentalItem.name
+                                , rentalItem.memo
+                                , rentalItem.insertDatetime
+                        )
+                )
+                .from(rentalItem)
+                .where(
+                        rentalItem.deleted.eq(false)
+                                .and(rentalItem.store.id.eq(storeId))
+                                .and(filterManager.getRentalItemListBooleanBuilderByKeyword(searchKeyword))
+                                .and(
+                                        JPAExpressions
+                                                .selectOne()
+                                                .from(rental)
+                                                .where(
+                                                        rental.rentalItem.eq(rentalItem)
+                                                                .and(rental.deleted.eq(false))
+                                                                .and(
+                                                                        // 예정 반납일과 겹치는 경우
+                                                                        (rental.fromDate.loe(requestDate)
+                                                                                .and(rental.requestDate.goe(fromDate)))
+                                                                                .or(
+                                                                                        // 실제 반납일과 겹치는 경우
+                                                                                        rental.fromDate.loe(requestDate)
+                                                                                                .and(rental.toDate.goe(fromDate))
+                                                                                )
+                                                                )
+                                                )
+                                                .notExists()
+                                )
+                )
+                .orderBy()
+                .fetch();
+
+        return results;
     }
 }

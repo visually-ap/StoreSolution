@@ -13,4 +13,5 @@ import java.time.LocalDateTime;
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, CustomerSupportRepository {
     int countByConsultingManagerAndConsultingDatetimeFromLessThanEqualAndConsultingDatetimeToGreaterThan(User consultingManager, LocalDateTime targetFrom, LocalDateTime targetTo);
     int countByConsultingManagerAndConsultingDatetimeFromLessThanAndConsultingDatetimeToGreaterThan(User consultingManager, LocalDateTime targetFrom, LocalDateTime targetTo);
+    int countByConsultingManagerAndConsultingDatetimeFromLessThanAndConsultingDatetimeToGreaterThanAndIdNot(User consultingManager, LocalDateTime targetFrom, LocalDateTime targetT, Long reservationId);
 }

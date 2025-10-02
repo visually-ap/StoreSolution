@@ -2,6 +2,8 @@ package kr.co.apfactory.storesolution.domain.repository.support;
 
 import kr.co.apfactory.storesolution.domain.dto.response.*;
 
+import java.util.List;
+
 public interface CounselingSupportRepository {
     ResCounselingDTO selectCounselingDetail(Long storeId, Long reservationId);
     ResDesignJacketDTO selectCounselingJacketDesignDetail(Long counselingId);
@@ -12,4 +14,6 @@ public interface CounselingSupportRepository {
     ResSizePantsDTO selectCounselingPantsSizeDetail(Long counselingId);
     ResSizeVestDTO selectCounselingVestSizeDetail(Long counselingId);
     ResSizeCoatDTO selectCounselingCoatSizeDetail(Long counselingId);
+
+    List<ResCounselingDTO> selectCounselingList(Long customerId, Long storeId);
 }

@@ -503,7 +503,7 @@ public class CustomerService {
         Reservation reservation = reservationRepository.findById(reqCustomerReservationDTO.getReservationId()).orElseThrow(IllegalAccessError::new);
         if (reservation == null) {
             return ResponseDTO.builder()
-                    .message("상담 예약 내용을 찾을 수 없습니다.")
+                    .message("예약 내용을 찾을 수 없습니다.")
                     .build();
         }
 
@@ -526,6 +526,54 @@ public class CustomerService {
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .message("완료 처리하였습니다.")
+                .build();
+    }
+
+    public ResponseDTO getReservationDetail(Long reservationId) {
+        ResCustomerDTO resCustomerDTO = reservationRepository.selectReservationDetail(reservationId);
+        if (resCustomerDTO == null) {
+            return ResponseDTO.builder()
+                    .message("예약 내용을 찾을 수 없습니다.")
+                    .build();
+        }
+
+        resCustomerDTO.setConsultingDatetime();
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .result(resCustomerDTO)
+                .build();
+    }
+
+    public ResponseDTO updateReservationDetail(ReqReservationDTO reqReservationDTO) {
+        SiteEnvSetting siteEnvSetting = siteEnvSettingRepository.findByStoreId(LoginUser.getDetails().getStoreId());
+        reqReservationDTO.updateConsultingDatetime(siteEnvSetting.getMinuteByType(reqReservationDTO.getReservationModalType()));
+        // 등록 가능한 일정인지 먼저 확인
+        if (!reqReservationDTO.getIsAlldayModal() && reservationRepository.countByConsultingManagerAndConsultingDatetimeFromLessThanAndConsultingDatetimeToGreaterThanAndIdNot(
+                User.builder().id(reqReservationDTO.getConsultingMangerIdModal()).build()
+                , reqReservationDTO.getConsultingDatetimeTo()
+                , reqReservationDTO.getConsultingDatetimeFrom()
+                , reqReservationDTO.getReservationIdModal()) > 0
+        ) {
+            return ResponseDTO.builder()
+                    .message("등록할 수 없는 일정입니다.\n상담담당의 일정을 확인하시기 바랍니다.")
+                    .build();
+        }
+
+        Reservation reservation = reservationRepository.findById(reqReservationDTO.getReservationIdModal()).orElseThrow(IllegalAccessError::new);
+        if (reservation == null) {
+            return ResponseDTO.builder()
+                    .message("상담 예약 내용을 찾을 수 없습니다.")
+                    .build();
+        }
+
+        // 예약 정보 등록
+        reservation.updateReservation(reqReservationDTO);
+        reservationRepository.save(reservation);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("저장하였습니다.")
                 .build();
     }
 }

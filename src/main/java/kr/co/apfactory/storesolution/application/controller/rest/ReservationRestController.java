@@ -197,4 +197,15 @@ public class ReservationRestController {
     public ResponseEntity<ResponseDTO> completeCustomerReservation(Long reservationId) {
         return ResponseEntity.ok(customerService.completeCustomerReservation(reservationId));
     }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseDTO> getReservationDetail(Long reservationId) {
+        return ResponseEntity.ok(customerService.getReservationDetail(reservationId));
+    }
+
+    @PostMapping("/detail/update")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateReservationDetail(@RequestBody ReqReservationDTO reqReservationDTO) {
+        return ResponseEntity.ok(customerService.updateReservationDetail(reqReservationDTO));
+    }
 }

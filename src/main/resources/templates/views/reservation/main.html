@@ -119,7 +119,7 @@
                                 <col style="width: 20%">
                                 <col style="width: 25%">
                                 <col style="width: 30%">
-                                <col style="width: 20%">
+                                <col style="width: 25%">
                             </colgroup>
                             <tr class="title_tr">
                                 <th>구분</th>
@@ -314,62 +314,89 @@
 
 <div class="modal_window modal_style" id="reservationDetailModal">
     <div class="inner_box">
-        <h2 class="title">예약 정보</h2>
-        <div class="data_box">
-            <div>
-                담당자 : 아무개
+        <form id="reservationDetailForm">
+            <input type="hidden" name="reservationIdModal" id="reservationIdModal">
+            <input type="hidden" name="consultingMangerIdModal" id="consultingMangerIdModal">
+            <h2 class="title">예약 정보</h2>
+            <div class="data_box">
+                <div>
+                    담당자 : <span id="reservationModalPic"></span>
+                </div>
+                <div>
+                    고객명 : <span id="reservationModalCustomer"></span>
+                </div>
+                <div>
+                    컨설팅 : <span id="reservationModalPartner"></span>
+                </div>
+                <div>
+                    날짜
+                    <label for="isAlldayModal">
+                        <input type="checkbox" name="isAlldayModal" id="isAlldayModal" value="true">
+                        미정
+                    </label>
+                    <input type="text" id="reservationModalConsultingDate" name="reservationModalConsultingDate" readonly>
+                    <select class="reservationDatetime" name="consultingHourModal" id="consultingHourModal">
+                        <option value="">선택</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                    </select>
+                    시&nbsp;
+                    <select class="reservationDatetime" name="consultingMinuteModal" id="consultingMinuteModal">
+                        <option value="">선택</option>
+                        <option value="00">00</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
+                    분
+                </div>
+                <div>
+                    구분
+                    <select name="reservationModalType" id="reservationModalType" class="t-center">
+                        <option value="1" selected>맞춤예약</option>
+                        <option value="2" th:text="${siteEnvDto.typeName2}"></option>
+                        <option value="3" th:text="${siteEnvDto.typeName3}"></option>
+                        <option value="4" th:text="${siteEnvDto.typeName4}"></option>
+                        <option value="5" th:text="${siteEnvDto.typeName5}"></option>
+                        <option value="6" th:text="${siteEnvDto.typeName6}"></option>
+                    </select>
+                </div>
+                <div>
+                    내용
+                    <textarea name="reservationModalMemo" id="reservationModalMemo"></textarea>
+                </div>
+                <div>
+                    계약여부
+                    <select name="reservationModalContract" id="reservationModalContract" class="t-center">
+                        <option value="0">미해당</option>
+                        <option value="1">계약</option>
+                        <option value="2">투어</option>
+                        <option value="3">취소</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                고객명 : 홍길동
+            <div class="btn_wrap center mt-40px">
+                <div class="innerBtn_box">
+                    <button type="button" id="updateButton" class="btnColor_1 btn_2">저장</button>
+                    <button type="button" id="completeButton" class="btn_2">상담완료</button>
+                    <button type="button" class="closeModalButton btn_2" data-label="#reservationDetailModal" onclick="closeModal($(this).data('label'), initReservationDetailModal)">닫기</button>
+                </div>
             </div>
-            <div>
-                컨설팅 : ?
-            </div>
-            <div>
-                날짜 : <input type="text">
-            </div>
-            <div>
-                구분
-                <select name="" id="">
-                    <option value="">선택</option>
-                    <option value="">선택</option>
-                </select>
-            </div>
-            <div>
-                내용
-                <textarea name="" id="" cols="30" rows="10"></textarea>
-            </div>
-            <div>
-                상태
-                <label for="radioComplete">
-                    <input type="radio" id="radioComplete">완료
-                </label>
-                <label for="radioIncomplete">
-                    <input type="radio" id="radioIncomplete">완료
-                </label>
-            </div>
-            <div>
-                계약여부
-                <label for="radioContracted">
-                    <input type="radio" id="radioContracted">계약
-                </label>
-                <label for="radioTour">
-                    <input type="radio" id="radioTour">투어
-                </label>
-                <label for="radioCancel">
-                    <input type="radio" id="radioCancel">투어
-                </label>
-                <label for="radioNa">
-                    <input type="radio" id="radioNa">해당없음
-                </label>
-            </div>
-        </div>
-        <div class="btn_wrap center mt-40px">
-            <div class="innerBtn_box">
-                <button id="updateButton" class="btnColor_1 btn_2">저장</button>
-                <button class="closeModalButton btn_2" data-label="#reservationDetailModal" onclick="closeModal($(this).data('label'), initReservationDetailModal)">닫기</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -379,8 +406,10 @@
     let todayString = getToday('YYYY-MM-DD');
     let momentDate = moment(todayString);
 
+    const fp = standardPickerWithMinDate($('.datepicker'));
+    const fp1 = standardPicker($('#reservationModalConsultingDate'));
+
     $(document).ready(function () {
-        const fp = standardPickerWithMinDate($('.datepicker'));
 
         // 금일 타임 테이블 로드
         getCustomerList('', todayString);
@@ -401,6 +430,26 @@
             setReadonlySelect($('#consultingHour'), false);
             setReadonlySelect($('#consultingMinute'), false);
         }
+    });
+
+    $(document).on('click', '#isAlldayModal', function () {
+        if ($(this).is(':checked')) {
+            $('#consultingHourModal').val('');
+            $('#consultingMinuteModal').val('');
+            setReadonlySelect($('#consultingHourModal'), true);
+            setReadonlySelect($('#consultingMinuteModal'), true);
+        } else {
+            setReadonlySelect($('#consultingHourModal'), false);
+            setReadonlySelect($('#consultingMinuteModal'), false);
+        }
+    });
+
+    $(document).on('change', '#reservationModalConsultingDate', function () {
+        // const isVisible = $('#reservationDetailModal').is(':visible');
+        // const date = $(this).val();
+        // if (isVisible && !isEmpty(date)) {
+        //     renderTimeTable('custom-schedule-table', date);
+        // }
     });
 
     function setReadonlySelect($obj, state) {
@@ -672,11 +721,111 @@
     });
 
     $(document).on('click', '.reservationDetail', function() {
-        openModal('#reservationDetailModal', initReservationDetailModal);
+        if (doubleClick.isDouble()) {
+            return false;
+        }
+
+        callLazyService(
+            "GET"
+            , `/reservation/detail?reservationId=${$(this).data('reservationid')}`
+            , {}
+            , function (response) {
+                if (response.success) {
+                    openModal('#reservationDetailModal', initReservationDetailModal);
+                    setReservationDetailInfo(response.result);
+                    if (response.result.completed) {
+                        $('#updateButton').hide()
+                    }
+                    if (response.result.type == 1 || response.result.completed) {
+                        $('#completeButton').hide();
+                    }
+                } else {
+                    alert(response.message);
+                }
+            }
+        );
+    });
+
+    $(document).on('click', '#updateButton', function() {
+        if (doubleClick.isDouble()) {
+            return;
+        }
+
+        if (!confirm('예약 정보를 저장하시겠습니까?')) {
+            doubleClick.initFlag();
+            return;
+        }
+
+        showLoadingImage();
+
+        callService(
+            "POST"
+            , "/reservation/detail/update"
+            , JSON.stringify(convertFormToJSON($('#reservationDetailForm')))
+            , function (response) {
+                alert(`${response.message}`);
+            }
+        );
+    });
+
+    $(document).on('click', '#completeButton', function() {
+        if (doubleClick.isDouble()) {
+            return;
+        }
+
+        if (!confirm('완료 처리하시겠습니까?')) {
+            doubleClick.initFlag();
+            return;
+        }
+
+        showLoadingImage();
+
+        callService(
+            "POST"
+            , `/reservation/customer/reservation/complete?reservationId=${$('#reservationIdModal').val()}`
+            , {}
+            , function (response) {
+                alert(response.message);
+                if (response.success) {
+                    location.reload();
+                }
+            }
+        );
     });
 
     function initReservationDetailModal() {
+        $('#reservationIdModal').val('');
+        $('#consultingMangerIdModal').val('');
+        $('#reservationModalPic').text('');
+        $('#reservationModalCustomer').text('');
+        $('#reservationModalPartner').text('');
+        $('#isAlldayModal').prop('checked', false);
+        fp1.clear();
+        $('#consultingHourModal').val('');
+        $('#consultingMinuteModal').val('');
+        $('#reservationModalType').val(1);
+        $('#reservationModalMemo').val('');
+        $('#reservationModalContract').val(0);
+    }
 
+    function setReservationDetailInfo(data) {
+        $('#reservationIdModal').val(data.reservationId);
+        $('#consultingMangerIdModal').val(data.consultingManagerId);
+        $('#reservationModalPic').text(data.consultingManagerName);
+        $('#reservationModalCustomer').text(data.name1);
+        $('#reservationModalPartner').text(data.consultingPartnerName == null ? '' : data.consultingPartnerName);
+        $('#isAlldayModal').prop('checked', data.isAllday);
+        fp1.setDate(data.consultingDate, true);
+        if (!data.isAllday) {
+            $('#consultingHourModal').val(data.consultingHour);
+            $('#consultingMinuteModal').val(data.consultingMinute);
+        }
+        setReadonlySelect($('#consultingHourModal'), data.isAllday);
+        setReadonlySelect($('#consultingMinuteModal'), data.isAllday);
+
+        $('#reservationModalType').val(data.type);
+        $('#reservationModalMemo').val(data.memo);
+        $('#reservationModalContract').val(data.contract);
     }
 </script>
 

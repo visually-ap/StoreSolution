@@ -44,10 +44,12 @@ public class ResCustomerDTO {
     private String insertDate;
     private String reservationTypeString;
     private Integer type;
+    private Integer contract;
 
     private Boolean isAllday;
 
     private Long consultingPartnerId;
+    private String consultingPartnerName;
 
     public void setConsultingDatetime() {
         if (!this.isAllday) {

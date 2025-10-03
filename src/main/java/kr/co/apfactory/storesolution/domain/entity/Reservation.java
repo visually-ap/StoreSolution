@@ -1,6 +1,7 @@
 package kr.co.apfactory.storesolution.domain.entity;
 
 import kr.co.apfactory.storesolution.domain.dto.request.ReqCustomerReservationDTO;
+import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationDTO;
 import kr.co.apfactory.storesolution.domain.dto.request.ReqReservationUpdateDTO;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.AllArgsConstructor;
@@ -121,6 +122,24 @@ public class Reservation extends BaseEntity {
 
         this.contract = dto.getReservationContract();
         this.memo = dto.getReservationMemo();
+    }
+
+    public void updateReservation(ReqReservationDTO dto) {
+        this.reservationManager = User.builder().id(LoginUser.getDetails().getId()).build();
+        this.allDay = dto.getIsAlldayModal();
+        this.consultingDate = dto.getReservationModalConsultingDate();
+        this.type = dto.getReservationModalType();
+
+        if (!dto.getIsAlldayModal()) {
+            this.consultingDatetimeFrom = dto.getConsultingDatetimeFrom();
+            this.consultingDatetimeTo = dto.getConsultingDatetimeTo();
+        } else {
+            this.consultingDatetimeFrom = null;
+            this.consultingDatetimeTo = null;
+        }
+
+        this.contract = dto.getReservationModalContract();
+        this.memo = dto.getReservationModalMemo();
     }
 
     public void updateMemo(String memo) {

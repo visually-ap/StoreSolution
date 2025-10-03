@@ -13,6 +13,7 @@ public interface CustomerSupportRepository {
     List<ResCustomerDTO> selectCustomerList(String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO);
 
     ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId);
+    ResCustomerDTO selectReservationDetail(Long reservationId);
 
     Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId);
 

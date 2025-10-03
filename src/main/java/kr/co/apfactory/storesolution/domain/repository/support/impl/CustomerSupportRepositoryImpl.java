@@ -81,6 +81,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     public ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId) {
         QCustomer customer = QCustomer.customer;
         QReservation reservation = QReservation.reservation;
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
 
         ResCustomerDTO result = queryFactory.select(
                         Projections.fields(
@@ -96,6 +97,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.weddingPlace
                                 , customer.memo
                                 , reservation.consultingManager.id.as("consultingManagerId")
+                                , reservation.consultingManager.name.as("consultingManagerName")
                                 , reservation.reservationManager.id.as("reservationManagerId")
                                 , reservation.consultingDate
                                 , reservation.consultingDatetimeFrom
@@ -103,10 +105,52 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , reservation.id.as("reservationId")
                                 , reservation.type
                                 , reservation.allDay.as("isAllday")
+                                , reservation.contract
+                                , consultingPartner.name.as("consultingPartnerName")
                         )
                 )
                 .from(reservation)
                 .innerJoin(customer).on(reservation.customer.eq(customer))
+                .leftJoin(consultingPartner).on(customer.consultingPartner.eq(consultingPartner))
+                .where(
+                        customer.deleted.eq(false)
+                                .and(reservation.id.eq(reservationId))
+                )
+                .orderBy()
+                .fetchFirst();
+
+        return result;
+    }
+
+    @Override
+    public ResCustomerDTO selectReservationDetail(Long reservationId) {
+        QCustomer customer = QCustomer.customer;
+        QReservation reservation = QReservation.reservation;
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+
+        ResCustomerDTO result = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerDTO.class
+                                , customer.id.as("customerId")
+                                , customer.name1
+                                , customer.mobile1
+                                , reservation.memo
+                                , reservation.consultingManager.id.as("consultingManagerId")
+                                , reservation.consultingManager.name.as("consultingManagerName")
+                                , reservation.reservationManager.id.as("reservationManagerId")
+                                , reservation.consultingDate
+                                , reservation.consultingDatetimeFrom
+                                , reservation.completed
+                                , reservation.id.as("reservationId")
+                                , reservation.type
+                                , reservation.allDay.as("isAllday")
+                                , reservation.contract
+                                , consultingPartner.name.as("consultingPartnerName")
+                        )
+                )
+                .from(reservation)
+                .innerJoin(customer).on(reservation.customer.eq(customer))
+                .leftJoin(consultingPartner).on(customer.consultingPartner.eq(consultingPartner))
                 .where(
                         customer.deleted.eq(false)
                                 .and(reservation.id.eq(reservationId))

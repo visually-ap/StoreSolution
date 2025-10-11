@@ -898,6 +898,59 @@
     width: 50%;
 }
 
+.one-line.full-line {
+    width: 100%;
+    max-width: 410px;
+}
+
+.unfixed-option {
+    width: initial !important;
+}
+
+.unfixed-option input[type="checkbox"] {
+    width: auto;
+    height: auto;
+}
+
+.unfixed-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    word-break: keep-all;
+}
+
+.unfixed-option span {
+    border: 1px solid #ccc;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.unfixed-option input {
+    display: none;
+}
+
+.unfixed-option:hover {
+    border-color: #999;
+}
+
+.unfixed-option input:checked + span {
+    color: #fff;
+    background: #4b7bec;
+    border: 1px solid #4b7bec;
+}
+
 .half-line input,
 .half-line select {
     width: 140px;

@@ -576,6 +576,26 @@ input::placeholder {
     z-index: -1;
 }
 
+.textarea-style {
+    border: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 7px 13px;
+     resize: none;
+    overflow: auto;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.textarea-style.border {
+    border: 1px solid #ddd;
+    width: 85%;
+    box-shadow: 3px 3px 7px 2px rgba(0, 0, 0, .025);
+    border-radius: 7px;
+    overflow: auto;
+}
+
 @media all and (max-width: 1080px) {
     .section_wrap {
         padding: 35px 30px;

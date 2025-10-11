@@ -191,6 +191,24 @@
     background: url(../images/icon/staff_on.png) no-repeat 19px / 23px;
 }
 
+.left_nav li .partner {
+    background: url(../images/icon/handshake.png) no-repeat 8px / 44px;
+    padding-top: 3px
+}
+
+.left_nav li.on .partner {
+    background: url(../images/icon/handshake_on.png) no-repeat 8px / 44px;
+}
+
+.left_nav li .rental {
+    background: url(../images/icon/rental.png) no-repeat 11px / 38px;
+    padding-top: 2px
+}
+
+.left_nav li.on .rental {
+    background: url(../images/icon/rental_on.png) no-repeat 11px / 38px;
+}
+
 .left_nav li .template {
     background: url(../images/icon/template.png) no-repeat 19px / 23px;
 }

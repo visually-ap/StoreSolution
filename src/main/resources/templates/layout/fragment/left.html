@@ -180,14 +180,14 @@
 
             <!-- 컨설팅 업체 관리 -->
             <li th:class="${pathname.startsWith('/setting/partner') ? 'on' : ''}">
-                <a th:href="@{/setting/partner/list}" class="staff">
+                <a th:href="@{/setting/partner/list}" class="partner">
                     <span>Consulting Partner</span>
                 </a>
             </li>
 
             <!-- 대여복 관리 -->
             <li th:class="${pathname.startsWith('/setting/rental') ? 'on' : ''}">
-                <a th:href="@{/setting/rental/list}" class="staff">
+                <a th:href="@{/setting/rental/list}" class="rental">
                     <span>Rental</span>
                 </a>
             </li>

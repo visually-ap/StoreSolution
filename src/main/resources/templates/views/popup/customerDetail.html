@@ -47,10 +47,13 @@
     <link rel="stylesheet" th:href="@{/plugins/loading/css/loading.css}">
 
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
         .purchaseDetail, .paymentDetail, .rentalDetail, .reservationDetail {
             cursor: pointer;
         }
-
         .select_readonly {
             pointer-events: none;
             background-color: #dddddd;
@@ -59,53 +62,55 @@
 </head>
 <body>
 <div class="blank_popup">
-    <div class="">
-        <h1>고객정보</h1>
-        <div>
-            <div>
-                <span>고객명1</span> : <span th:text="${customerInfo.name1}"></span>
-                <span>연락처</span> : <span th:text="${customerInfo.mobile1}"></span>
+    <div class="section_block half_block">
+        <h1 class="block_title">고객정보</h1>
+        <div class="basic_block">
+            <div class="list_ full-list_ margin">
+                <span class="name">고객명1</span><span class="value" th:text="${customerInfo.name1}"></span>
+                <span class="name">연락처</span><span class="value" th:text="${customerInfo.mobile1}"></span>
             </div>
-            <div>
-                <span>고객명2</span> : <span th:text="${customerInfo.name2}"></span>
-                <span>연락처</span> : <span th:text="${customerInfo.mobile2}"></span>
+            <div class="list_ full-list_">
+                <span class="name">고객명2</span><span class="value" th:text="${customerInfo.name2}"></span>
+                <span class="name">연락처</span><span class="value" th:text="${customerInfo.mobile2}"></span>
             </div>
-            <div>
-                <span>촬영일</span> : <span th:text="${customerInfo.photoDate}"></span>
-                <span>장소</span> : <span th:text="${customerInfo.photoPlace}"></span>
+            <div class="list_ full-list_">
+                <span class="name">촬영일</span><span class="value" th:text="${customerInfo.photoDate}"></span>
+                <span class="name">장소</span><span class="value" th:text="${customerInfo.photoPlace}"></span>
             </div>
-            <div>
-                <span>본식일</span> : <span th:text="${customerInfo.weddingDate}"></span>
-                <span>장소</span> : <span th:text="${customerInfo.weddingPlace}"></span>
-            </div>
-        </div>
-    </div>
-    <div>
-        <h1>컨설팅 업체</h1>
-        <div class="data_box">
-            <div>
-                <span>업체명</span>
-                <select id="consultingPartner" th:field="*{customerInfo.consultingPartnerId}">
-                    <option value="" selected>-- 선택 --</option>
-                    <option th:each="partner : ${partnerList}" th:value="${partner.partnerId}"
-                            th:text="${partner.name}"></option>
-                </select>
-            </div>
-            <div>
-                <span>담당자</span> : <span id="partnerPic"></span>
-                <span>연락처</span> : <span id="partnerContact"></span>
-            </div>
-            <div>
-                <span>비고</span>
-                <!--                여기 textarea로 적인 내용 표시될 거임-->
-                <div>
-                    <pre id="partnerMemo"></pre>
-                </div>
+            <div class="list_ full-list_">
+                <span class="name">본식일</span><span class="value" th:text="${customerInfo.weddingDate}"></span>
+                <span class="name">장소</span><span class="value" th:text="${customerInfo.weddingPlace}"></span>
             </div>
         </div>
     </div>
-    <div>
-        <h1>구매내역</h1>
+    <div class="section_block half_block">
+        <h1 class="block_title">컨설팅 업체</h1>
+        <div class="data_box ">
+            <ul class="basic_info">
+                <li class="list_">
+                    <span class="name">업체명</span>
+                    <select class="select_style" id="consultingPartner" th:field="*{customerInfo.consultingPartnerId}">
+                        <option value="" selected>-- 선택 --</option>
+                        <option th:each="partner : ${partnerList}" th:value="${partner.partnerId}"
+                                th:text="${partner.name}"></option>
+                    </select>
+                </li>
+                <li class="list_">
+                    <span class="name">담당자</span><span class="value" id="partnerPic"></span>
+                    <span class="name">연락처</span><span class="value" id="partnerContact"></span>
+                </li>
+                <li class="list_ textarea-line">
+                    <span class="name">비고</span>
+                    <!--                여기 textarea로 적인 내용 표시될 거임-->
+                    <div  class="value">
+                        <pre id="partnerMemo"></pre>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="section_block half_block">
+        <h1 class="block_title">구매내역</h1>
         <button id="purchaseRegisterModalOpenButton">등록</button>
         <table>
             <tr>
@@ -135,8 +140,8 @@
 
         </table>
     </div>
-    <div>
-        <h1>결제 내역</h1>
+    <div class="section_block half_block">
+        <h1 class="block_title">결제 내역</h1>
         <button id="paymentRegisterModalOpenButton">등록</button>
         <table>
             <tr>
@@ -169,8 +174,8 @@
 
         </table>
     </div>
-    <div>
-        <h1>상품 내역</h1>
+    <div class="section_block half_block">
+        <h1 class="block_title">상품 내역</h1>
         <table>
             <tr>
                 <th>구분</th>
@@ -202,8 +207,8 @@
             </th:block>
         </table>
     </div>
-    <div>
-        <h1>대여 정보</h1>
+    <div class="section_block half_block">
+        <h1 class="block_title">대여 정보</h1>
         <button id="rentalRegisterModalOpenButton">대여등록</button>
         <table>
             <tr>
@@ -235,8 +240,8 @@
             </th:block>
         </table>
     </div>
-    <div>
-        <h1>매장스케줄</h1>
+    <div class="section_block full_block">
+        <h1 class="block_title">매장스케줄</h1>
         <button id="reservationRegisterModalOpenButton">등록</button>
         <table>
             <tr>

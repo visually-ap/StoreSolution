@@ -104,3 +104,133 @@
 .data_box .one-line .unfixed-option {
     margin-left: 0;
 }
+
+/* 새창 팝업 */
+.blank_popup {
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 25px;
+}
+
+.section_block {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.section_block.full_block {
+    width: 90%;
+}
+
+.section_block.half_block {
+    width: 48%;
+}
+
+.block_title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.basic_block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.list_ {
+    background-color: #eff1f7;
+}
+
+.basic_block .list_ {
+    flex-grow: 1;
+    display: flex;
+    border-radius: 10px;
+    gap: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.list_.full-list_ {
+    width: 100%;
+}
+
+.list_.full-list_ span {
+    display: inline-block;
+}
+
+.list_.full-list_ .name {
+    width: 15%;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.list_.full-list_ .value {
+    width: 33%;
+}
+
+.blank_popup .data_box {
+    display: flex;
+}
+
+.blank_popup .data_box .basic_info {
+    width: 100%;
+    flex-wrap: wrap;
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.blank_popup .data_box li {
+    flex-grow: 1;
+    width: 30%;
+}
+
+.blank_popup .data_box li {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border: 0;
+    gap: 5px;
+    align-items: center;
+}
+
+.blank_popup .data_box li .name {
+    width: 30%;
+    padding-bottom: 0;
+}
+
+.blank_popup .data_box li .value {
+    width: 68%;
+    min-height: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.select_style {
+    border: 1px solid #ddd;
+    /* min-width: 80px; */
+    border-radius: 7px;
+    padding: 0 10px;
+    outline: none;
+    height: 45px;
+    box-shadow: 3px 3px 7px 2px rgba(0, 0, 0, .025);
+}
+
+.blank_popup .data_box .textarea-line {
+    width: 100%;
+}
+
+.blank_popup .data_box li.textarea-line .name {
+    width: 10%;
+}
+
+.blank_popup .data_box li.textarea-line .value pre {
+    font-family: "Noto Sans KR";
+}

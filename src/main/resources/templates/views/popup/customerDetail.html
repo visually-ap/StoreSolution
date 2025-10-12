@@ -110,166 +110,205 @@
         </div>
     </div>
     <div class="section_block half_block">
-        <h1 class="block_title">구매내역</h1>
-        <button id="purchaseRegisterModalOpenButton">등록</button>
-        <table>
-            <tr>
-                <th>구매일</th>
-                <th>상품구분</th>
-                <th>구매내역</th>
-                <th>구매금액</th>
-                <th>수수료율</th>
-                <th></th>
-            </tr>
-            <th:block th:if="${purchaseList.size() > 0}">
-                <tr class="purchaseDetail" th:each="purchase : ${purchaseList}"
-                    th:data-purchaseid="${purchase.purchaseId}">
-                    <td th:text="${purchase.purchaseDate}"></td>
-                    <td th:text="${purchase.typeString}"></td>
-                    <td th:text="${purchase.purchaseMemo}"></td>
-                    <td th:text="${@stringParser.addCommaToNumber(purchase.price)}"></td>
-                    <td class="purchaseCharge" th:text="${purchase.charge + '%'}"></td>
-                    <td class="purchaseDeleteButton">삭제</td>
+        <div class="upper_line">
+            <h1 class="block_title">구매내역</h1>
+            <button id="purchaseRegisterModalOpenButton" class="btnColor_1 btn-style-3">등록</button>
+        </div>
+        <div class="table_wrap">
+            <table class="tableStyle listT listT2">
+                <thead>
+                <tr class="title_tr">
+                    <th>구매일</th>
+                    <th>상품구분</th>
+                    <th>구매내역</th>
+                    <th>구매금액</th>
+                    <th>수수료율</th>
+                    <th></th>
                 </tr>
-            </th:block>
-            <th:block th:unless="${purchaseList.size() > 0}">
-                <tr>
-                    <td colspan="6">구매 내역이 없습니다.</td>
-                </tr>
-            </th:block>
-
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:if="${purchaseList.size() > 0}">
+                    <tr class="purchaseDetail" th:each="purchase : ${purchaseList}"
+                        th:data-purchaseid="${purchase.purchaseId}">
+                        <td th:text="${purchase.purchaseDate}"></td>
+                        <td th:text="${purchase.typeString}"></td>
+                        <td th:text="${purchase.purchaseMemo}"></td>
+                        <td th:text="${@stringParser.addCommaToNumber(purchase.price)}"></td>
+                        <td class="purchaseCharge" th:text="${purchase.charge + '%'}"></td>
+                        <td class="purchaseDeleteButton delete_btn">삭제</td>
+                    </tr>
+                </th:block>
+                <th:block th:unless="${purchaseList.size() > 0}">
+                    <tr>
+                        <td colspan="6">구매 내역이 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="section_block half_block">
-        <h1 class="block_title">결제 내역</h1>
-        <button id="paymentRegisterModalOpenButton">등록</button>
-        <table>
-            <tr>
-                <th>결제일</th>
-                <th>구분</th>
-                <th>담당자</th>
-                <th>결제방식</th>
-                <th>금액</th>
-                <th>미수금</th>
-                <th>비고</th>
-                <th></th>
-            </tr>
-            <th:block th:if="${paymentList.size() > 0}">
-                <tr class="paymentDetail" th:each="payment : ${paymentList}" th:data-paymentid="${payment.paymentId}">
-                    <td th:text="${payment.paymentDate}"></td>
-                    <td th:text="${payment.typeString}"></td>
-                    <td th:text="${payment.pic}"></td>
-                    <td th:text="${payment.methodString}"></td>
-                    <td th:text="${@stringParser.addCommaToNumber(payment.amount)}"></td>
-                    <td th:text="${@stringParser.addCommaToNumber(payment.outstanding)}"></td>
-                    <td th:text="${payment.paymentMemo}"></td>
-                    <td class="paymentDeleteButton">삭제</td>
+        <div class="upper_line">
+            <h1 class="block_title">결제 내역</h1>
+            <button id="paymentRegisterModalOpenButton" class="btnColor_1 btn-style-3">등록</button>
+        </div>
+        <div class="table_wrap">
+            <table class="tableStyle listT listT2">
+                <thead>
+                <tr class="title_tr">
+                    <th>결제일</th>
+                    <th>구분</th>
+                    <th>담당자</th>
+                    <th>결제방식</th>
+                    <th>금액</th>
+                    <th>미수금</th>
+                    <th>비고</th>
+                    <th></th>
                 </tr>
-            </th:block>
-            <th:block th:unless="${paymentList.size() > 0}">
-                <tr>
-                    <td colspan="8">결제 내역이 없습니다.</td>
-                </tr>
-            </th:block>
-
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:if="${paymentList.size() > 0}">
+                    <tr class="paymentDetail" th:each="payment : ${paymentList}" th:data-paymentid="${payment.paymentId}">
+                        <td th:text="${payment.paymentDate}"></td>
+                        <td th:text="${payment.typeString}"></td>
+                        <td th:text="${payment.pic}"></td>
+                        <td th:text="${payment.methodString}"></td>
+                        <td th:text="${@stringParser.addCommaToNumber(payment.amount)}"></td>
+                        <td th:text="${@stringParser.addCommaToNumber(payment.outstanding)}"></td>
+                        <td th:text="${payment.paymentMemo}"></td>
+                        <td class="paymentDeleteButton delete_btn">삭제</td>
+                    </tr>
+                </th:block>
+                <th:block th:unless="${paymentList.size() > 0}">
+                    <tr>
+                        <td colspan="8">결제 내역이 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="section_block half_block">
-        <h1 class="block_title">상품 내역</h1>
-        <table>
-            <tr>
-                <th>구분</th>
-                <th>상의</th>
-                <th>하의</th>
-                <th>조끼</th>
-                <th>코트</th>
-                <th>원단명</th>
-                <th>상태</th>
-                <th>제작현황</th>
-            </tr>
-            <th:block th:if="${counselingList.size() > 0}">
-                <tr class="counselingDetail" th:each="counseling : ${counselingList}"
-                    th:data-counselingid="${counseling.counselingCommonId}">
-                    <td th:text="${counseling.coat ? '코트' : '수트'}"></td>
-                    <td th:text="${counseling.jacket ? '1' : ''}"></td>
-                    <td th:text="${counseling.pants ? '1' : ''}"></td>
-                    <td th:text="${counseling.vest ? '1' : ''}"></td>
-                    <td th:text="${counseling.coat ? '1' : ''}"></td>
-                    <td th:utext="${counseling.fabricInfo}"></td>
-                    <td th:text="${counseling.orderCommonId == null ? '미발주' : '발주'}"></td>
-                    <td th:text="${counseling.orderingDate == null ? '-' : '제작중'}"></td>
+        <div class="upper_line">
+            <h1 class="block_title">상품 내역</h1>
+        </div>
+        <div class="table_wrap no-popup">
+            <table class="tableStyle listT listT2">
+                <thead>
+                <tr class="title_tr">
+                    <th>구분</th>
+                    <th>상의</th>
+                    <th>하의</th>
+                    <th>조끼</th>
+                    <th>코트</th>
+                    <th>원단명</th>
+                    <th>상태</th>
+                    <th>제작현황</th>
                 </tr>
-            </th:block>
-            <th:block th:unless="${counselingList.size() > 0}">
-                <tr>
-                    <td colspan="8">상품 내역이 없습니다.</td>
-                </tr>
-            </th:block>
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:if="${counselingList.size() > 0}">
+                    <tr class="counselingDetail" th:each="counseling : ${counselingList}"
+                        th:data-counselingid="${counseling.counselingCommonId}">
+                        <td th:text="${counseling.coat ? '코트' : '수트'}"></td>
+                        <td th:text="${counseling.jacket ? '1' : ''}"></td>
+                        <td th:text="${counseling.pants ? '1' : ''}"></td>
+                        <td th:text="${counseling.vest ? '1' : ''}"></td>
+                        <td th:text="${counseling.coat ? '1' : ''}"></td>
+                        <td th:utext="${counseling.fabricInfo}"></td>
+                        <td th:text="${counseling.orderCommonId == null ? '미발주' : '발주'}"></td>
+                        <td th:text="${counseling.orderingDate == null ? '-' : '제작중'}"></td>
+                    </tr>
+                </th:block>
+                <th:block th:unless="${counselingList.size() > 0}">
+                    <tr>
+                        <td colspan="8">상품 내역이 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="section_block half_block">
-        <h1 class="block_title">대여 정보</h1>
-        <button id="rentalRegisterModalOpenButton">대여등록</button>
-        <table>
-            <tr>
-                <th>구분</th>
-                <th>대여일</th>
-                <th>반납예정일</th>
-                <th>반납일</th>
-                <th>상품명</th>
-                <th>비고</th>
-                <th>대여상태</th>
-                <th></th>
-            </tr>
-            <th:block th:if="${rentalList.size() > 0}">
-                <tr class="rentalDetail" th:each="rental : ${rentalList}" th:data-rentalid="${rental.rentalId}">
-                    <td th:text="${rental.typeString}"></td>
-                    <td th:text="${rental.fromDate}"></td>
-                    <td th:text="${rental.requestDate}"></td>
-                    <td th:text="${rental.toDate}"></td>
-                    <td th:text="${rental.rentalItemName}"></td>
-                    <td th:text="${rental.memo}"></td>
-                    <td th:text="${rental.rentingState}"></td>
-                    <td class="rentalDeleteButton">삭제</td>
+        <div class="upper_line">
+            <h1 class="block_title">대여 정보</h1>
+            <button id="rentalRegisterModalOpenButton" class="btnColor_1 btn-style-3">대여등록</button>
+        </div>
+        <div class="table_wrap">
+            <table class="tableStyle listT listT2">
+                <thead>
+                <tr class="title_tr">
+                    <th>구분</th>
+                    <th>대여일</th>
+                    <th>반납예정일</th>
+                    <th>반납일</th>
+                    <th>상품명</th>
+                    <th>비고</th>
+                    <th>대여상태</th>
+                    <th></th>
                 </tr>
-            </th:block>
-            <th:block th:unless="${rentalList.size() > 0}">
-                <tr>
-                    <td colspan="8">대여 내역이 없습니다.</td>
-                </tr>
-            </th:block>
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:if="${rentalList.size() > 0}">
+                    <tr class="rentalDetail" th:each="rental : ${rentalList}" th:data-rentalid="${rental.rentalId}">
+                        <td th:text="${rental.typeString}"></td>
+                        <td th:text="${rental.fromDate}"></td>
+                        <td th:text="${rental.requestDate}"></td>
+                        <td th:text="${rental.toDate}"></td>
+                        <td th:text="${rental.rentalItemName}"></td>
+                        <td th:text="${rental.memo}"></td>
+                        <td th:text="${rental.rentingState}"></td>
+                        <td class="rentalDeleteButton delete_btn">삭제</td>
+                    </tr>
+                </th:block>
+                <th:block th:unless="${rentalList.size() > 0}">
+                    <tr>
+                        <td colspan="8">대여 내역이 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="section_block full_block">
-        <h1 class="block_title">매장스케줄</h1>
-        <button id="reservationRegisterModalOpenButton">등록</button>
-        <table>
-            <tr>
-                <th>날짜</th>
-                <th>시간</th>
-                <th>구분</th>
-                <th>진행상태</th>
-                <th>상담담당</th>
-                <th>계약여부</th>
-                <th>상담내용</th>
-            </tr>
-            <th:block th:if="${reservationList.size() > 0}">
-                <tr class="reservationDetail" th:each="reservation : ${reservationList}" th:data-reservationid="${reservation.reservationId}">
-                    <td th:text="${reservation.consultingDate}"></td>
-                    <td th:text="${reservation.allDay ? '미정' : #temporals.format(reservation.consultingDatetimeFrom, 'HH:mm') + '~' + #temporals.format(reservation.consultingDatetimeTo, 'HH:mm')}"></td>
-                    <td th:text="${reservation.typeString}"></td>
-                    <td th:text="${reservation.completed ? '완료' : '미완료'}"></td>
-                    <td th:text="${reservation.consultingManagerName}"></td>
-                    <td th:text="${reservation.contractString}"></td>
-                    <td th:text="${reservation.memo}"></td>
+        <div class="upper_line">
+            <h1 class="block_title">매장스케줄</h1>
+            <button id="reservationRegisterModalOpenButton" class="btnColor_1 btn-style-3">등록</button>
+        </div>
+        <div class="table_wrap">
+            <table class="tableStyle listT listT2">
+                <thead>
+                <tr class="title_tr">
+                    <th>날짜</th>
+                    <th>시간</th>
+                    <th>구분</th>
+                    <th>진행상태</th>
+                    <th>상담담당</th>
+                    <th>계약여부</th>
+                    <th>상담내용</th>
                 </tr>
-            </th:block>
-            <th:block th:unless="${reservationList.size() > 0}">
-                <tr>
-                    <td colspan="7">스케줄 내역이 없습니다.</td>
-                </tr>
-            </th:block>
-        </table>
+                </thead>
+                <tbody>
+                <th:block th:if="${reservationList.size() > 0}">
+                    <tr class="reservationDetail" th:each="reservation : ${reservationList}" th:data-reservationid="${reservation.reservationId}">
+                        <td th:text="${reservation.consultingDate}"></td>
+                        <td th:text="${reservation.allDay ? '미정' : #temporals.format(reservation.consultingDatetimeFrom, 'HH:mm') + '~' + #temporals.format(reservation.consultingDatetimeTo, 'HH:mm')}"></td>
+                        <td th:text="${reservation.typeString}"></td>
+                        <td th:text="${reservation.completed ? '완료' : '미완료'}"></td>
+                        <td th:text="${reservation.consultingManagerName}"></td>
+                        <td th:text="${reservation.contractString}"></td>
+                        <td th:text="${reservation.memo}"></td>
+                    </tr>
+                </th:block>
+                <th:block th:unless="${reservationList.size() > 0}">
+                    <tr>
+                        <td colspan="7">스케줄 내역이 없습니다.</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 
@@ -277,36 +316,36 @@
 <!--구매내역 상세 및 등록 모달-->
 <div class="modal_window modal_style" id="purchaseModal">
     <div class="inner_box">
-        <form id="purchaseForm">
+        <form id="purchaseForm" class="data_box">
             <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
             <input type="hidden" name="purchaseId" id="purchaseId">
-            <div>
+            <div class="title">
                 구매 내역
             </div>
-            <div>
-                구매일*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">구매일<sup>*</sup></h4>
                 <input type="text" id="purchaseDate" name="purchaseDate" readonly>
             </div>
-            <div>
-                상품구분
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">상품구분</h4>
                 <select name="purchaseType" id="purchaseType">
                     <option value="0" selected>지정안함</option>
                     <option value="1">맞춤정장</option>
                 </select>
             </div>
-            <div>
-                구매내역*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">구매내역<sup>*</sup></h4>
                 <input type="text" id="purchaseMemo" name="purchaseMemo" maxlength="50" placeholder="50자 이내로 입력">
             </div>
-            <div>
-                구매금액*
+            <div class="one-line">
+                <h4 class="inner_title">구매금액<sup>*</sup></h4>
                 <input type="text" id="purchasePrice" name="purchasePrice" maxlength="8" placeholder="숫자만 입력">
             </div>
-            <div>
-                <button type="button" id="purchaseModalRegisterButton">등록</button>
-                <button type="button" id="purchaseModalUpdateButton">수정</button>
+            <div class="btn_wrap">
+                <button type="button" id="purchaseModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
+                <button type="button" id="purchaseModalUpdateButton" class="btn-style-4">수정</button>
                 <button type="button" data-label="#purchaseModal"
-                        onclick="closeModal($(this).data('label'), initCustomerPurchaseInfo)">닫기
+                        onclick="closeModal($(this).data('label'), initCustomerPurchaseInfo)" class="btn-style-4">닫기
                 </button>
             </div>
         </form>
@@ -316,18 +355,18 @@
 <!--결제내역 상세 및 등록 모달-->
 <div class="modal_window modal_style" id="paymentModal">
     <div class="inner_box">
-        <form id="paymentForm">
+        <form id="paymentForm" class="data_box">
             <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
             <input type="hidden" name="paymentId" id="paymentId">
-            <div>
+            <div class="title">
                 결제 내역
             </div>
-            <div>
-                결제일*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">결제일<sup>*</sup></h4>
                 <input type="text" id="paymentDate" name="paymentDate" readonly>
             </div>
-            <div>
-                구분
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">구분</h4>
                 <select name="paymentType" id="paymentType">
                     <option value="0" selected>기타</option>
                     <option value="1">선금</option>
@@ -335,12 +374,12 @@
                     <option value="3">잔금</option>
                 </select>
             </div>
-            <div>
-                담당자*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">담당자<sup>*</sup></h4>
                 <input type="text" id="paymentPic" name="paymentPic" maxlength="50" placeholder="50자 이내로 입력">
             </div>
-            <div>
-                결제방식
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">결제방식</h4>
                 <select name="paymentMethod" id="paymentMethod">
                     <option value="0" selected>기타</option>
                     <option value="1">카드</option>
@@ -348,23 +387,23 @@
                     <option value="3">현금</option>
                 </select>
             </div>
-            <div>
-                금액*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">금액<sup>*</sup></h4>
                 <input type="text" id="paymentAmount" name="paymentAmount" maxlength="8" placeholder="숫자만 입력">
             </div>
-            <div>
-                미수금*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">미수금<sup>*</sup></h4>
                 <input type="text" id="paymentOutstanding" name="paymentOutstanding" maxlength="8" placeholder="숫자만 입력">
             </div>
-            <div>
-                비고사항
+            <div class="one-line">
+                <h4 class="inner_title">비고사항</h4>
                 <input type="text" id="paymentMemo" name="paymentMemo" maxlength="50" placeholder="50자 이내로 입력">
             </div>
-            <div>
-                <button type="button" id="paymentModalRegisterButton">등록</button>
-                <button type="button" id="paymentModalUpdateButton">수정</button>
+            <div class="btn_wrap">
+                <button type="button" id="paymentModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
+                <button type="button" id="paymentModalUpdateButton" class="btn-style-4">수정</button>
                 <button type="button" data-label="#paymentModal"
-                        onclick="closeModal($(this).data('label'), initCustomerPaymentInfo)">닫기
+                        onclick="closeModal($(this).data('label'), initCustomerPaymentInfo)" class="btn-style-4">닫기
                 </button>
             </div>
         </form>
@@ -374,33 +413,35 @@
 <!--대여 상세 및 등록 모달-->
 <div class="modal_window modal_style" id="rentalModal">
     <div class="inner_box">
-        <form id="rentalForm">
+        <form id="rentalForm" class="data_box">
             <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
             <input type="hidden" name="rentalId" id="rentalId">
-            <div>
+            <div class="title">
                 대여 정보 <span id="rentingStateWrap"></span>
             </div>
-            <div>
-                구분
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">구분</h4>
                 <select name="rentalType" id="rentalType">
                     <option value="0" selected>기타</option>
                 </select>
             </div>
-            <div>
-                대여일*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">대여일<sup>*</sup></h4>
                 <input type="text" id="fromDate" name="fromDate" readonly>
             </div>
-            <div>
-                반납예정일*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">반납예정일<sup>*</sup></h4>
                 <input type="text" id="requestDate" name="requestDate" readonly>
             </div>
-            <div>
-                상품명*
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">상품명<sup>*</sup></h4>
                 <input type="text" id="rentalItemName" maxlength="10" placeholder="검색키워드">
                 <input type="hidden" id="rentalItemId" name="rentalItemId">
-                <button type="button" id="rentalItemSearchButton">검색</button>
+                <button type="button" id="rentalItemSearchButton" class="searchIconBtn btnColor_1">
+                    <img src="/images/icon/search_w.png" alt="검색 아이콘" class="search_icon">
+                </button>
             </div>
-            <div id="rentalItemSearchResultWrap">
+            <div id="rentalItemSearchResultWrap" class="one-line mb-5px">
                 <h1>검색결과</h1>
                 <table>
                     <thead>
@@ -415,23 +456,23 @@
                     </tbody>
                 </table>
             </div>
-            <div>
-                비고
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">비고</h4>
                 <input type="text" id="rentalMemo" name="rentalMemo" maxlength="50" placeholder="50자 이내로 입력">
             </div>
-            <div id="rentalItemToDateWrap">
-                반납일
+            <div id="rentalItemToDateWrap" class="one-line mb-5px">
+                <h4 class="inner_title">반납일</h4>
                 <input type="text" id="toDate" name="toDate" readonly>
             </div>
-            <div>
-                <button type="button" id="rentalModalRegisterButton">등록</button>
-                <button type="button" id="rentalModalUpdateButton">수정</button>
-                <button type="button" id="rentalModalRentalCompleteButton">대여완료</button>
-                <button type="button" id="rentalModalRentalCancelButton">대여취소</button>
-                <button type="button" id="rentalModalBackCompleteButton">반납완료</button>
-                <button type="button" id="rentalModalBackCancelButton">반납취소</button>
+            <div class="btn_wrap">
+                <button type="button" id="rentalModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
+                <button type="button" id="rentalModalUpdateButton" class="btn-style-4">수정</button>
+                <button type="button" id="rentalModalRentalCompleteButton" class="btn-style-4">대여완료</button>
+                <button type="button" id="rentalModalRentalCancelButton" class="btn-style-4">대여취소</button>
+                <button type="button" id="rentalModalBackCompleteButton" class="btn-style-4">반납완료</button>
+                <button type="button" id="rentalModalBackCancelButton" class="btn-style-4">반납취소</button>
                 <button type="button" data-label="#rentalModal"
-                        onclick="closeModal($(this).data('label'), initCustomerRentalInfo)">닫기
+                        onclick="closeModal($(this).data('label'), initCustomerRentalInfo)" class="btn-style-4">닫기
                 </button>
             </div>
         </form>
@@ -441,14 +482,14 @@
 <!--스케줄 모달-->
 <div class="modal_window modal_style" id="reservationModal">
     <div class="inner_box">
-        <form id="reservationForm">
+        <form id="reservationForm" class="data_box">
             <input type="hidden" name="customerId" th:value="${customerInfo.customerId}">
             <input type="hidden" name="reservationId" id="reservationId">
-            <div>
+            <div class="title">
                 매장스케줄
             </div>
-            <div>
-                예약구분
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">예약구분</h4>
                 <select name="reservationType" id="reservationType">
                     <option value="1" selected>맞춤예약</option>
                     <option value="2" th:text="${siteEnvDto.typeName2}"></option>
@@ -458,23 +499,19 @@
                     <option value="6" th:text="${siteEnvDto.typeName6}"></option>
                 </select>
             </div>
-            <div>
-                상담담당
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">상담담당</h4>
                 <select name="consultingManager" id="consultingManager" class="t-center">
                     <option value="" selected>-- 선택 --</option>
                     <option th:each='employee: ${employeeList}' th:value="${employee.userId}" th:text="${employee.name}"></option>
                 </select>
             </div>
-            <div>
-                상담예약일
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">상담예약일</h4>
                 <input type="text" id="consultingDate" name="consultingDate" readonly>
             </div>
-            <div>
-                예약시간
-                <label for="isAllday">
-                    <input type="checkbox" name="isAllday" id="isAllday" value="true">
-                    미정
-                </label>
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">예약시간</h4>
                 <select class="reservationDatetime" name="consultingHour" id="consultingHour">
                     <option value="">선택</option>
                     <option value="09">09</option>
@@ -503,9 +540,13 @@
                     <option value="50">50</option>
                 </select>
                 분
+                <label for="isAllday" class="unfixed-option">
+                    <input type="checkbox" name="isAllday" id="isAllday" value="true">
+                    <span>미정</span>
+                </label>
             </div>
-            <div>
-                계약여부
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">계약여부</h4>
                 <select name="reservationContract" id="reservationContract">
                     <option value="0" selected>미해당</option>
                     <option value="1">계약</option>
@@ -513,16 +554,16 @@
                     <option value="3">취소</option>
                 </select>
             </div>
-            <div>
-                상담내용
-                <textarea name="reservationMemo" id="reservationMemo"></textarea>
+            <div class="one-line mb-5px">
+                <h4 class="inner_title">상담내용</h4>
+                <textarea name="reservationMemo" id="reservationMemo" class="textarea-style border"></textarea>
             </div>
-            <div>
-                <button type="button" id="reservationModalRegisterButton">등록</button>
-                <button type="button" id="reservationModalUpdateButton">수정</button>
-                <button type="button" id="reservationModalCompleteButton">완료</button>
+            <div class="btn_wrap">
+                <button type="button" id="reservationModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
+                <button type="button" id="reservationModalUpdateButton" class="btn-style-4">수정</button>
+                <button type="button" id="reservationModalCompleteButton" class="btn-style-4">완료</button>
                 <button type="button" data-label="#reservationModal"
-                        onclick="closeModal($(this).data('label'), initCustomerReservationInfo)">닫기
+                        onclick="closeModal($(this).data('label'), initCustomerReservationInfo)" class="btn-style-4">닫기
                 </button>
             </div>
         </form>

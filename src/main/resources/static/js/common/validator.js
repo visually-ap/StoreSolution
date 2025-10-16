@@ -341,7 +341,7 @@ const validationObject = {
     , rentalItemMemo: {
         rules : {
             required: false,
-            regexp1: "^.{1,50}$",
+            regexp1: "^[\\s\\S]{1,50}$",
         }
         , message: {
             regexp1: "비고는 50자 이내로 입력해 주세요.",
@@ -366,7 +366,7 @@ const validationObject = {
     , rentalMemo: {
         rules : {
             required: false,
-            regexp1: "^.{1,50}$",
+            regexp1: "^[\\s\\S]{1,50}$",
         }
         , message: {
             regexp1: "비고는 50자 이내로 입력해 주세요.",

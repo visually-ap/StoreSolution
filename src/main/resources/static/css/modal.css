@@ -170,18 +170,18 @@
 
 /* 새창 팝업 */
 .blank_popup {
-    padding: 40px;
+    padding: 10px 40px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    gap: 25px;
+    gap: 10px;
 }
 
 .section_block {
     border: 1px solid #ddd;
     border-radius: 20px;
     flex-grow: 1;
-    padding: 20px;
+    padding: 10px 20px;
     box-sizing: border-box;
 }
 

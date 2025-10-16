@@ -300,7 +300,7 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                 , rentalItem.size
                                 , rentalItem.barcode
                                 , rentalItem.renting
-                                , rentalItem.name
+                                , rentalItem.memo
                                 , rentalItem.insertDatetime
                         )
                 )

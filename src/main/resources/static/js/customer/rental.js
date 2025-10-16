@@ -339,7 +339,9 @@ $(document).on('change', '#toDate', function() {
     );
 });
 
-$(document).on('click', '.rentalDeleteButton', function() {
+$(document).on('click', '.rentalDeleteButton', function(e) {
+    e.stopPropagation();
+
     if (doubleClick.isDouble()) {
         return false;
     }

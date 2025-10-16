@@ -53,7 +53,8 @@
                         <div class="box">
                             <h2 class="name">메모</h2>
                             <div class="value">
-                                <textarea name="memo" class="textarea-style" id="memo" placeholder="업체메모">[[${item.memo}]]</textarea>
+<!--                                <textarea name="memo" class="textarea-style" id="memo" placeholder="업체메모">[[${item.memo}]]</textarea>-->
+                                <input type="text" id="memo" name="memo" maxlength="50" placeholder="50자 이내로 입력" th:value="${item.memo}">
                             </div>
                         </div>
                     </div>

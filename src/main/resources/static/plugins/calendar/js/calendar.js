@@ -88,6 +88,7 @@ $(document).ready(function (){
 
             initTimeTable('custom-schedule-table');
             renderTimeTable('custom-schedule-table', getDatetimeString(momentToday, `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`));
+            getStatistics(getDatetimeString(momentToday, `${year}-${String(month).padStart(2, "0")}-${String(date).padStart(2, "0")}`));
         }
     });
 

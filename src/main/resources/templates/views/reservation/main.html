@@ -75,7 +75,15 @@
             .allday-cell {
                 text-align: center;
                 padding: 8px 4px;   /* 상하 8px, 좌우 4px */
-                line-height: 2.5;   /* 줄 간격 */
+                line-height: 1.4;   /* 줄 간격 */
+            }
+
+            .allday-cell > span {
+                display: block;       /* 세로 배치 */
+            }
+
+            .allday-cell > span:last-child {
+                margin-bottom: 0;     /* 마지막은 간격 제거 */
             }
 
             .select_readonly {
@@ -85,6 +93,98 @@
 
             .customerDetail, .reservationDetail {
                 cursor: pointer;
+                text-decoration: underline;
+            }
+
+            @keyframes shimmer {
+                0%   { background-position: -200px 0; }
+                100% { background-position: 200px 0; }
+            }
+
+            .started-cell-underline span {
+                background: linear-gradient(
+                        90deg,
+                        rgba(255,255,255,0) 0%,
+                        rgba(255,255,255,1) 50%,
+                        rgba(255,255,255,0) 100%
+                );
+                background-size: 200px 100%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+
+                animation-name: shimmer;
+                animation-duration: 5s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                animation-direction: alternate; /* ← 이게 핵심! */
+            }
+
+            .timetable-scroll {
+                max-height: 700px;
+                overflow: auto;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
+
+            /* ✅ sticky를 유지하면서도 border가 겹치지 않게 */
+            #custom-schedule-table {
+                width: 100%;
+                border-collapse: collapse; /* ✅ 다시 collapse로 변경 */
+                table-layout: fixed;
+                background-color: #fff;
+            }
+
+            /* ✅ 공통 셀 스타일 */
+            #custom-schedule-table th,
+            #custom-schedule-table td {
+                border: 1px solid #d3d3d3;
+                text-align: center;
+                height: 36px;
+                padding: 0;
+                white-space: nowrap;
+            }
+
+            /* ✅ sticky header */
+            #custom-schedule-table thead th {
+                position: sticky;
+                top: 0;
+                background-color: #f8f9fb;
+                color: #00264b;
+                font-weight: 700;
+                z-index: 5;
+                border-bottom: 1px solid #d3d3d3;
+            }
+
+            /* ✅ 추가: sticky 보더 유지를 위한 “가짜 하단선” */
+            #custom-schedule-table thead th::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: #d3d3d3;
+                z-index: 6; /* 실제 border보다 위에 표시 */
+            }
+
+            /* ✅ 왼쪽 고정 (시간) */
+            #custom-schedule-table th.sticky-left {
+                position: sticky;
+                left: 0;
+                background-color: #f8f9fb;
+                z-index: 6;
+                border-right: 1px solid #d3d3d3;
+            }
+
+            /* ✅ 두 번째 열(분) 고정 */
+            #custom-schedule-table th.sticky-left.minute {
+                left: 60px; /* 첫 열의 너비 */
+                z-index: 6;
+            }
+
+            /* ✅ hover 시 라인 표시 (선택적) */
+            #custom-schedule-table tr:hover td {
+                background-color: #f5f6fa;
             }
         </style>
 
@@ -112,20 +212,28 @@
                     <div id="customerListWrap" class="search_style_1 mt-20px scroll-box">
                         <div class="top_line flex between">
                             <h3 class="title">고객 목록</h3>
+                            <select id="sortString" style="height: 35px !important;">
+                                <option value="type_asc" selected>구분 오름차순</option>
+                                <option value="type_desc">구분 내림차순</option>
+                                <option value="date_asc">상담일 오름차순</option>
+                                <option value="date_desc">상담일 내림차순</option>
+                            </select>
                         </div>
                         <table class="tableStyle listT">
                             <thead>
                             <colgroup>
                                 <col style="width: 20%">
                                 <col style="width: 25%">
-                                <col style="width: 30%">
                                 <col style="width: 25%">
+                                <col style="width: 20%">
+                                <col style="width: 10%">
                             </colgroup>
                             <tr class="title_tr">
                                 <th>구분</th>
                                 <th>이름</th>
                                 <th>휴대전화</th>
                                 <th>상담일</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody id="customerListBody">
@@ -202,7 +310,7 @@
                                     <div class="half-line">
                                         <h4 class="inner_title">예약구분</h4>
                                         <select name="type" id="type" class="t-center">
-                                            <option value="1" selected>맞춤예약</option>
+                                            <option value="1" selected>맞춤상담</option>
                                             <option value="2" th:text="${siteEnvDto.typeName2}"></option>
                                             <option value="3" th:text="${siteEnvDto.typeName3}"></option>
                                             <option value="4" th:text="${siteEnvDto.typeName4}"></option>
@@ -280,13 +388,21 @@
             </div>
             <div class="right_area">
                 <div class="flex between">
-                    <ul class="date-line flex flex-start align-center">
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor1}">맞춤상담</li>
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor2}" th:text="${siteEnvDto.typeName2}">항목2</li>
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor3}" th:text="${siteEnvDto.typeName3}">항목3</li>
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor4}" th:text="${siteEnvDto.typeName4}">항목4</li>
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor5}" th:text="${siteEnvDto.typeName5}">항목5</li>
-                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor6}" th:text="${siteEnvDto.typeName6}">항목6</li>
+                    <ul class="date-line flex flex-start align-center" style="gap: 8px !important;">
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor1}">맞춤상담(<span id="reservationType1"></span>건)</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor2}" th:utext="${siteEnvDto.typeName2 + '(<span id=&quot;reservationType2&quot;></span>건)'}">항목2</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor3}" th:utext="${siteEnvDto.typeName3 + '(<span id=&quot;reservationType3&quot;></span>건)'}">항목3</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor4}" th:utext="${siteEnvDto.typeName4 + '(<span id=&quot;reservationType4&quot;></span>건)'}">항목4</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor5}" th:utext="${siteEnvDto.typeName5 + '(<span id=&quot;reservationType5&quot;></span>건)'}">항목5</li>
+                        <li class="type_list" th:style="${'color: ' + siteEnvDto.typeColor6}" th:utext="${siteEnvDto.typeName6 + '(<span id=&quot;reservationType6&quot;></span>건)'}">항목6</li>
+                    </ul>
+                </div>
+                <div class="flex between">
+                    <ul class="date-line flex flex-start align-center" style="gap: 50px !important;">
+                        <li class="type_list">계약 (<span id="contractType1"></span>건)</li>
+                        <li class="type_list">투어 (<span id="contractType2"></span>건)</li>
+                        <li class="type_list">취소 (<span id="contractType3"></span>건)</li>
+                        <li class="type_list">미해당 (<span id="contractType0"></span>건)</li>
                     </ul>
                     <div class="date-line flex flex-end align-center">
                         <button class="prev-btn btn" id="prevBtn"> < </button>
@@ -368,7 +484,7 @@
                 <div class="one-line mb-5px">
                     <h4 class="inner_title">구분</h4>
                     <select name="reservationModalType" id="reservationModalType">
-                        <option value="1" selected>맞춤예약</option>
+                        <option value="1" selected>맞춤상담</option>
                         <option value="2" th:text="${siteEnvDto.typeName2}"></option>
                         <option value="3" th:text="${siteEnvDto.typeName3}"></option>
                         <option value="4" th:text="${siteEnvDto.typeName4}"></option>
@@ -393,6 +509,7 @@
             <div class="btn_wrap center mt-40px">
                 <div class="innerBtn_box">
                     <button type="button" id="updateButton" class="btnColor_1 btn_2">저장</button>
+                    <button type="button" id="startButton" class="btn_2">상담시작</button>
                     <button type="button" id="completeButton" class="btn_2">상담완료</button>
                     <button type="button" class="closeModalButton btn_2" data-label="#reservationDetailModal" onclick="closeModal($(this).data('label'), initReservationDetailModal)">닫기</button>
                 </div>
@@ -415,11 +532,39 @@
         // 금일 타임 테이블 로드
         getCustomerList('', todayString);
         renderTimeTable('custom-schedule-table', todayString);
+        getStatistics(todayString);
 
         $('#searchInput').focus();
 
         $('#customerDetailWrap').hide();
     });
+
+    function getStatistics(date) {
+        showLoadingImage();
+
+        callService(
+            "GET"
+            , `/reservation/stat/list?date=${date}`
+            , {}
+            , function (response) {
+                renderStat(response.result);
+            }
+        );
+    }
+
+    function renderStat(data) {
+        $('#reservationType1').text(`${data.reservationType1}`);
+        $('#reservationType2').text(`${data.reservationType2}`);
+        $('#reservationType3').text(`${data.reservationType3}`);
+        $('#reservationType4').text(`${data.reservationType4}`);
+        $('#reservationType5').text(`${data.reservationType5}`);
+        $('#reservationType6').text(`${data.reservationType6}`);
+
+        $('#contractType1').text(`${data.contractType1}`);
+        $('#contractType2').text(`${data.contractType2}`);
+        $('#contractType3').text(`${data.contractType3}`);
+        $('#contractType0').text(`${data.contractType0}`);
+    }
 
     $(document).on('click', '#isAllday', function () {
         if ($(this).is(':checked')) {
@@ -479,6 +624,7 @@
                     <td>${name}</td>
                     <td>${mobile}</td>
                     <td>${reservation.consultingDate == null ? '' : reservation.consultingDate}</td>
+                    <td class="customerDetail" data-customerid="${reservation.customerId}">상세</td>
                 </tr>
                 `);
             });
@@ -543,11 +689,12 @@
     }
 
     function getCustomerList(searchKeyword, searchDate) {
+        const sortString = $('#sortString').val();
         showLoadingImage();
 
         callService(
             "GET"
-            , `/reservation/customer/list?searchKeyword=${searchKeyword}&searchDate=${searchDate}`
+            , `/reservation/customer/list?sortString=${sortString}&searchKeyword=${searchKeyword}&searchDate=${searchDate}`
             , {}
             , function (response) {
                 renderCustomerList(response.result);
@@ -607,6 +754,7 @@
                         alert(response.message);
                         initTimeTable('custom-schedule-table');
                         renderTimeTable('custom-schedule-table', $('#consultingDate').val());
+                        getStatistics($('#consultingDate').val());
                     }
                 );
             }
@@ -631,6 +779,10 @@
             // 500ms 뒤에 다시 허용
             setTimeout(() => isSearching = false, 500);
         }
+    });
+
+    $(document).on('change', '#sortString', function() {
+        getCustomerList($('#searchInput').val(), '');
     });
 
     $(document).on('click', '#searchButton', function () {
@@ -668,6 +820,7 @@
 
                     initTimeTable('custom-schedule-table');
                     renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+                    getStatistics(getDatetimeString(momentDate, 'YYYY-MM-DD'));
 
                     if (!response.result.isAllday) {
                         setTimeout(() => {
@@ -686,6 +839,7 @@
 
         initTimeTable('custom-schedule-table');
         renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, $(this).val()));
+        getStatistics(getDatetimeString(momentDate, $(this).val()));
     });
 
     $(document).on('click', '#prevBtn', function() {
@@ -693,6 +847,7 @@
 
         initTimeTable('custom-schedule-table');
         renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+        getStatistics(getDatetimeString(momentDate, 'YYYY-MM-DD'));
     });
 
     $(document).on('click', '#nextBtn', function() {
@@ -700,6 +855,7 @@
 
         initTimeTable('custom-schedule-table');
         renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+        getStatistics(getDatetimeString(momentDate, 'YYYY-MM-DD'));
     });
 
     // 예약 안내 멘트 관련
@@ -715,9 +871,11 @@
         setReservationText();
     });
 
-    $(document).on('click', '.customerDetail', function() {
-        window.open(`/reservation/popup/customer/detail?customerId=${$(this).data('customerid')}`, "ImageViewer"
-            , `left=0, top=0, width=${screen.availWidth}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
+    $(document).on('click', '.customerDetail', function(e) {
+        e.stopPropagation();
+
+        window.open(`/reservation/popup/customer/detail?customerId=${$(this).data('customerid')}`, "Customer Detail"
+            , `left=0, top=0, width=${screen.availWidth / 2}, height=${screen.availHeight} fullscreen=yes, status=no, menubar=no, toolbar=no, resizable=no`
         );
     });
 
@@ -734,9 +892,11 @@
                 if (response.success) {
                     openModal('#reservationDetailModal', initReservationDetailModal);
                     setReservationDetailInfo(response.result);
-                    if (response.result.completed) {
-                        $('#updateButton').hide()
+
+                    if (response.result.started || response.result.completed) {
+                        $('#startButton').hide();
                     }
+
                     if (response.result.type == 1 || response.result.completed) {
                         $('#completeButton').hide();
                     }
@@ -765,6 +925,34 @@
             , JSON.stringify(convertFormToJSON($('#reservationDetailForm')))
             , function (response) {
                 alert(`${response.message}`);
+                initTimeTable('custom-schedule-table');
+                renderTimeTable('custom-schedule-table', getDatetimeString(momentDate, 'YYYY-MM-DD'));
+                getStatistics(getDatetimeString(momentDate, 'YYYY-MM-DD'));
+            }
+        );
+    });
+
+    $(document).on('click', '#startButton', function() {
+        if (doubleClick.isDouble()) {
+            return;
+        }
+
+        if (!confirm('상담을 시작하시겠습니까?')) {
+            doubleClick.initFlag();
+            return;
+        }
+
+        showLoadingImage();
+
+        callService(
+            "POST"
+            , `/reservation/customer/reservation/start?reservationId=${$('#reservationIdModal').val()}`
+            , {}
+            , function (response) {
+                alert(response.message);
+                if (response.success) {
+                    location.reload();
+                }
             }
         );
     });
@@ -774,7 +962,7 @@
             return;
         }
 
-        if (!confirm('완료 처리하시겠습니까?')) {
+        if (!confirm('상담완료 처리하시겠습니까?')) {
             doubleClick.initFlag();
             return;
         }
@@ -807,6 +995,9 @@
         $('#reservationModalType').val(1);
         $('#reservationModalMemo').val('');
         $('#reservationModalContract').val(0);
+        $('#updateButton').show();
+        $('#startButton').show();
+        $('#completeButton').show();
     }
 
     function setReservationDetailInfo(data) {

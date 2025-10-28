@@ -49,6 +49,8 @@ public class ResCounselingDTO {
     private Boolean saved;
     private LocalDate orderingDate;
     private String fabricInfo;
+    private Boolean ordering;
+    private LocalDate deliveryReleaseDate;
 
 
     public void updateFabricData(ReqFabricSaveDTO reqFabricSaveDTO){

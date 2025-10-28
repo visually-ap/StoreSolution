@@ -40,6 +40,8 @@ public class SiteService {
                     .build();
             // 새로운 매장용 설정 생성
             siteEnvSettingRepository.save(siteEnvSetting);
+
+            siteEnvSetting = siteEnvSettingRepository.findByStore(store);
         }
         return siteEnvSetting.toResEnvironmentUpdateDTO();
     }

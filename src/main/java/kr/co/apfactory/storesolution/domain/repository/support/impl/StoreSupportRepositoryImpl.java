@@ -4,6 +4,7 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -123,10 +124,12 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
         QStore store = QStore.store;
         QReservation reservation = QReservation.reservation;
         QCustomer customer = QCustomer.customer;
+        QSiteEnvSetting siteEnvSetting = QSiteEnvSetting.siteEnvSetting;
 
         List<ResEmployeeScheduleDTO> results = queryFactory
                 .from(user)
                 .innerJoin(store).on(user.store.eq(store))
+                .innerJoin(siteEnvSetting).on(store.eq(siteEnvSetting.store))
                 .leftJoin(reservation).on(user.eq(reservation.consultingManager).and(reservation.deleted.isFalse()).and(reservation.consultingDate.eq(date)))
                 .leftJoin(customer).on(reservation.customer.eq(customer))
                 .where(
@@ -148,8 +151,19 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                                         , reservation.consultingDatetimeFrom
                                                         , reservation.consultingDatetimeTo
                                                         , reservation.type
+                                                        , reservation.contract
+                                                        , reservation.completed
+                                                        , reservation.started
                                                         , customer.name1.as("customerName")
                                                         , customer.id.as("customerId")
+                                                        , new CaseBuilder()
+                                                                .when(reservation.type.eq(2)).then(siteEnvSetting.typeName2)
+                                                                .when(reservation.type.eq(3)).then(siteEnvSetting.typeName3)
+                                                                .when(reservation.type.eq(4)).then(siteEnvSetting.typeName4)
+                                                                .when(reservation.type.eq(5)).then(siteEnvSetting.typeName5)
+                                                                .when(reservation.type.eq(6)).then(siteEnvSetting.typeName6)
+                                                                .otherwise(Expressions.constant("맞춤상담"))
+                                                                .as("typeString")
                                                 )
                                         ).as("reservationList")
                                 )
@@ -213,8 +227,6 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                 ResConsultingPartnerListDTO.class
                                 , consultingPartner.id.as("partnerId")
                                 , consultingPartner.name
-                                , consultingPartner.pic
-                                , consultingPartner.contact
                                 , consultingPartner.charge
                                 , consultingPartner.insertDatetime
                         )
@@ -244,8 +256,6 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                 ResConsultingPartnerDetailDTO.class
                                 , consultingPartner.id.as("partnerId")
                                 , consultingPartner.name
-                                , consultingPartner.pic
-                                , consultingPartner.contact
                                 , consultingPartner.charge
                                 , consultingPartner.memo
                         )
@@ -262,6 +272,54 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
     }
 
     @Override
+    public List<ResConsultingPartnerPicDTO> selectConsultingPartnerPicList(Long partnerId) {
+        QConsultingPartnerPic consultingPartnerPic = QConsultingPartnerPic.consultingPartnerPic;
+
+        List<ResConsultingPartnerPicDTO> results = queryFactory
+                .select(
+                        Projections.fields(
+                                ResConsultingPartnerPicDTO.class
+                                , consultingPartnerPic.id.as("picId")
+                                , consultingPartnerPic.consultingPartner.id.as("partnerId")
+                                , consultingPartnerPic.name
+                                , consultingPartnerPic.contact
+                                , consultingPartnerPic.insertDatetime
+                        )
+                )
+                .from(consultingPartnerPic)
+                .where(
+                        consultingPartnerPic.deleted.isFalse()
+                                .and(consultingPartnerPic.consultingPartner.id.eq(partnerId))
+                )
+                .orderBy(consultingPartnerPic.name.asc())
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public ResConsultingPartnerPicDTO selectConsultingPartnerPicDetail(Long picId) {
+        QConsultingPartnerPic consultingPartnerPic = QConsultingPartnerPic.consultingPartnerPic;
+
+        ResConsultingPartnerPicDTO result = queryFactory
+                .select(
+                        Projections.fields(
+                                ResConsultingPartnerPicDTO.class
+                                , consultingPartnerPic.id.as("picId")
+                                , consultingPartnerPic.contact
+                        )
+                )
+                .from(consultingPartnerPic)
+                .where(
+                        consultingPartnerPic.deleted.isFalse()
+                                .and(consultingPartnerPic.id.eq(picId))
+                )
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
     public List<ResConsultingPartnerListDTO> selectConsultingPartnerList(Long storeId) {
         QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
 
@@ -270,8 +328,6 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                 ResConsultingPartnerListDTO.class
                                 , consultingPartner.id.as("partnerId")
                                 , consultingPartner.name
-                                , consultingPartner.pic
-                                , consultingPartner.contact
                                 , consultingPartner.charge
                                 , consultingPartner.insertDatetime
                         )
@@ -376,6 +432,57 @@ public class StoreSupportRepositoryImpl implements StoreSupportRepository {
                                                 .where(
                                                         rental.rentalItem.eq(rentalItem)
                                                                 .and(rental.deleted.eq(false))
+                                                                .and(
+                                                                        // 예정 반납일과 겹치는 경우
+                                                                        (rental.fromDate.loe(requestDate)
+                                                                                .and(rental.requestDate.goe(fromDate)))
+                                                                                .or(
+                                                                                        // 실제 반납일과 겹치는 경우
+                                                                                        rental.fromDate.loe(requestDate)
+                                                                                                .and(rental.toDate.goe(fromDate))
+                                                                                )
+                                                                )
+                                                )
+                                                .notExists()
+                                )
+                )
+                .orderBy()
+                .fetch();
+
+        return results;
+    }
+
+    @Override
+    public List<ResRentalItemListDTO> selectRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword, Long storeId, Long rentalId) {
+        QRentalItem rentalItem = QRentalItem.rentalItem;
+        QRental rental = QRental.rental;
+
+        List<ResRentalItemListDTO> results = queryFactory.select(
+                        Projections.fields(
+                                ResRentalItemListDTO.class
+                                , rentalItem.id.as("rentalItemId")
+                                , rentalItem.name
+                                , rentalItem.size
+                                , rentalItem.barcode
+                                , rentalItem.renting
+                                , rentalItem.name
+                                , rentalItem.memo
+                                , rentalItem.insertDatetime
+                        )
+                )
+                .from(rentalItem)
+                .where(
+                        rentalItem.deleted.eq(false)
+                                .and(rentalItem.store.id.eq(storeId))
+                                .and(filterManager.getRentalItemListBooleanBuilderByKeyword(searchKeyword))
+                                .and(
+                                        JPAExpressions
+                                                .selectOne()
+                                                .from(rental)
+                                                .where(
+                                                        rental.rentalItem.eq(rentalItem)
+                                                                .and(rental.deleted.eq(false))
+                                                                .and(rental.id.ne(rentalId))
                                                                 .and(
                                                                         // 예정 반납일과 겹치는 경우
                                                                         (rental.fromDate.loe(requestDate)

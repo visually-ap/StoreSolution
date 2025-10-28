@@ -35,12 +35,16 @@ public class TempOrderCommon extends BaseEntity {
     @Comment("취소 여부")
     private Boolean canceled;
 
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    @Comment("발주 여부")
+    private Boolean ordering;
+
     @Column(columnDefinition = "tinyint", nullable = false)
     @Comment("주문 부위 (1:정장, 2:코트")
     private Integer orderParts;
 
     @Column(columnDefinition = "tinyint", nullable = false)
-    @Comment("주문 위치 구분 (1:국내, 2:해외(인니)")
+    @Comment("주문 위치 구분 (1:국내, 2:해외(인니), 3:기타")
     private Integer nation;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -75,4 +79,20 @@ public class TempOrderCommon extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     private FileAttachMaster fileAttachMaster;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("카운셀링 공통 시퀀스")
+    private CounselingCommon counselingCommon;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("주문 공통 시퀀스")
+    private OrderCommon orderCommon;
+
+    @Column(columnDefinition = "datetime")
+    @Comment("발주일")
+    private LocalDateTime orderingDatetime;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("발주자")
+    private User orderingUser;
 }

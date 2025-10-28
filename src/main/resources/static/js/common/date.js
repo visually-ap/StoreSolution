@@ -37,6 +37,11 @@ function periodPicker(from, to) {
             }
         }
     });
+
+    return {
+        from : fromPicker
+        , to : toPicker
+    }
 }
 
 function checkDateInputForSearch() {

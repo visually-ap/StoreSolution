@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +41,7 @@ public class ResCustomerDTO {
     private String memo;
 
     private Boolean completed;
+    private Boolean started;
 
     private String insertDate;
     private String reservationTypeString;
@@ -49,7 +51,13 @@ public class ResCustomerDTO {
     private Boolean isAllday;
 
     private Long consultingPartnerId;
+    private Long consultingPartnerPicId;
+    private List<ResConsultingPartnerPicDTO> picList;
     private String consultingPartnerName;
+
+    private Integer charge;
+
+    private String contact;
 
     public void setConsultingDatetime() {
         if (!this.isAllday) {

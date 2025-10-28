@@ -66,7 +66,7 @@ function renderTimeTable(tableId, date) {
 
                     // 고객명을 줄바꿈으로 표시
                     td.innerHTML = alldayReservations
-                        .map(res => `<span style="color:${getCellBackgroundColor(res.type)}"><span class="customerDetail" data-customerid="${res.customerId}">[${res.customerName}]</span>님 <span class="reservationDetail" data-reservationid="${res.reservationId}">예약</span></span>`)
+                        .map(res => `<span style="color:${getCellBackgroundColor(res.type, res.contract)}"><span class="customerDetail" data-customerid="${res.customerId}">[${res.customerName}]</span>님 <span class="reservationDetail" data-reservationid="${res.reservationId}">${res.typeString}</span></span>`)
                         .join('<br>');
                 }
 
@@ -129,10 +129,13 @@ function renderTimeTable(tableId, date) {
 
                             // 배경 선택
                             td.className = 'schedule-cell';
-                            td.style.backgroundColor = getCellBackgroundColor(reservation.type);
+                            td.style.backgroundColor = getCellBackgroundColor(reservation.type, reservation.contract);
+                            if (reservation.started && !reservation.completed) {
+                                td.classList.add('started-cell-underline'); // 여기에 CSS 효과 자동 적용됨
+                            }
                             td.style.color = 'white';
                             td.style.fontWeight = 'bold';
-                            td.innerHTML = `<span class="customerDetail" data-customerid="${reservation.customerId}">[${reservation.customerName}]</span>님 <span class="reservationDetail" data-reservationid="${reservation.reservationId}">예약</span>`;
+                            td.innerHTML = `<span class="customerDetail" data-customerid="${reservation.customerId}">[${reservation.customerName}]</span><span>님</span> <span class="reservationDetail" data-reservationid="${reservation.reservationId}">${reservation.typeString}</span>`;
 
                             // 중복 셀 제거용 skipMap 세팅
                             for (let j = 1; j < rowspan; j++) {
@@ -155,27 +158,31 @@ function renderTimeTable(tableId, date) {
     );
 }
 
-function getCellBackgroundColor(type) {
-    switch (type) {
-        case 1:
-            return siteEnv.typeColor1;
-            break;
-        case 2:
-            return siteEnv.typeColor2;
-            break;
-        case 3:
-            return siteEnv.typeColor3;
-            break;
-        case 4:
-            return siteEnv.typeColor4;
-            break;
-        case 5:
-            return siteEnv.typeColor5;
-            break;
-        case 6:
-            return siteEnv.typeColor6;
-            break;
-        default:
-            break;
+function getCellBackgroundColor(type, contract) {
+    if (contract == 0) {
+        switch (type) {
+            case 1:
+                return siteEnv.typeColor1;
+                break;
+            case 2:
+                return siteEnv.typeColor2;
+                break;
+            case 3:
+                return siteEnv.typeColor3;
+                break;
+            case 4:
+                return siteEnv.typeColor4;
+                break;
+            case 5:
+                return siteEnv.typeColor5;
+                break;
+            case 6:
+                return siteEnv.typeColor6;
+                break;
+            default:
+                break;
+        }
+    } else {
+        return "#515151";
     }
 }

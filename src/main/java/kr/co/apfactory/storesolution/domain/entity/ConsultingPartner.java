@@ -39,14 +39,6 @@ public class ConsultingPartner extends BaseEntity {
     @Comment("업체명")
     private String name;
 
-    @Column(length = 50)
-    @Comment("담당자")
-    private String pic;
-
-    @Column(length = 50)
-    @Comment("연락처")
-    private String contact;
-
     @Column(columnDefinition = "int default 0", nullable = false)
     @Comment("수수료율")
     private Integer charge;
@@ -65,8 +57,6 @@ public class ConsultingPartner extends BaseEntity {
 
     public void updateConsultingPartner(ReqConsultingPartnerUpdateDTO dto) {
         this.name = dto.getName();
-        this.pic = dto.getPic();
-        this.contact = dto.getContact();
         this.charge = dto.getCharge();
         this.memo = dto.getMemo();
     }

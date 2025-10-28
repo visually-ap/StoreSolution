@@ -1,3 +1,6 @@
+let isSearching = false;
+let isSearchItem = false;
+
 $(function () {
     callValidationFormService(
         $('#rentalForm')
@@ -99,6 +102,7 @@ function initCustomerRentalInfo() {
     fp2.clear();
     fp3.clear();
     $('#rentalItemName').val('');
+    $('#rentalItemName').prop('readonly', false);
     $('#rentalItemId').val('');
     $('#rentalMemo').val('');
     $('#rentalItemListBody').empty();
@@ -107,9 +111,6 @@ function initCustomerRentalInfo() {
 
     hideRentalModalElements();
 }
-
-let isSearching = false;
-let isSearchItem = false;
 
 $(document).on('keydown', '#rentalItemName', function (event) {
     isSearchItem = false;
@@ -144,7 +145,7 @@ $(document).on('click', '#rentalItemSearchButton', function () {
 
     callLazyService(
         "GET"
-        , `/reservation/rental/itemList?fromDate=${$('#fromDate').val()}&requestDate=${$('#requestDate').val()}&searchKeyword=${$('#rentalItemName').val()}`
+        , `/reservation/rental/itemList?fromDate=${$('#fromDate').val()}&requestDate=${$('#requestDate').val()}&searchKeyword=${$('#rentalItemName').val()}&rentalId=${$('#rentalId').val()}`
         , {}
         , function (response) {
             if (response.success) {
@@ -155,8 +156,6 @@ $(document).on('click', '#rentalItemSearchButton', function () {
         }
     );
 });
-
-
 
 $(document).on('click', '.selectRental', function () {
     $('#rentalItemName').val($(this).data('rentalitem'));
@@ -206,9 +205,9 @@ $(document).on('click', '.rentalDetail', function() {
         , function (response) {
             if (response.success) {
                 openModal('#rentalModal', initCustomerRentalInfo);
-                isSearchItem = true;
-                setCustomerRentalInfo(response.result)
+                setCustomerRentalInfo(response.result);
                 $('#rentingStateWrap').show();
+                isSearchItem = true;
                 if (response.result.rentingStateType == 1) {
                     // 대여 예약 중 -> 대여완료 버튼
                     $('#rentalItemSearchButton').show();
@@ -334,7 +333,8 @@ $(document).on('change', '#toDate', function() {
         , `/reservation/customer/rental/todate/update?rentalId=${$('#rentalId').val()}&toDate=${$(this).val()}`
         , {}
         , function (response) {
-            alert('대여 정보 목록에서 변경된 반납일은 새로 고침 후 적용됩니다.');
+            alert('반납일을 수정하였습니다.');
+            location.reload();
         }
     );
 });

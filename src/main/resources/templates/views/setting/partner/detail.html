@@ -11,32 +11,60 @@
         <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
         <script th:src="@{/js/common/validator.js}"></script>
 
+        <style>
+            .deletePic {
+                cursor: pointer;
+            }
+
+            .deletePic:hover {
+                color: #fd5252;
+            }
+
+            .table_wrap {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-height: 320px;
+                overflow-y: auto;
+            }
+
+            .table_wrap table {
+                width: 100%;
+                border-collapse: collapse;
+                display: table;
+                table-layout: fixed;
+            }
+
+            .table_wrap .tableStyle.listT tr {
+                width: 100%;
+            }
+
+            .table_wrap .tableStyle.listT .title_tr th {
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+            }
+
+            .table_wrap .tableStyle.listT td {
+                border: 1px solid #ddd;
+                padding: 0 3px;
+                text-align: center;
+                height: 45px;
+                font-size: 16px;
+                background-color: #ffffff;
+            }
+        </style>
+
         <div class="section_wrap detailPage">
             <h2 class="title">컨설팅 업체 상세 정보<span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
 
             <form id="dataForm">
+                <input type="hidden" name="partnerId" th:value="${item.partnerId}"/>
                 <div class="boxStyle_1">
                     <div class="line mb-20px">
                         <div class="box">
                             <h2 class="name">업체명<span class="pointColor_1">*</span></h2>
                             <div class="value">
                                 <input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.name}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="line mb-20px">
-                        <div class="box">
-                            <h2 class="name">담당자<span class="pointColor_1">*</span></h2>
-                            <div class="value">
-                                <input type="text" id="pic" name="pic" maxlength="30" placeholder="30자 이내로 입력" th:value="${item.pic}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="line mb-20px">
-                        <div class="box">
-                            <h2 class="name">연락처<span class="pointColor_1">*</span></h2>
-                            <div class="value">
-                                <input inputmode="numeric" id="contact" name="contact" maxlength="12" placeholder="숫자만 입력" th:value="${item.contact}">
                             </div>
                         </div>
                     </div>
@@ -52,26 +80,65 @@
                     <div class="line mb-20px">
                         <div class="box">
                             <h2 class="name">메모</h2>
-                            <div class="value">
-<!--                                <textarea name="memo" class="textarea-style" id="memo" placeholder="업체메모">[[${item.memo}]]</textarea>-->
+                            <div class="value" style="width: 100%;">
                                 <input type="text" id="memo" name="memo" maxlength="50" placeholder="50자 이내로 입력" th:value="${item.memo}">
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <input type="hidden" name="partnerId" th:value="${item.partnerId}"/>
-
-                <div class="btn_wrap between">
-                    <div class="innerBtn_box">
-                        <button type="button" id="cancelButton" class="btn_2">목록</button>
-                    </div>
-                    <div class="innerBtn_box">
-                        <button type="button" id="updateButton" class="btn_2 btnColor_1">수정</button>
-                        <button type="button" id="deleteButton" class="btn_2">삭제</button>
+                    <div class="line">
+                        <div class="box" style="width: 100%;">
+                            <h2 class="name">담당자</h2>
+                            <div class="table_wrap">
+                                <table class="tableStyle listT listT2">
+                                    <thead>
+                                    <colgroup>
+                                        <col style="width: 10%">
+                                        <col style="width: 30%">
+                                        <col style="width: 30%">
+                                        <col style="width: 20%">
+                                        <col style="width: 10%">
+                                    </colgroup>
+                                    <tr class="title_tr">
+                                        <th>순번</th>
+                                        <th>이름</th>
+                                        <th>연락처</th>
+                                        <th>등록일시</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <th:block th:if="${picList.size() == 0}">
+                                        <tr>
+                                            <td colspan="5">등록된 담당자가 존재하지 않습니다.</td>
+                                        </tr>
+                                    </th:block>
+                                    <th:block th:unless="${picList.size() == 0}">
+                                        <tr th:each="item, stat : ${picList}" th:data-id="${item.picId}">
+                                            <td th:text="${picList.size() - stat.index}"></td>
+                                            <td th:text="${item.name}"></td>
+                                            <td th:text="${@stringParser.addDashToMobileNumber(item.contact)}"></td>
+                                            <td th:text="${#temporals.format(item.insertDatetime, 'yyyy-MM-dd HH:mm')}"></td>
+                                            <td class="deletePic">삭제</td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
+
+            <div class="btn_wrap between">
+                <div class="innerBtn_box">
+                    <button type="button" id="deleteButton" class="btn_2">삭제</button>
+                </div>
+                <div class="innerBtn_box">
+                    <button type="button" id="updateButton" class="btn_2 btnColor_1">수정</button>
+                    <button type="button" id="registerPicButton" class="btn_2">담당자등록</button>
+                    <button type="button" id="cancelButton" class="btn_2">목록</button>
+                </div>
+            </div>
 
             <script>
                 const gotoList = function () {
@@ -85,14 +152,10 @@
                         $('#dataForm')
                         , {
                             name: validationObject.consultingPartnerName.rules
-                            , pic: validationObject.consultingPartnerPic.rules
-                            , contact: validationObject.consultingPartnerContact.rules
                             , charge: validationObject.consultingPartnerCharge.rules
                         }
                         , {
                             name: validationObject.consultingPartnerName.message
-                            , pic: validationObject.consultingPartnerPic.message
-                            , contact: validationObject.consultingPartnerContact.message
                             , charge: validationObject.consultingPartnerCharge.message
                         }
                         , function (form) {
@@ -153,6 +216,10 @@
 
                 $(document).on('click', '#updateButton', function () {
                     $('#dataForm').submit();
+                });
+
+                $(document).on('click', '#registerPicButton', function () {
+                    location.href = `/setting/partner/pic/register?partnerId=${getParamValue('partnerId')}`;
                 });
             </script>
         </div>

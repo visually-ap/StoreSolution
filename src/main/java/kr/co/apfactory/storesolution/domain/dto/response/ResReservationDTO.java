@@ -19,4 +19,8 @@ public class ResReservationDTO {
     private String customerName;
     private Integer type;
     private Long customerId;
+    private String typeString;
+    private Integer contract;
+    private Boolean completed;
+    private Boolean started;
 }

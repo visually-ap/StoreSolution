@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class ReqReservationUpdateDTO {
     private Long reservationId;
+    private Long customerId;
 
     private String name1;
     private String mobile1;

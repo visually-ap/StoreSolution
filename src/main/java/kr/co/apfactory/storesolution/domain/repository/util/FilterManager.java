@@ -207,21 +207,26 @@ public class FilterManager {
                 return nullSafeBuilder(() ->
                         queryStringEq(QConsultingPartner.consultingPartner.name, searchDTO.getSearchKeyword())
                 );
-            } else if ("pic".equals(searchDTO.getSearchCondition())) {
-                return nullSafeBuilder(() ->
-                        queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword())
-                );
-            } else if ("contact".equals(searchDTO.getSearchCondition())) {
-                return nullSafeBuilder(() ->
-                        queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword())
-                );
             } else {
                 return nullSafeBuilder(() ->
                         queryStringEq(QConsultingPartner.consultingPartner.name, searchDTO.getSearchKeyword())
-                                .or(queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword()))
-                                .or(queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword()))
                 );
             }
+//            } else if ("pic".equals(searchDTO.getSearchCondition())) {
+//                return nullSafeBuilder(() ->
+//                        queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword())
+//                );
+//            } else if ("contact".equals(searchDTO.getSearchCondition())) {
+//                return nullSafeBuilder(() ->
+//                        queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword())
+//                );
+//            } else {
+//                return nullSafeBuilder(() ->
+//                        queryStringEq(QConsultingPartner.consultingPartner.name, searchDTO.getSearchKeyword())
+//                                .or(queryStringEq(QConsultingPartner.consultingPartner.pic, searchDTO.getSearchKeyword()))
+//                                .or(queryStringEq(QConsultingPartner.consultingPartner.contact, searchDTO.getSearchKeyword()))
+//                );
+//            }
         } else {
             return null;
         }

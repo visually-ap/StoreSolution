@@ -69,12 +69,20 @@ public class Reservation extends BaseEntity {
     private LocalDateTime consultingDatetimeTo;
 
     @Column(columnDefinition = "boolean default false", nullable = false)
+    @Comment("상담 시작 여부")
+    private Boolean started;
+
+    @Column(columnDefinition = "boolean default false", nullable = false)
     @Comment("상담 완료 여부")
     private Boolean completed;
 
     @OneToOne(fetch = FetchType.LAZY)
     @Comment("상담 완료 직원")
     private User completedUser;
+
+    @Column(columnDefinition = "datetime")
+    @Comment("상담완료 일시")
+    private LocalDateTime completedDatetimeTo;
 
     @Column(columnDefinition = "tinyint default 0", nullable = false)
     @Comment("계약 여부 (0:미해당, 1:계약, 2:투어, 3:취소)")
@@ -87,6 +95,7 @@ public class Reservation extends BaseEntity {
     public void completeCounseling(User user) {
         this.completed = true;
         this.completedUser = user;
+        this.completedDatetimeTo = LocalDateTime.now();
     }
 
     public void updateReservation(ReqReservationUpdateDTO dto) {
@@ -144,5 +153,9 @@ public class Reservation extends BaseEntity {
 
     public void updateMemo(String memo) {
         this.memo = memo;
+    }
+
+    public void startCounseling() {
+        this.started = true;
     }
 }

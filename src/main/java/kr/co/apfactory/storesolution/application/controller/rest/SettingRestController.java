@@ -101,6 +101,12 @@ public class SettingRestController {
         return ResponseEntity.ok(userService.deleteConsultingPartner(partnerId));
     }
 
+    @PostMapping("/partner/pic/register")
+    @Transactional
+    public ResponseEntity<ResponseDTO> registerConsultingPartnerPic(@RequestBody ReqConsultingPartnerPicDTO dto) {
+        return ResponseEntity.ok(userService.registerConsultingPartnerPic(dto));
+    }
+
     @PostMapping("/rental/register")
     @Transactional
     public ResponseEntity<ResponseDTO> registerRentalItem(@RequestBody ReqRentalItemDTO dto) {

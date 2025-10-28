@@ -22,6 +22,8 @@ public interface StoreSupportRepository {
     Page<ResConsultingPartnerListDTO> selectConsultingPartnerList(String lang, Pageable pageable, SearchDTO searchDTO, Long storeId);
 
     ResConsultingPartnerDetailDTO selectConsultingPartnerDetail(Long partnerId, Long storeId);
+    List<ResConsultingPartnerPicDTO> selectConsultingPartnerPicList(Long partnerId);
+    ResConsultingPartnerPicDTO selectConsultingPartnerPicDetail(Long picId);
 
     List<ResConsultingPartnerListDTO> selectConsultingPartnerList(Long storeId);
 
@@ -30,4 +32,5 @@ public interface StoreSupportRepository {
     ResRentalItemDTO selectRentalItemDetail(Long rentalItemId, Long storeId);
 
     List<ResRentalItemListDTO> selectRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword, Long storeId);
+    List<ResRentalItemListDTO> selectRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword, Long storeId, Long rentalId);
 }

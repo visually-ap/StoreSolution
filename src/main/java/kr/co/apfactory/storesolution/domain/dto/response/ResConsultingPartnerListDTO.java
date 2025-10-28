@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 public class ResConsultingPartnerListDTO {
     private Long partnerId;
     private String name;
-    private String pic;
-    private String contact;
     private Integer charge;
     private LocalDateTime insertDatetime;
 }

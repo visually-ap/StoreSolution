@@ -36,9 +36,11 @@ public class StoreService {
     private final CustomerRepository customerRepository;
 
     private final ConsultingPartnerRepository consultingPartnerRepository;
+    private final ConsultingPartnerPicRepository consultingPartnerPicRepository;
 
     private final CustomerPurchaseRepository customerPurchaseRepository;
     private final RentalItemRepository rentalItemRepository;
+    private final ReservationRepository reservationRepository;
 
     @Transactional(readOnly = true)
     public ResStoreInfoDTO getStoreInfo() {
@@ -63,24 +65,12 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseDTO getEmployeeScheduleList(LocalDate date) {
-        List<ResEmployeeScheduleDTO> scheduleList = storeRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId(), date);
-
-        if (scheduleList.size() < 5) {
-            int limit = 5 - scheduleList.size();
-
-            for (int i = 0; i < limit; i++) {
-                scheduleList.add(
-                        ResEmployeeScheduleDTO.builder()
-                                .name("")
-                                .build()
-                );
-            }
-        }
+    public ResponseDTO getStatisticsList(LocalDate date) {
+        ResStatDTO statisticsDto = reservationRepository.selectStatisticsList(LoginUser.getDetails().getStoreId(), date);
 
         return ResponseDTO.builder()
                 .isSuccess(true)
-                .result(scheduleList)
+                .result(statisticsDto)
                 .build();
     }
 
@@ -100,6 +90,11 @@ public class StoreService {
             throw new IllegalArgumentException();
         }
         return dto;
+    }
+
+    public List<ResConsultingPartnerPicDTO> getConsultingPartnerPicList(Long partnerId) {
+        List<ResConsultingPartnerPicDTO> list = consultingPartnerPicRepository.selectConsultingPartnerPicList(partnerId);
+        return list;
     }
 
     @Transactional(readOnly = true)
@@ -151,11 +146,38 @@ public class StoreService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseDTO getRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword) {
-        List<ResRentalItemListDTO> list = rentalItemRepository.selectRentalItemList(fromDate, requestDate, searchKeyword, LoginUser.getDetails().getStoreId());
+    public ResponseDTO getRentalItemList(LocalDate fromDate, LocalDate requestDate, String searchKeyword, Long rentalId) {
+        List<ResRentalItemListDTO> list;
+        if (rentalId == null) {
+            list = rentalItemRepository.selectRentalItemList(fromDate, requestDate, searchKeyword, LoginUser.getDetails().getStoreId());
+        } else {
+            list = rentalItemRepository.selectRentalItemList(fromDate, requestDate, searchKeyword, LoginUser.getDetails().getStoreId(), rentalId);
+        }
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .result(list)
+                .build();
+    }
+
+    @Transactional
+    public ResponseDTO getEmployeeScheduleList(LocalDate date) {
+        List<ResEmployeeScheduleDTO> scheduleList = storeRepository.selectEmployeeScheduleList(LoginUser.getDetails().getStoreId(), date);
+
+        if (scheduleList.size() < 5) {
+            int limit = 5 - scheduleList.size();
+
+            for (int i = 0; i < limit; i++) {
+                scheduleList.add(
+                        ResEmployeeScheduleDTO.builder()
+                                .name("")
+                                .build()
+                );
+            }
+        }
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .result(scheduleList)
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package kr.co.apfactory.storesolution.domain.repository.support.impl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
@@ -33,9 +34,11 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
     private final FilterManager filterManager;
 
     @Override
-    public List<ResCustomerDTO> selectCustomerList(String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
+    public List<ResCustomerDTO> selectCustomerList(String sortString, String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
         QReservation reservation = QReservation.reservation;
         QCustomer customer = QCustomer.customer;
+
+        List<OrderSpecifier> ORDERS = sortManager.getCustomerListOrderSpecifiers(sortString);
 
         List<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -49,9 +52,9 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.weddingDate
                                 , Expressions.stringTemplate("DATE_FORMAT({0}, {1})", reservation.insertDatetime, ConstantImpl.create("%Y-%m-%d")).as("insertDate")
                                 , reservation.consultingDate
-                                , reservation.consultingDate
                                 , reservation.completed
                                 , reservation.id.as("reservationId")
+                                , reservation.consultingDatetimeFrom
                                 , new CaseBuilder()
                                         .when(reservation.type.eq(1)).then(Expressions.constant("맞춤상담"))
                                         .when(reservation.type.eq(2)).then(Expressions.constant(resEnvironmentUpdateDTO.getTypeName2()))
@@ -71,7 +74,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 .and(filterManager.getReservationCustomerListBooleanBuilderByKeyword(searchKeyword))
                                 .and(filterManager.getReservationCustomerListBooleanBuilderByDate(searchDate))
                 )
-                .orderBy()
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .fetch();
 
         return results;
@@ -141,6 +144,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , reservation.consultingDate
                                 , reservation.consultingDatetimeFrom
                                 , reservation.completed
+                                , reservation.started
                                 , reservation.id.as("reservationId")
                                 , reservation.type
                                 , reservation.allDay.as("isAllday")
@@ -166,7 +170,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
         QCustomer customer = QCustomer.customer;
         QReservation reservation = QReservation.reservation;
         QUser reservationManger = new QUser("reservationManger");
-        QUser consultingManger = new QUser("consultingManger");
+        QUser consultingManager = new QUser("consultingManager");
 
         QueryResults<ResCustomerDTO> results = queryFactory.select(
                         Projections.fields(
@@ -180,9 +184,9 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customer.photoPlace
                                 , customer.weddingDate
                                 , customer.weddingPlace
-                                , customer.memo
+                                , reservation.memo
                                 , reservationManger.name.as("reservationManagerName")
-                                , consultingManger.name.as("consultingManagerName")
+                                , consultingManager.name.as("consultingManagerName")
                                 , reservation.id.as("reservationId")
                                 , reservation.consultingDate
                                 , reservation.completed
@@ -191,25 +195,85 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                 .from(customer)
                 .innerJoin(reservation).on(customer.eq(reservation.customer))
                 .innerJoin(reservationManger).on(reservation.reservationManager.eq(reservationManger))
-                .innerJoin(consultingManger).on(reservation.reservationManager.eq(consultingManger))
+                .innerJoin(consultingManager).on(reservation.consultingManager.eq(consultingManager))
                 .where(
                         customer.deleted.eq(false)
                                 .and(customer.store.id.eq(storeId))
+                                .and(reservation.type.eq(1))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByKeyword(searchDTO))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByState(searchDTO))
                                 .and(filterManager.getCounselingCustomerListBooleanBuilderByPeriod(searchDTO))
                 )
-                .orderBy(reservation.insertDatetime.desc())
+                .orderBy(reservation.consultingDate.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
     @Override
+    public ResCustomerDTO selectCustomerDetail(Long customerId, Long storeId) {
+        QCustomer customer = QCustomer.customer;
+        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
+        QConsultingPartnerPic consultingPartnerPic = QConsultingPartnerPic.consultingPartnerPic;
+
+        ResCustomerDTO result = queryFactory.select(
+                        Projections.fields(
+                                ResCustomerDTO.class
+                                , customer.id.as("customerId")
+                                , customer.name1
+                                , customer.mobile1
+                                , customer.name2
+                                , customer.mobile2
+                                , customer.photoDate
+                                , customer.photoPlace
+                                , customer.weddingDate
+                                , customer.weddingPlace
+                                , consultingPartner.id.as("consultingPartnerId")
+                                , consultingPartnerPic.id.as("consultingPartnerPicId")
+                                , consultingPartner.charge.coalesce(0).as("charge")
+                                , consultingPartnerPic.contact
+                                , consultingPartner.memo
+                        )
+                )
+                .from(customer)
+                .leftJoin(consultingPartner).on(customer.consultingPartner.eq(consultingPartner))
+                .leftJoin(consultingPartnerPic).on(customer.consultingPartnerPic.eq(consultingPartnerPic))
+                .where(
+                        customer.deleted.eq(false)
+                                .and(customer.store.id.eq(storeId))
+                                .and(customer.id.eq(customerId))
+                )
+                .orderBy()
+                .fetchOne();
+
+        if (result.getConsultingPartnerId() != null) {
+            result.setPicList(
+                    queryFactory.select(
+                                    Projections.fields(
+                                            ResConsultingPartnerPicDTO.class
+                                            , consultingPartnerPic.id.as("picId")
+                                            , consultingPartnerPic.name
+                                            , consultingPartnerPic.contact
+                                    )
+                            )
+                            .from(consultingPartnerPic)
+                            .where(
+                                    consultingPartnerPic.deleted.eq(false)
+                                            .and(consultingPartnerPic.consultingPartner.id.eq(result.getConsultingPartnerId()))
+                            )
+                            .orderBy(consultingPartnerPic.name.asc())
+                            .fetch()
+            );
+        }
+        return result;
+    }
+
+    @Override
     public List<ResCustomerPurchaseListDTO> selectCustomerPurchaseList(Long customerId, Long storeId) {
         QCustomer customer = QCustomer.customer;
         QCustomerPurchase customerPurchase = QCustomerPurchase.customerPurchase;
-        QConsultingPartner consultingPartner = QConsultingPartner.consultingPartner;
 
         List<ResCustomerPurchaseListDTO> results = queryFactory.select(
                         Projections.fields(
@@ -224,12 +288,11 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customerPurchase.purchaseMemo
                                 , customerPurchase.price
                                 , customerPurchase.purchaseDate
-                                , consultingPartner.charge
+                                , customerPurchase.charge
                         )
                 )
                 .from(customerPurchase)
                 .innerJoin(customer).on(customerPurchase.customer.eq(customer).and(customer.store.id.eq(storeId)))
-                .leftJoin(consultingPartner).on(customer.consultingPartner.eq(consultingPartner))
                 .where(
                         customerPurchase.deleted.eq(false)
                                 .and(customer.id.eq(customerId))
@@ -252,6 +315,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , customerPurchase.purchaseMemo
                                 , customerPurchase.price
                                 , customerPurchase.purchaseDate
+                                , customerPurchase.charge
                         )
                 )
                 .from(customerPurchase)
@@ -354,6 +418,7 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                                 , rental.requestDate
                                 , rentalItem.id.as("rentalItemId")
                                 , rentalItem.name.as("rentalItemName")
+                                , rentalItem.size.as("rentalItemSize")
                         )
                 )
                 .from(rental)
@@ -444,5 +509,66 @@ public class CustomerSupportRepositoryImpl implements CustomerSupportRepository 
                 .fetch();
 
         return results;
+    }
+
+    @Override
+    public ResStatDTO selectStatisticsList(Long storeId, LocalDate date) {
+        QReservation reservation = QReservation.reservation;
+
+        return queryFactory
+                .select(Projections.fields(
+                        ResStatDTO.class,
+
+                        // --- 예약 종류(type)별 ---
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 1 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType1"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 2 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType2"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 3 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType3"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 4 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType4"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 5 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType5"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 6 THEN 1 ELSE 0 END)", reservation.type)
+                                .coalesce(0L)
+                                .as("reservationType6"),
+
+                        // --- 계약 상태(contract)별 ---
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 0 THEN 1 ELSE 0 END)", reservation.contract)
+                                .coalesce(0L)
+                                .as("contractType0"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 1 THEN 1 ELSE 0 END)", reservation.contract)
+                                .coalesce(0L)
+                                .as("contractType1"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 2 THEN 1 ELSE 0 END)", reservation.contract)
+                                .coalesce(0L)
+                                .as("contractType2"),
+                        Expressions.numberTemplate(Long.class,
+                                        "SUM(CASE WHEN {0} = 3 THEN 1 ELSE 0 END)", reservation.contract)
+                                .coalesce(0L)
+                                .as("contractType3")
+                ))
+                .from(reservation)
+                .where(
+                        reservation.deleted.isFalse()
+                        , reservation.consultingManager.store.id.eq(storeId)
+                        , filterManager.getReservationCustomerListBooleanBuilderByDate(date)
+                )
+                .fetchOne();
     }
 }

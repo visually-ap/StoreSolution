@@ -24,6 +24,7 @@ public class ResRentalListDTO {
     private String memo;
     private Boolean renting;
     private String rentingState;
+    private Integer rentalItemSize;
 
     public void setRentingState() {
         if (fromDate != null && toDate == null && !renting) {

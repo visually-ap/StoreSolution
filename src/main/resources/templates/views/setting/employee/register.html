@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="btn_wrap right">
-                    <button type="button" id="registerButton" class="btn_2 btnColor_1">등록</button>
+                    <button type="button" id="registerButton" class="btn_2 btnColor_1" th:if="${#authentication.principal.authority == 'ROLE_USER'}">등록</button>
                     <button type="button" id="cancelButton" class="btn_2">취소</button>
                 </div>
             </form>

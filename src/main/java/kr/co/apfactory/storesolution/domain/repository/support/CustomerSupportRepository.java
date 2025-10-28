@@ -10,12 +10,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CustomerSupportRepository {
-    List<ResCustomerDTO> selectCustomerList(String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO);
+    List<ResCustomerDTO> selectCustomerList(String sortString, String searchKeyword, LocalDate searchDate, Long storeId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO);
 
     ResCustomerDTO selectCustomerDetailByReservationId(Long reservationId);
     ResCustomerDTO selectReservationDetail(Long reservationId);
 
     Page<ResCustomerDTO> selectCustomerList(Pageable pageable, SearchDTO searchDTO, Long storeId);
+
+    ResCustomerDTO selectCustomerDetail(Long customerId, Long storeId);
 
     List<ResCustomerPurchaseListDTO> selectCustomerPurchaseList(Long customerId, Long storeId);
 
@@ -30,4 +32,6 @@ public interface CustomerSupportRepository {
     ResRentalDTO selectCustomerRentalDetail(Long rentalId);
 
     List<ResCustomerReservationDTO> selectCustomerReservationList(Long customerId, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO);
+
+    ResStatDTO selectStatisticsList(Long storeId, LocalDate date);
 }

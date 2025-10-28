@@ -12,13 +12,13 @@
         <script th:src="@{/js/common/validator.js}"></script>
 
         <div class="section_wrap registerPage">
-            <h2 class="title">컨설팅 업체 등록 <span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
-
+            <h2 class="title">컨설팅 업체 담당자 등록 <span class="description">* 항목은 필수 입력 항목입니다.</span></h2>
             <form id="dataForm">
+                <input type="hidden" name="partnerId" th:value="${partnerId}">
                 <div class="boxStyle_1">
                     <div class="line mb-20px">
                         <div class="box">
-                            <h2 class="name">업체명<span class="pointColor_1">*</span></h2>
+                            <h2 class="name">이름<span class="pointColor_1">*</span></h2>
                             <div class="value">
                                 <input type="text" id="name" name="name" maxlength="30" placeholder="30자 이내로 입력">
                             </div>
@@ -26,18 +26,9 @@
                     </div>
                     <div class="line mb-20px">
                         <div class="box">
-                            <h2 class="name">수수료율<span class="pointColor_1">*</span></h2>
+                            <h2 class="name">연락처<span class="pointColor_1">*</span></h2>
                             <div class="value">
-                                <input inputmode="numeric" id="charge" name="charge" maxlength="2" value="0">
-                            </div>
-                            <h2 class="name" style="margin-left: 5px;">%</h2>
-                        </div>
-                    </div>
-                    <div class="line mb-20px">
-                        <div class="box">
-                            <h2 class="name">메모</h2>
-                            <div class="value" style="width: 100%;">
-                                <input type="text" id="memo" name="memo" maxlength="50" placeholder="50자 이내로 입력">
+                                <input inputmode="numeric" id="contact" name="contact" maxlength="12" placeholder="숫자만 입력">
                             </div>
                         </div>
                     </div>
@@ -49,32 +40,24 @@
                 </div>
             </form>
 
-            <script>
-                const gotoList = function () {
-                    document.location.href = ("[[${ session['gotoList_/setting/partner/list'] != null ?  session['gotoList_/setting/partner/list'] : '/setting/partner/list' }]]").replace(/&amp;/g, '&');
-                }
-            </script>
-
             <script th:inline="javascript">
                 $(function () {
                     callValidationFormService(
                         $('#dataForm')
                         , {
-                            name: validationObject.consultingPartnerName.rules
+                            name: validationObject.consultingPartnerPic.rules
                             , contact: validationObject.consultingPartnerContact.rules
-                            , charge: validationObject.consultingPartnerCharge.rules
                         }
                         , {
-                            name: validationObject.consultingPartnerName.message
+                            name: validationObject.consultingPartnerPic.message
                             , contact: validationObject.consultingPartnerContact.message
-                            , charge: validationObject.consultingPartnerCharge.message
                         }
                         , function (form) {
                             if (doubleClick.isDouble()) {
                                 return false;
                             }
 
-                            if (!confirm("업체를 등록하시겠습니까?")) {
+                            if (!confirm("담당자를 등록하시겠습니까?")) {
                                 doubleClick.initFlag();
                                 return;
                             }
@@ -83,12 +66,12 @@
 
                             callService(
                                 "POST"
-                                , "/setting/partner/register"
+                                , "/setting/partner/pic/register"
                                 , JSON.stringify(convertFormToJSON(form))
                                 , function (response) {
                                     alert(response.message);
                                     if (response.success) {
-                                        location.replace('/setting/partner/list');
+                                        location.replace(`/setting/partner/detail?partnerId=${getParamValue('partnerId')}`);
                                     }
                                 }
                             );
@@ -97,7 +80,7 @@
                 });
 
                 $(document).on('click', '#cancelButton', function () {
-                    gotoList();
+                    location.href = `/setting/partner/detail?partnerId=${getParamValue('partnerId')}`;
                 });
 
                 $(document).on('click', '#registerButton', function () {

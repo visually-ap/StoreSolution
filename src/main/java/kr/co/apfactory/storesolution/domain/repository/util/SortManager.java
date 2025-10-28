@@ -4,9 +4,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
-import kr.co.apfactory.storesolution.domain.entity.QConsultingPartner;
-import kr.co.apfactory.storesolution.domain.entity.QRentalItem;
-import kr.co.apfactory.storesolution.domain.entity.QUser;
+import kr.co.apfactory.storesolution.domain.entity.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -25,6 +23,10 @@ public class SortManager {
 
     private Order getSortType(Sort.Order order) {
         return order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+    }
+
+    private Order getSortTypeFromString(String sortType) {
+        return ("asc").equals(sortType) ? Order.ASC : Order.DESC;
     }
 
     public List<OrderSpecifier> getEmployeeListOrderSpecifiers(Pageable pageable) {
@@ -78,6 +80,35 @@ public class SortManager {
                     default:
                         break;
                 }
+            }
+        }
+
+        return ORDERS;
+    }
+
+    public List<OrderSpecifier> getCustomerListOrderSpecifiers(String sortString) {
+        List<OrderSpecifier> ORDERS = new ArrayList<>();
+
+        if (!isEmpty(sortString)) {
+            switch (sortString) {
+                case "type_asc":
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.type, "type"));
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.consultingDatetimeFrom, "consultingDatetimeFrom"));
+                    break;
+                case "type_desc":
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("desc"), QReservation.reservation.type, "type"));
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.consultingDatetimeFrom, "consultingDatetimeFrom"));
+                    break;
+                case "date_asc":
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.consultingDate, "consultingDate"));
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.type, "type"));
+                    break;
+                case "date_desc":
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("desc"), QReservation.reservation.consultingDate, "consultingDate"));
+                    ORDERS.add(getSortedColumn(getSortTypeFromString("asc"), QReservation.reservation.type, "type"));
+                    break;
+                default:
+                    break;
             }
         }
 

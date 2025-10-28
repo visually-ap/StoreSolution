@@ -25,7 +25,6 @@ public class ReqCustomerPaymentDTO {
     private String paymentPic;
     private Integer paymentMethod;
     private BigDecimal paymentAmount;
-    private BigDecimal paymentOutstanding;
     private String paymentMemo;
 
     public CustomerPayment toCustomerPaymentEntity(Customer customer) {
@@ -36,7 +35,6 @@ public class ReqCustomerPaymentDTO {
                 .pic(this.paymentPic)
                 .method(this.paymentMethod)
                 .amount(this.paymentAmount)
-                .outstanding(this.paymentOutstanding)
                 .memo(this.paymentMemo)
                 .build();
     }

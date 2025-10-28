@@ -29,7 +29,7 @@
                         <div class="box other_box">
                             <h2 class="name">비밀번호</h2>
                             <div class="value">
-                                <button type="button" id="resetPasswordButton" class="resetBtn btnColor_2">비밀번호초기화</button>
+                                <button type="button" id="resetPasswordButton" class="resetBtn btnColor_2" th:if="${#authentication.principal.authority == 'ROLE_USER'}">비밀번호초기화</button>
                             </div>
                         </div>
                     </div>
@@ -102,8 +102,8 @@
                         <button type="button" id="cancelButton" class="btn_2">목록</button>
                     </div>
                     <div class="innerBtn_box">
-                        <button type="button" id="updateButton" class="btn_2 btnColor_1">수정</button>
-                        <button type="button" id="deleteButton" class="btn_2">삭제</button>
+                        <button type="button" id="updateButton" class="btn_2 btnColor_1" th:if="${#authentication.principal.authority == 'ROLE_USER'}">수정</button>
+                        <button type="button" id="deleteButton" class="btn_2" th:if="${#authentication.principal.authority == 'ROLE_USER'}">삭제</button>
                     </div>
                 </div>
             </form>

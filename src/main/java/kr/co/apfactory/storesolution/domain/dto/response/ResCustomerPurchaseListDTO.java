@@ -21,4 +21,5 @@ public class ResCustomerPurchaseListDTO {
     private BigDecimal price;
     private Integer charge;
     private LocalDate purchaseDate;
+    private Integer chargeFee;
 }

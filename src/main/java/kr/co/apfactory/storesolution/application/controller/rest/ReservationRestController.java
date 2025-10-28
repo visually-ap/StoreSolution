@@ -47,9 +47,9 @@ public class ReservationRestController {
     }
 
     @GetMapping("/customer/list")
-    public ResponseEntity<ResponseDTO> getCustomerList(String searchKeyword, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+    public ResponseEntity<ResponseDTO> getCustomerList(String sortString, String searchKeyword, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
         ResEnvironmentUpdateDTO resEnvironmentUpdateDTO = siteService.getSiteEnvironment();
-        return ResponseEntity.ok(customerService.getCustomerList(searchKeyword, searchDate, resEnvironmentUpdateDTO));
+        return ResponseEntity.ok(customerService.getCustomerList(sortString, searchKeyword, searchDate, resEnvironmentUpdateDTO));
     }
 
     @GetMapping("/customer/detail")
@@ -63,9 +63,14 @@ public class ReservationRestController {
         return ResponseEntity.ok(customerService.updateConsultingReservation(reqReservationUpdateDTO));
     }
 
-    @PostMapping("/popup/partner/detail")
+    @PostMapping("/partner/detail")
     public ResponseEntity<ResponseDTO> savePartnerAndGetConsultingPartnerDetailById(Long customerId, Long partnerId) {
         return ResponseEntity.ok(customerService.savePartnerAndGetConsultingPartnerDetailById(customerId, partnerId));
+    }
+
+    @PostMapping("/pic/detail")
+    public ResponseEntity<ResponseDTO> savePicAndGetConsultingPartnerPicDetailById(Long customerId, Long picId) {
+        return ResponseEntity.ok(customerService.savePicAndGetConsultingPartnerPicDetailById(customerId, picId));
     }
 
     @PostMapping("/customer/purchase/register")
@@ -118,8 +123,8 @@ public class ReservationRestController {
     public ResponseEntity<ResponseDTO> getRentalItemList(
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate
             , @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate requestDate
-            , String searchKeyword) {
-        return ResponseEntity.ok(storeService.getRentalItemList(fromDate, requestDate, searchKeyword));
+            , String searchKeyword, Long rentalId) {
+        return ResponseEntity.ok(storeService.getRentalItemList(fromDate, requestDate, searchKeyword, rentalId));
     }
 
     @PostMapping("/customer/rental/register")
@@ -192,6 +197,12 @@ public class ReservationRestController {
         return ResponseEntity.ok(customerService.getCustomerReservationDetail(reservationId));
     }
 
+    @PostMapping("/customer/reservation/start")
+    @Transactional
+    public ResponseEntity<ResponseDTO> startCustomerCounseling(Long reservationId) {
+        return ResponseEntity.ok(customerService.startCustomerCounseling(reservationId));
+    }
+
     @PostMapping("/customer/reservation/complete")
     @Transactional
     public ResponseEntity<ResponseDTO> completeCustomerReservation(Long reservationId) {
@@ -207,5 +218,16 @@ public class ReservationRestController {
     @Transactional
     public ResponseEntity<ResponseDTO> updateReservationDetail(@RequestBody ReqReservationDTO reqReservationDTO) {
         return ResponseEntity.ok(customerService.updateReservationDetail(reqReservationDTO));
+    }
+
+    @PostMapping("/popup/customer/update")
+    @Transactional
+    public ResponseEntity<ResponseDTO> updateCustomerDetail(@RequestBody ReqReservationUpdateDTO reqReservationUpdateDTO) {
+        return ResponseEntity.ok(customerService.updateCustomerDetail(reqReservationUpdateDTO));
+    }
+
+    @GetMapping("/stat/list")
+    public ResponseEntity<ResponseDTO> getStatisticsList(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        return ResponseEntity.ok(storeService.getStatisticsList(date));
     }
 }

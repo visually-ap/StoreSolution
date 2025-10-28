@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class ReqConsultingPartnerUpdateDTO {
     private Long partnerId;
     private String name;
-    private String pic;
-    private String contact;
     private Integer charge;
     private String memo;
 }

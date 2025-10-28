@@ -15,16 +15,12 @@ import java.time.LocalDateTime;
 @Builder
 public class ReqConsultingPartnerRegisterDTO {
     private String name;
-    private String pic;
-    private String contact;
     private Integer charge;
     private String memo;
 
     public ConsultingPartner toConsultingPartnerEntity() {
         return ConsultingPartner.builder()
                 .name(this.name)
-                .pic(this.pic)
-                .contact(this.contact)
                 .charge(this.charge)
                 .memo(this.memo)
                 .build();

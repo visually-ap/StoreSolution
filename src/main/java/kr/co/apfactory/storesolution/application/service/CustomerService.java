@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class CustomerService {
     private final CounselingCoatRepository counselingCoatRepository;
     private final CustomerPurchaseRepository customerPurchaseRepository;
     private final ConsultingPartnerRepository consultingPartnerRepository;
+    private final ConsultingPartnerPicRepository consultingPartnerPicRepository;
     private final CustomerPaymentRepository customerPaymentRepository;
     private final RentalRepository rentalRepository;
     private final RentalItemRepository rentalItemRepository;
@@ -64,8 +67,8 @@ public class CustomerService {
                 .build();
     }
 
-    public ResponseDTO getCustomerList(String searchKeyword, LocalDate searchDate, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
-        List<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(searchKeyword, searchDate, LoginUser.getDetails().getStoreId(), resEnvironmentUpdateDTO);
+    public ResponseDTO getCustomerList(String sortString, String searchKeyword, LocalDate searchDate, ResEnvironmentUpdateDTO resEnvironmentUpdateDTO) {
+        List<ResCustomerDTO> resCustomerList = customerRepository.selectCustomerList(sortString, searchKeyword, searchDate, LoginUser.getDetails().getStoreId(), resEnvironmentUpdateDTO);
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .result(resCustomerList)
@@ -134,10 +137,34 @@ public class CustomerService {
                         .message("잘못된 접근입니다.")
                         .build();
             }
+
+            dto.setPicList(consultingPartnerPicRepository.selectConsultingPartnerPicList(dto.getPartnerId()));
         }
 
         Customer customer = customerRepository.findById(customerId).orElseThrow(IllegalAccessError::new);
         customer.updateConsultingPartner(partnerId == null ? null : ConsultingPartner.builder().id(partnerId).build());
+        customer.updateConsultingPartnerPic(null);
+        customerRepository.save(customer);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .result(dto)
+                .build();
+    }
+
+    public ResponseDTO savePicAndGetConsultingPartnerPicDetailById(Long customerId, Long picId) {
+        ResConsultingPartnerPicDTO dto = new ResConsultingPartnerPicDTO();
+        if (picId != null) {
+            dto = consultingPartnerRepository.selectConsultingPartnerPicDetail(picId);
+            if (dto == null) {
+                return ResponseDTO.builder()
+                        .message("잘못된 접근입니다.")
+                        .build();
+            }
+        }
+
+        Customer customer = customerRepository.findById(customerId).orElseThrow(IllegalAccessError::new);
+        customer.updateConsultingPartnerPic(picId == null ? null : ConsultingPartnerPic.builder().id(picId).build());
         customerRepository.save(customer);
 
         return ResponseDTO.builder()
@@ -151,25 +178,30 @@ public class CustomerService {
         return resCustomerList;
     }
 
-    public ResCustomerDTO getCustomerDetailById(Long customerId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(IllegalAccessError::new);
+    @Transactional
+    public ResCustomerDTO getCustomerDetailById(Long customerId) throws Exception {
+        ResCustomerDTO dto = customerRepository.selectCustomerDetail(customerId, LoginUser.getDetails().getStoreId());
+        if (dto == null) {
+            throw new Exception();
+        }
 
-        return ResCustomerDTO.builder()
-                .customerId(customer.getId())
-                .name1(customer.getName1())
-                .mobile1(customer.getMobile1())
-                .name2(customer.getName2())
-                .mobile2(customer.getMobile2())
-                .photoDate(customer.getPhotoDate())
-                .photoPlace(customer.getPhotoPlace())
-                .weddingDate(customer.getWeddingDate())
-                .weddingPlace(customer.getWeddingPlace())
-                .consultingPartnerId(customer.getConsultingPartner() == null ? null : customer.getConsultingPartner().getId())
-                .build();
+        return dto;
     }
 
     public List<ResCustomerPurchaseListDTO> getCustomerPurchaseList(Long customerId) {
-        return customerPurchaseRepository.selectCustomerPurchaseList(customerId, LoginUser.getDetails().getStoreId());
+        List<ResCustomerPurchaseListDTO> list = customerPurchaseRepository.selectCustomerPurchaseList(customerId, LoginUser.getDetails().getStoreId());
+        for (ResCustomerPurchaseListDTO dto : list) {
+            Integer price = dto.getPrice().intValue();
+            Integer charge = dto.getCharge();
+
+            if (charge == 0) {
+                dto.setChargeFee(0);
+            } else {
+                dto.setChargeFee(price * charge / 100);
+            }
+        }
+
+        return list;
     }
 
     public ResponseDTO registerCustomerPurchase(ReqCustomerPurchaseDTO reqCustomerPurchaseDTO) {
@@ -180,7 +212,10 @@ public class CustomerService {
                     .build();
         }
 
-        customerPurchaseRepository.save(reqCustomerPurchaseDTO.toCustomerPurchaseEntity(customer));
+        ConsultingPartner consultingPartner = customer.getConsultingPartner();
+        int partnerFee = consultingPartner == null ? 0 : consultingPartner.getCharge();
+
+        customerPurchaseRepository.save(reqCustomerPurchaseDTO.toCustomerPurchaseEntity(customer, partnerFee));
 
         return ResponseDTO.builder()
                 .isSuccess(true)
@@ -242,7 +277,7 @@ public class CustomerService {
 
         return ResponseDTO.builder()
                 .isSuccess(true)
-                .message("구매내역을 등록하였습니다.")
+                .message("결제 내역을 등록하였습니다.")
                 .build();
     }
 
@@ -517,6 +552,18 @@ public class CustomerService {
                 .build();
     }
 
+    public ResponseDTO startCustomerCounseling(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(IllegalAccessError::new);
+        reservation.startCounseling();
+
+        reservationRepository.save(reservation);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("상담을 시작하였습니다.")
+                .build();
+    }
+
     public ResponseDTO completeCustomerReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(IllegalAccessError::new);
         reservation.completeCounseling(User.builder().id(LoginUser.getDetails().getId()).build());
@@ -574,6 +621,24 @@ public class CustomerService {
         return ResponseDTO.builder()
                 .isSuccess(true)
                 .message("저장하였습니다.")
+                .build();
+    }
+
+    public ResponseDTO updateCustomerDetail(ReqReservationUpdateDTO reqReservationUpdateDTO) {
+        Customer customer = customerRepository.findById(reqReservationUpdateDTO.getCustomerId()).orElseThrow(IllegalAccessError::new);
+        if (customer == null) {
+            return ResponseDTO.builder()
+                    .message("잘못된 접근입니다.")
+                    .build();
+        }
+
+        // 고객정보 수정
+        customer.updateCustomerInfoForPopup(reqReservationUpdateDTO);
+        customerRepository.save(customer);
+
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("수정하였습니다.")
                 .build();
     }
 }

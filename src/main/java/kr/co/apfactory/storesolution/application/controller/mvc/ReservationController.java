@@ -5,6 +5,8 @@ import kr.co.apfactory.storesolution.application.service.SiteService;
 import kr.co.apfactory.storesolution.application.service.StoreService;
 import kr.co.apfactory.storesolution.application.service.UserService;
 import kr.co.apfactory.storesolution.domain.dto.common.SearchDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerPaymentListDTO;
+import kr.co.apfactory.storesolution.domain.dto.response.ResCustomerPurchaseListDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEnvironmentUpdateDTO;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -48,11 +52,26 @@ public class ReservationController {
     }
 
     @GetMapping("/popup/customer/detail")
-    public String openCustomerDetailPopup(Model model, Long customerId) {
+    public String openCustomerDetailPopup(Model model, Long customerId) throws Exception {
         model.addAttribute("customerInfo", customerService.getCustomerDetailById(customerId));
         model.addAttribute("partnerList", storeService.getConsultingPartnerList());
-        model.addAttribute("purchaseList", customerService.getCustomerPurchaseList(customerId));
-        model.addAttribute("paymentList", customerService.getCustomerPaymentList(customerId));
+        List<ResCustomerPurchaseListDTO> purchaseList = customerService.getCustomerPurchaseList(customerId);
+        model.addAttribute("purchaseList", purchaseList);
+        List<ResCustomerPaymentListDTO> paymentList = customerService.getCustomerPaymentList(customerId);
+        model.addAttribute("paymentList", paymentList);
+
+        BigDecimal totalPurchase = BigDecimal.ZERO;
+        for (ResCustomerPurchaseListDTO dto : purchaseList) {
+            totalPurchase = totalPurchase.add(dto.getPrice());
+        }
+        BigDecimal totalPayment = BigDecimal.ZERO;
+        BigDecimal totalUnpaid = totalPurchase;
+        for (int i = paymentList.size() - 1; i >= 0; i--) {
+            totalUnpaid = totalUnpaid.subtract(paymentList.get(i).getAmount());
+            paymentList.get(i).setOutstanding(totalUnpaid);
+            totalPayment = totalPayment.add(paymentList.get(i).getAmount());
+        }
+        model.addAttribute("totalUnpaid", totalUnpaid);
         model.addAttribute("counselingList", customerService.getCounselingList(customerId));
         model.addAttribute("rentalList", customerService.getCustomerRentalList(customerId));
         model.addAttribute("reservationList", customerService.getCustomerReservationList(customerId, siteService.getSiteEnvironment()));

@@ -7,6 +7,7 @@ import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeListDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResEmployeeScheduleDTO;
 import kr.co.apfactory.storesolution.domain.dto.response.ResMypageDTO;
 import kr.co.apfactory.storesolution.domain.entity.*;
+import kr.co.apfactory.storesolution.domain.repository.ConsultingPartnerPicRepository;
 import kr.co.apfactory.storesolution.domain.repository.ConsultingPartnerRepository;
 import kr.co.apfactory.storesolution.domain.repository.UserLoginHistoryRepository;
 import kr.co.apfactory.storesolution.domain.repository.UserRepository;
@@ -36,6 +37,7 @@ public class UserService {
     private final UserLoginHistoryRepository userLoginHistoryRepository;
 
     private final ConsultingPartnerRepository consultingPartnerRepository;
+    private final ConsultingPartnerPicRepository consultingPartnerPicRepository;
 
     public void saveLoginHistory() {
         userLoginHistoryRepository.save(UserLoginHistory.builder()
@@ -208,5 +210,13 @@ public class UserService {
                 .build();
     }
 
+    public ResponseDTO registerConsultingPartnerPic(ReqConsultingPartnerPicDTO dto) {
+        ConsultingPartnerPic consultingPartnerPic = dto.toConsultingPartnerPicEntity();
+        consultingPartnerPicRepository.save(consultingPartnerPic);
 
+        return ResponseDTO.builder()
+                .isSuccess(true)
+                .message("담당자를 등록하였습니다.")
+                .build();
+    }
 }

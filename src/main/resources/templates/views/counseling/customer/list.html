@@ -30,13 +30,17 @@
                 margin-right: 20px;        /* 항목 간 간격 */
                 cursor: pointer;           /* 클릭 영역 손가락 모양 */
             }
+
+            .container {
+                top: 100px !important;
+            }
         </style>
 
-        <div class="section_wrap fabric-4">
+        <div class="section_wrap fabric-4" style="padding: 15px 20px !important;">
             <h2 class="title">고객검색</h2>
-            <form action="/counseling/customer/list" method="get" class="search_form" onsubmit="return checkDateInput()">
+            <form action="/counseling/customer/list" method="get" class="search_form" onsubmit="return checkDateInput()" style="padding: 10px 20px;">
                 <div class="boxStyle_2 flex align-center column">
-                    <div class="line align-center">
+                    <div class="line align-center" style="padding-top: 0px !important; margin-bottom: 0px !important;">
                         <div class="box other_box">
                             <h2 class="name">상세검색</h2>
                             <select th:field="*{searchDTO.searchCondition}">
@@ -73,11 +77,9 @@
                     </div>
                     <div class="btn_wrap flex-end">
                         <button type="submit" class="search_frame">
-<!--                            <span class="search"></span>-->
                             <span class="search">검색</span>
                         </button>
                         <button type="button" class="reset_frame" onclick="resetSearchForm();">
-<!--                            <span class="init"></span>-->
                             <span class="reset"></span>
                             <span>초기화</span>
                         </button>
@@ -107,7 +109,7 @@
             </script>
         </div>
 
-        <div class="section_wrap listPage mt-30px">
+        <div class="section_wrap listPage mt-15px" style="padding: 15px 20px !important;">
             <div class="flex align-center between">
                 <h2 class="title">고객예약목록</h2>
                 <div class="flex flex-end middle-icon-line">
@@ -154,7 +156,7 @@
                 </tr>
                 <tr class="gotoDetail" th:each="item, index : ${itemList}" th:data-id="${item.reservationId}" th:data-completed="${item.completed}">
                     <td th:text="${item.name1}"></td>
-                    <td th:text="${item.mobile1}"></td>
+                    <td th:text="${@stringParser.addDashToMobileNumber(item.mobile1)}"></td>
                     <td th:text="${item.photoDate}"></td>
                     <td th:text="${item.photoPlace}"></td>
                     <td th:text="${item.weddingDate}"></td>

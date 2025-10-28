@@ -460,6 +460,7 @@ public class CounselingSupportRepositoryImpl implements CounselingSupportReposit
         QCounselingCommon counselingCommon = QCounselingCommon.counselingCommon;
         QReservation reservation = QReservation.reservation;
         QCustomer customer = QCustomer.customer;
+        QTempOrderCommon tempOrderCommon = QTempOrderCommon.tempOrderCommon;
         QOrderCommon orderCommon = QOrderCommon.orderCommon;
 
         List<ResCounselingDTO> results = queryFactory.select(
@@ -484,16 +485,24 @@ public class CounselingSupportRepositoryImpl implements CounselingSupportReposit
                                 , counselingCommon.fabricCompanyCoat
                                 , counselingCommon.fabricPatternCoat
                                 , counselingCommon.fabricColorCoat
+                                , tempOrderCommon.ordering.coalesce(false).as("ordering")
                                 , orderCommon.id.as("orderCommonId")
                                 , orderCommon.orderingDate
+                                , orderCommon.deliveryReleaseDate
                         )
                 )
                 .from(counselingCommon)
                 .innerJoin(reservation).on(counselingCommon.reservation.eq(reservation).and(reservation.deleted.isFalse()))
                 .innerJoin(customer).on(reservation.customer.eq(customer).and(customer.id.eq(customerId)))
-                .leftJoin(orderCommon).on(counselingCommon.orderCommon.eq(orderCommon))
+                .innerJoin(tempOrderCommon).on(counselingCommon.eq(tempOrderCommon.counselingCommon))
+                .leftJoin(orderCommon).on(tempOrderCommon.orderCommon.eq(orderCommon))
                 .where(
                         counselingCommon.canceled.isFalse()
+                                .and(orderCommon.id.isNull()
+                                        .or(orderCommon.id.isNotNull()
+                                                .and(orderCommon.canceled.isFalse())
+                                        )
+                                )
                 )
                 .orderBy()
                 .fetch();

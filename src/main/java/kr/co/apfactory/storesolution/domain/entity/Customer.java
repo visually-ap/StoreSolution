@@ -36,6 +36,10 @@ public class Customer extends BaseEntity {
     @Comment("컨설팅 업체 시퀀스")
     private ConsultingPartner consultingPartner;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @Comment("컨설팅 업체 담당자 시퀀스")
+    private ConsultingPartnerPic consultingPartnerPic;
+
     @Column(columnDefinition = "boolean default false", nullable = false)
     @Comment("삭제 여부 (true : 삭제, false : 미삭제)")
     private Boolean deleted;
@@ -92,7 +96,22 @@ public class Customer extends BaseEntity {
         this.memo = dto.getMemo();
     }
 
+    public void updateCustomerInfoForPopup(ReqReservationUpdateDTO dto) {
+        this.name1 = dto.getName1();
+        this.mobile1 = dto.getMobile1();
+        this.name2 = dto.getName2();
+        this.mobile2 = dto.getMobile2();
+        this.photoDate = dto.getPhotoDate();
+        this.photoPlace = dto.getPhotoPlace();
+        this.weddingDate = dto.getWeddingDate();
+        this.weddingPlace = dto.getWeddingPlace();
+    }
+
     public void updateConsultingPartner(ConsultingPartner consultingPartner) {
         this.consultingPartner = consultingPartner;
+    }
+
+    public void updateConsultingPartnerPic(ConsultingPartnerPic consultingPartnerPic) {
+        this.consultingPartnerPic = consultingPartnerPic;
     }
 }

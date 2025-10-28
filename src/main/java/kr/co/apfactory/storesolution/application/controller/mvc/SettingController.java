@@ -83,7 +83,14 @@ public class SettingController {
     @GetMapping("/partner/detail")
     public String gotoConsultingPartnerDetail(Long partnerId, Model model) {
         model.addAttribute("item", storeService.getConsultingPartnerDetail(partnerId));
+        model.addAttribute("picList", storeService.getConsultingPartnerPicList(partnerId));
         return "views/setting/partner/detail";
+    }
+
+    @GetMapping("/partner/pic/register")
+    public String gotoConsultingPartnerPicRegister(Long partnerId, Model model) {
+        model.addAttribute("partnerId", partnerId);
+        return "views/setting/partner/registerPic";
     }
 
     @GetMapping("/rental/list")

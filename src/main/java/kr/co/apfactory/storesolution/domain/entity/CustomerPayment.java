@@ -71,7 +71,6 @@ public class CustomerPayment extends BaseEntity {
         this.pic = dto.getPaymentPic();
         this.method = dto.getPaymentMethod();
         this.amount = dto.getPaymentAmount();
-        this.outstanding = dto.getPaymentOutstanding();
         this.memo = dto.getPaymentMemo();
     }
 

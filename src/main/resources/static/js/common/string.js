@@ -34,3 +34,21 @@ function addDashToMobileNumber(mobileNumber) {
     }
     return buffer;
 }
+
+// 숫자만 남기기 (음수/소수점 허용)
+function removeComma(v) {
+    return (v || '')
+        .replace(/[^\d.-]/g, '')     // 숫자, -, . 이외 제거
+        .replace(/(?!^)-/g, '')      // 맨 앞 외의 - 제거
+        .replace(/(\..*)\./g, '$1'); // 소수점 1개만 허용
+}
+
+// 1000단위 콤마 넣기
+function addComma(v) {
+    if (v === '' || v === '-' || v === '.' || v === '-.') return v;
+    const sign = v.startsWith('-') ? '-' : '';
+    v = v.replace(/^-/, '');
+    const parts = v.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return sign + parts.join('.');
+}

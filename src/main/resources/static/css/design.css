@@ -102,7 +102,7 @@
     border: 1px solid #ddd;
     border-radius: 20px;
     overflow: hidden;
-    padding: 20px;
+    padding: 20px 13px;
     box-sizing: border-box;
     background: #fff;
     height: 500px;
@@ -110,8 +110,10 @@
 }
 
 .img-frame.selectedImage {
-    border-color: #1e6ceb;
-    border-width: 3px;
+    /*border-color: #1e6ceb;*/
+    /*border-width: 1px;*/
+    outline: 3px solid #1e6ceb;
+    outline-offset: 0px;
 }
 
 .img-frame img {

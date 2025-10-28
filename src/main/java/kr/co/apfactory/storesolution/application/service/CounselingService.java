@@ -72,6 +72,13 @@ public class CounselingService {
                     .build();
         }
 
+        Reservation reservation = counselingCommon.getReservation();
+        if (reservation.getCompleted()) {
+            return ResponseDTO.builder()
+                    .message("이미 완료 처리한 상담입니다.\n목록으로 돌아갑니다.")
+                    .build();
+        }
+
         counselingCommon.updateFabricData(reqFabricSaveDTO);
 
         counselingCommonRepository.save(counselingCommon);
@@ -102,6 +109,13 @@ public class CounselingService {
         if (counselingCommon == null) {
             return ResponseDTO.builder()
                     .message("잘못된 접근입니다.")
+                    .build();
+        }
+
+        Reservation reservation = counselingCommon.getReservation();
+        if (reservation.getCompleted()) {
+            return ResponseDTO.builder()
+                    .message("이미 완료 처리한 상담입니다.\n목록으로 돌아갑니다.")
                     .build();
         }
 
@@ -150,6 +164,13 @@ public class CounselingService {
                     .build();
         }
 
+        Reservation reservation = counselingCommon.getReservation();
+        if (reservation.getCompleted()) {
+            return ResponseDTO.builder()
+                    .message("이미 완료 처리한 상담입니다.\n목록으로 돌아갑니다.")
+                    .build();
+        }
+
         CounselingJacket jacket = counselingJacketRepository.findByCounselingCommonId(counselingCommon.getId());
         jacket.updateSizeData(reqSizeSaveDTO);
         counselingJacketRepository.save(jacket);
@@ -173,9 +194,7 @@ public class CounselingService {
     }
 
     public ResponseDTO completeCounseling(Long reservationId) {
-        CounselingCommon counselingCommon = counselingCommonRepository
-                .findByStoreIdAndReservationId(LoginUser.getDetails().getStoreId(), reservationId);
-
+        CounselingCommon counselingCommon = counselingCommonRepository.findByStoreIdAndReservationId(LoginUser.getDetails().getStoreId(), reservationId);
         if (counselingCommon == null) {
             return ResponseDTO.builder()
                     .message("잘못된 접근입니다.")
@@ -190,16 +209,22 @@ public class CounselingService {
         }
 
         Reservation reservation = counselingCommon.getReservation();
+        if (reservation.getCompleted()) {
+            return ResponseDTO.builder()
+                    .message("이미 상담완료 하였습니다.\n목록으로 돌아갑니다.")
+                    .build();
+        }
+
         reservation.completeCounseling(User.builder().id(LoginUser.getDetails().getId()).build());
         reservationRepository.save(reservation);
 
         // 기타 처리 제외
-        if (counselingCommon.getFactory() == 3) {
-            return ResponseDTO.builder()
-                    .isSuccess(true)
-                    .message("상담완료 처리를 하였습니다.")
-                    .build();
-        }
+//        if (counselingCommon.getFactory() == 3) {
+//            return ResponseDTO.builder()
+//                    .isSuccess(true)
+//                    .message("상담완료 처리를 하였습니다.")
+//                    .build();
+//        }
 
         Customer customer = reservation.getCustomer();
         User pic = reservation.getConsultingManager();
@@ -225,20 +250,19 @@ public class CounselingService {
             for (Map.Entry<String, List<String>> entry : fabricGroups.entrySet()) {
                 List<String> parts = entry.getValue();
 
-                TempOrderCommon orderCommon = createTempOrderCommon(counselingCommon, customer);
-                orderCommon = TempOrderCommon.builder()
-                        .store(orderCommon.getStore())
-                        .canceled(false)
+                TempOrderCommon orderCommon = TempOrderCommon.builder()
+                        .store(counselingCommon.getStore())
                         .orderParts(parts.contains("coat") ? 2 : 1)
-                        .nation(orderCommon.getNation())
-                        .workType(orderCommon.getWorkType())
-                        .paymentsRequest(orderCommon.getPaymentsRequest())
-                        .customerName(orderCommon.getCustomerName())
-                        .customerMobile(orderCommon.getCustomerMobile())
+                        .nation(counselingCommon.getFactory())
+                        .workType(counselingCommon.getWorkType())
+                        .paymentsRequest(CodeType.builder().id(10L).build())
+                        .customerName(customer.getName1())
+                        .customerMobile(customer.getMobile1())
                         .jacket(parts.contains("jacket"))
                         .pants(parts.contains("pants"))
                         .vest(parts.contains("vest"))
                         .coat(parts.contains("coat"))
+                        .counselingCommon(counselingCommon)
                         .build();
 
                 tempOrderCommonRepository.save(orderCommon);
@@ -323,6 +347,7 @@ public class CounselingService {
                 .pants(cc.getPants())
                 .vest(cc.getVest())
                 .coat(cc.getCoat())
+                .counselingCommon(cc)
                 .build();
     }
 

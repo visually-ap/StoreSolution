@@ -35,10 +35,6 @@ public class CounselingCommon extends BaseEntity {
     @Comment("주문 매장")
     private Store store;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @Comment("주문 공통 시퀀스")
-    private OrderCommon orderCommon;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("예약 시퀀스")
     private Reservation reservation;

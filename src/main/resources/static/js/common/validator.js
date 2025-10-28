@@ -2,6 +2,8 @@ $(function () {
     $.validator.setDefaults({
         onkeyup: false,
         onclick: false,
+        ignoreTitle: true,
+        ignore: [],
     });
 
     $.validator.addMethod("regexp", function (value, element, regexp) {
@@ -321,7 +323,7 @@ const validationObject = {
     , rentalItemName: {
         rules : {
             required: true,
-            regexp: "^.{1,10}$",
+            regexp: "^.{1,30}$",
         }
         , message: {
             required: "상품명은 필수 입력 항목입니다.",
@@ -366,10 +368,20 @@ const validationObject = {
     , rentalMemo: {
         rules : {
             required: false,
-            regexp1: "^[\\s\\S]{1,50}$",
+            regexp1: "^[\\s\\S]{1,30}$",
         }
         , message: {
-            regexp1: "비고는 50자 이내로 입력해 주세요.",
+            regexp1: "비고는 30자 이내로 입력해 주세요.",
+        }
+    }
+    , partnerFee: {
+        rules : {
+            required: true,
+            regexp: "^[0-9]{1,2}$",
+        }
+        , message: {
+            required: "수수료율은 필수 입력 항목입니다.",
+            regexp: "수수료율은 2자리 이내의 숫자로 입력해 주세요.",
         }
     }
 }

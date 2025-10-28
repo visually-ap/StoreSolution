@@ -4,15 +4,11 @@ $(function () {
         , {
             paymentDate: validationObject.paymentDate.rules
             , paymentPic: validationObject.paymentPic.rules
-            , paymentAmount: validationObject.paymentAmount.rules
-            , paymentOutstanding: validationObject.paymentOutstanding.rules
             , paymentMemo: validationObject.paymentMemo.rules
         }
         , {
             paymentDate:validationObject.paymentDate.message
             , paymentPic: validationObject.paymentPic.message
-            , paymentAmount: validationObject.paymentAmount.message
-            , paymentOutstanding: validationObject.paymentOutstanding.message
             , paymentMemo: validationObject.paymentMemo.message
         }
         , function (form) {
@@ -48,8 +44,8 @@ function initCustomerPaymentInfo() {
     $('#paymentType').val(0);
     $('#paymentPic').val('');
     $('#paymentMethod').val(0);
+    $('#paymentAmountView').val('');
     $('#paymentAmount').val('');
-    $('#paymentOutstanding').val('');
     $('#paymentMemo').val('');
 }
 
@@ -59,8 +55,8 @@ function setCustomerPaymentInfo(data) {
     $('#paymentType').val(data.type);
     $('#paymentPic').val(data.pic);
     $('#paymentMethod').val(data.method);
+    $('#paymentAmountView').val(addComma(data.amount.toString()));
     $('#paymentAmount').val(data.amount);
-    $('#paymentOutstanding').val(data.outstanding);
     $('#paymentMemo').val(data.memo);
 }
 
@@ -76,7 +72,7 @@ $(document).on('click', '.paymentDetail', function() {
         , function (response) {
             if (response.success) {
                 openModal('#paymentModal', initCustomerPaymentInfo);
-                setCustomerPaymentInfo(response.result)
+                setCustomerPaymentInfo(response.result);
                 $('#paymentModalRegisterButton').hide();
                 $('#paymentModalUpdateButton').show();
             } else {
@@ -127,4 +123,26 @@ $(document).on('click', '.paymentDeleteButton', function (e) {
             location.reload();
         }
     );
+});
+
+$(document).on('focus', '#paymentAmountView', function () {
+    const inputtedValue = $(this).val();
+    $(this).val(inputtedValue.replaceAll(',', ''));
+});
+
+$(document).on('blur', '#paymentAmountView', function () {
+    const inputValue = $(this).val();
+    if (isEmpty(inputValue)) {
+        return;
+    }
+
+    if (!isValid('^[0-9]{1,8}$', inputValue)) {
+        alert($(this).data('msg'));
+        $(this).val('')
+        $(this).focus();
+        return;
+    }
+
+    $($(this).data('target')).val(inputValue);
+    $(this).val(addComma(inputValue));
 });

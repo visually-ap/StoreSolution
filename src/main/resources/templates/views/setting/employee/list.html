@@ -97,8 +97,7 @@
         </div>
 
         <div class="listPage_btn btn_wrap right">
-            <button id="registerButton" class="btn_2 btnColor_1 registerBtn">등록</button>
-
+            <button id="registerButton" class="btn_2 btnColor_1 registerBtn" th:if="${#authentication.principal.authority == 'ROLE_USER'}">등록</button>
         </div>
 
         <script>

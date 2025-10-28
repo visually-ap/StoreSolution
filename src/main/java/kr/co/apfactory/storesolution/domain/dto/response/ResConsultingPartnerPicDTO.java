@@ -6,18 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResConsultingPartnerDetailDTO {
+public class ResConsultingPartnerPicDTO {
     private Long partnerId;
+    private Long picId;
     private String name;
-    private Integer charge;
-    private String memo;
+    private String contact;
     private LocalDateTime insertDatetime;
-
-    private List<ResConsultingPartnerPicDTO> picList;
 }

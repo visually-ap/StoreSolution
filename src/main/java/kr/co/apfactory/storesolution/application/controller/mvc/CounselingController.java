@@ -38,7 +38,7 @@ public class CounselingController {
     private final CounselingService counselingService;
 
     @GetMapping("/customer/list")
-    public String gotoCustomerList(@PageableDefault(page = 0, size = 5, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable,
+    public String gotoCustomerList(@PageableDefault(page = 0, size = 10, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable,
                                    @ModelAttribute("searchDTO") SearchDTO searchDTO, Model model) {
         model.addAttribute("itemList", customerService.getCustomerList(pageable, searchDTO));
         return "views/counseling/customer/list";

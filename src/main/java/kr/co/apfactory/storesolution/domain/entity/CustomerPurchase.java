@@ -53,6 +53,10 @@ public class CustomerPurchase extends BaseEntity {
     @Comment("구매일")
     private LocalDate purchaseDate;
 
+    @Column(columnDefinition = "tinyint default 0", nullable = false)
+    @Comment("수수료율")
+    private Integer charge;
+
     public void update(ReqCustomerPurchaseDTO dto) {
         this.type = dto.getPurchaseType();
         this.purchaseMemo = dto.getPurchaseMemo();

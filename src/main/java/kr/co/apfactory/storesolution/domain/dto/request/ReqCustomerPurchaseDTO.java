@@ -24,13 +24,14 @@ public class ReqCustomerPurchaseDTO {
     private String purchaseMemo;
     private BigDecimal purchasePrice;
 
-    public CustomerPurchase toCustomerPurchaseEntity(Customer customer) {
+    public CustomerPurchase toCustomerPurchaseEntity(Customer customer, Integer charge) {
         return CustomerPurchase.builder()
                 .customer(customer)
                 .type(this.purchaseType)
                 .purchaseMemo(this.purchaseMemo)
                 .price(this.purchasePrice)
                 .purchaseDate(this.purchaseDate)
+                .charge(charge)
                 .build();
     }
 

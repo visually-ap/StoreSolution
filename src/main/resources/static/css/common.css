@@ -357,6 +357,17 @@ button:hover {
     border: 1px solid #1e6ceb;
 }
 
+.btnColor_4 {
+    border: 1px solid #d1d3d4;
+    background: #fff;
+    color: #939598;
+}
+
+.btnColor_4:hover {
+    background: #b5b5b5;
+    color: #fff;
+}
+
 /*글자 정렬*/
 .t-center {
     text-align: center !important;

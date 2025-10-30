@@ -141,7 +141,9 @@
                 text-align: center;
                 height: 36px;
                 padding: 0;
-                white-space: nowrap;
+                white-space: normal;
+                word-break: break-all;
+                overflow-wrap: break-word;
             }
 
             /* ✅ sticky header */
@@ -245,7 +247,7 @@
                             <input type="hidden" id="reservationId" name="reservationId">
                             <div class="top_line flex between">
                                 <h3 class="title">고객 정보</h3>
-                                <button type="button" class="btnColor_1" id="registerButton" style="display: none;">저장</button>
+<!--                                <button type="button" class="btnColor_1" id="registerButton" style="display: none;">저장</button>-->
                             </div>
                             <div class="inner_bg inner_style_1 column">
                                 <div class="one-line mb-5px">
@@ -383,6 +385,12 @@
                                 <textarea class="textarea" id="memo" name="memo" placeholder="고객 특이사항"></textarea>
                             </div>
                         </form>
+                    </div>
+                    <div class="search_style_1" style="border: none;">
+                        <div class="top_line flex between">
+                            <button type="button" class="btnColor_4" id="listButton" style="display: none;">목록</button>
+                            <button type="button" class="btnColor_1" id="registerButton" style="display: none;">저장</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -523,6 +531,8 @@
 
     let todayString = getToday('YYYY-MM-DD');
     let momentDate = moment(todayString);
+
+    let mySearchKeyword = '';
 
     const fp = standardPickerWithMinDate($('.datepicker'));
     const fp1 = standardPicker($('#reservationModalConsultingDate'));
@@ -794,6 +804,7 @@
         }
 
         getCustomerList(inputValue, '');
+        mySearchKeyword = inputValue;
     });
 
     $(document).on('click', '#initButton', function () {
@@ -813,7 +824,9 @@
                 if (response.success) {
                     setCustomerData(response.result);
 
+                    $('#listButton').show();
                     $('#registerButton').show();
+
                     setReservationText();
 
                     momentDate = moment(response.result.consultingDate);
@@ -907,6 +920,15 @@
         );
     });
 
+    $(document).on('click', '#listButton', function() {
+        initTimeTable('custom-schedule-table');
+        getCustomerList(mySearchKeyword, '');
+        renderTimeTable('custom-schedule-table', todayString);
+        getStatistics(todayString);
+
+        $('#listButton').hide();
+        $('#registerButton').hide();
+    });
     $(document).on('click', '#updateButton', function() {
         if (doubleClick.isDouble()) {
             return;

@@ -816,7 +816,6 @@
     background: #fff;
     color: #939598;
     font-weight: 700;
-
     display: inline-block;
     border-radius: 7px;
     transition: all .3s;
@@ -849,12 +848,12 @@
 }
 
 .scroll-box {
-    height: 62vh;
+    height: 56vh;
     overflow: auto;
 }
 
 .scroll-box_1 {
-    height: 80vh;
+    height: 74vh;
     overflow: auto;
 }
 

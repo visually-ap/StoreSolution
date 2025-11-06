@@ -50,6 +50,42 @@ public class CommonCodeSupportRepositoryImpl implements CommonCodeSupportReposit
     }
 
     @Override
+    public List<ResCodeListDTO> selectCodeList(Long part, List<Long> exceptionCodeIdList) {
+        QCommonCodeParent commonCodeParent = QCommonCodeParent.commonCodeParent;
+        QCommonCodeChild commonCodeChild = QCommonCodeChild.commonCodeChild;
+
+        List<ResCodeListDTO> results = queryFactory
+                .select(Projections.fields(
+                        ResCodeListDTO.class
+                                , commonCodeParent.parentCodeValue
+                                , commonCodeParent.part.id
+                                , commonCodeParent.type.id
+                                , commonCodeChild.codeNameKo.as("codeName")
+                                , commonCodeChild.childCodeValue
+                                , commonCodeChild.showSequence
+                                , commonCodeChild.id
+                                , commonCodeChild.yard
+                                , commonCodeChild.fileAttachStoreSolution.id.as("fileId")
+                        )
+                )
+                .from(commonCodeChild)
+                .leftJoin(commonCodeParent).on(commonCodeChild.parentCode.parentCodeValue.eq(commonCodeParent.parentCodeValue))
+                .orderBy(
+                        commonCodeParent.parentCodeValue.asc()
+                        , commonCodeChild.showSequence.asc()
+                        , commonCodeChild.insertDatetime.asc()
+                )
+                .where(
+                        commonCodeChild.deleted.isFalse()
+                                .and(commonCodeParent.deleted.isFalse())
+                                .and(commonCodeParent.part.id.eq(part))
+                                .and(commonCodeChild.id.notIn(exceptionCodeIdList))
+                ).fetch();
+
+        return results;
+    }
+
+    @Override
     public List<ResCodeListDTO> selectCodeList(Long part) {
         QCommonCodeParent commonCodeParent = QCommonCodeParent.commonCodeParent;
         QCommonCodeChild commonCodeChild = QCommonCodeChild.commonCodeChild;

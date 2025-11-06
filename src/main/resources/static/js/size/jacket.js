@@ -1,3 +1,6 @@
+const CAVAN_JACKET = '33';
+
+
 function initJacketGaugeResultSize() {
     $('#jacketSizeGaugeChest').val('');
     $('#jacketSizeGaugeChestWidth').val('');
@@ -186,14 +189,18 @@ function initJacketPattern() {
 }
 
 
-let beforeJacketSize;
+let beforeJacketPattern;
 $(document).on('focus', '#jacketPattern', function () {
-    beforeJacketSize = $("option:selected", this).val();
+    beforeJacketPattern = $("option:selected", this).val();
 });
 $(document).on('change', '#jacketPattern', function () {
-    if (!isEmpty(beforeJacketSize) && !confirm('상의 패턴 변경 시 게이지복이 초기화됩니다.\n변경 하시겠습니까?')) {
-        $('#jacketPattern').val(beforeJacketSize);
+    if (!isEmpty(beforeJacketPattern) && !confirm('상의 패턴 변경 시 게이지복이 초기화됩니다.\n변경 하시겠습니까?')) {
+        $('#jacketPattern').val(beforeJacketPattern);
         return;
+    }
+
+    if ($("#jacketPattern").val() == CAVAN_JACKET) {
+        alert('카반 자켓 선택 시 어깨, 체크원단, 소매단추, 소매, 추가옵션을 제외한 다른 디자인은 수정할 수 없습니다.');
     }
 
     // 게이지복 초기화

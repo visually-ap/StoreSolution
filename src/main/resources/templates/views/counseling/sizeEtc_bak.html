@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/defaultLayout :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <!-- 개별 css -->
+        <link rel="stylesheet" th:href="@{/css/size.css}">
+
+        <script th:src="@{/js/size/common.js}"></script>
+
+        <style>
+            .pattern_gauge_select {
+                text-align: center;
+            }
+        </style>
+
+        <form id="dataForm">
+            <input type="hidden" name="reservationId" th:value="${counseling.reservationId}">
+            <input type="hidden" id="isJacket" th:value="${counseling.jacket}">
+            <input type="hidden" id="isPants" th:value="${counseling.pants}">
+            <input type="hidden" id="pantsPattern" th:value="${pants.pantsPattern}">
+            <input type="hidden" id="isVest" th:value="${counseling.vest}">
+            <input type="hidden" id="vestPattern" th:value="${vest.vestPattern}">
+            <input type="hidden" id="isCoat" th:value="${counseling.coat}">
+
+            <div class="section_wrap mb-20px">
+                <div class="size_input_wrap">
+                    <ul class="sizeTabs flex align-center flex-center">
+                        <li class="tab-link partsTab" data-parts="tab-jacket" th:if="${counseling.jacket}">Jacket</li>
+                        <li class="tab-link partsTab" data-parts="tab-pants" th:if="${counseling.pants}">Pants</li>
+                        <li class="tab-link partsTab" data-parts="tab-vest" th:if="${counseling.vest}">Vest</li>
+                        <li class="tab-link partsTab" data-parts="tab-coat" th:if="${counseling.coat}">Coat</li>
+                    </ul>
+
+                    <div id="tab-jacket" class="size-tab-content sizeTab">
+                        <div class="flex size_article_wrap warp_center">
+                            <div class="flex between sizeOuter-wrap">
+                                <div class="size_inputNumber_wrap">
+                                    <input type="hidden" name="jacketPattern" th:value="${jacket.jacketPattern}">
+                                    <input type="hidden" name="jacketGauge" th:value="${jacket.jacketGauge}">
+                                    <div class="size-title">
+                                        <span>Size</span>
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name"></span>
+                                            <div class="value title">실측 Size</div>
+                                            <div class="value" style="background-color: #1e6ceb !important; color: #ffffff !important;">
+                                                <div class="value_1">완성</div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchChest" name="jacketSizeRealInchChest" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchChest == 0 ? '' : jacket.jacketSizeRealInchChest}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiChest" name="jacketSizeRealCentiChest" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiChest == 0 ? '' : jacket.jacketSizeRealCentiChest}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditChest" name="jacketSizeEditChest" autocomplete="off" th:value="${jacket.jacketSizeEditChest == 0 ? '' : jacket.jacketSizeEditChest}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상앞품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchChestWidth" name="jacketSizeRealInchChestWidth" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchChestWidth == 0 ? '' : jacket.jacketSizeRealInchChestWidth}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiChestWidth" name="jacketSizeRealCentiChestWidth" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiChestWidth == 0 ? '' : jacket.jacketSizeRealCentiChestWidth}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditChestWidth" name="jacketSizeEditChestWidth" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditChestWidth == 0 ? '' : jacket.jacketSizeEditChestWidth}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상사이바</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchUpperSideBody" name="jacketSizeRealInchUpperSideBody" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchUpperSideBody == 0 ? '' : jacket.jacketSizeRealInchUpperSideBody}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiUpperSideBody" name="jacketSizeRealCentiUpperSideBody" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiUpperSideBody == 0 ? '' : jacket.jacketSizeRealCentiUpperSideBody}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditUpperSideBody" name="jacketSizeEditUpperSideBody" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditUpperSideBody == 0 ? '' : jacket.jacketSizeEditUpperSideBody}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상뒷품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchBackWidth" name="jacketSizeRealInchBackWidth" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchBackWidth == 0 ? '' : jacket.jacketSizeRealInchBackWidth}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiBackWidth" name="jacketSizeRealCentiBackWidth" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiBackWidth == 0 ? '' : jacket.jacketSizeRealCentiBackWidth}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditBackWidth" name="jacketSizeEditBackWidth" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditBackWidth == 0 ? '' : jacket.jacketSizeEditBackWidth}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchWaist" name="jacketSizeRealInchWaist" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchWaist == 0 ? '' : jacket.jacketSizeRealInchWaist}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiWaist" name="jacketSizeRealCentiWaist" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiWaist == 0 ? '' : jacket.jacketSizeRealCentiWaist}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditWaist" name="jacketSizeEditWaist" autocomplete="off" th:value="${jacket.jacketSizeEditWaist == 0 ? '' : jacket.jacketSizeEditWaist}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중앞품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchWaistFront" name="jacketSizeRealInchWaistFront" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchWaistFront == 0 ? '' : jacket.jacketSizeRealInchWaistFront}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiWaistFront" name="jacketSizeRealCentiWaistFront" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiWaistFront == 0 ? '' : jacket.jacketSizeRealCentiWaistFront}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditWaistFront" name="jacketSizeEditWaistFront" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditWaistFront == 0 ? '' : jacket.jacketSizeEditWaistFront}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중사이바</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchMiddleSideBody" name="jacketSizeRealInchMiddleSideBody" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchMiddleSideBody == 0 ? '' : jacket.jacketSizeRealInchMiddleSideBody}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiMiddleSideBody" name="jacketSizeRealCentiMiddleSideBody" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiMiddleSideBody == 0 ? '' : jacket.jacketSizeRealCentiMiddleSideBody}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditMiddleSideBody" name="jacketSizeEditMiddleSideBody" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditMiddleSideBody == 0 ? '' : jacket.jacketSizeEditMiddleSideBody}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중뒷품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchWaistBack" name="jacketSizeRealInchWaistBack" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchWaistBack == 0 ? '' : jacket.jacketSizeRealInchWaistBack}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiWaistBack" name="jacketSizeRealCentiWaistBack" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiWaistBack == 0 ? '' : jacket.jacketSizeRealCentiWaistBack}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditWaistBack" name="jacketSizeEditWaistBack" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditWaistBack == 0 ? '' : jacket.jacketSizeEditWaistBack}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">어깨</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchShoulder" name="jacketSizeRealInchShoulder" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchShoulder == 0 ? '' : jacket.jacketSizeRealInchShoulder}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiShoulder" name="jacketSizeRealCentiShoulder" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiShoulder == 0 ? '' : jacket.jacketSizeRealCentiShoulder}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditShoulder" name="jacketSizeEditShoulder" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditShoulder == 0 ? '' : jacket.jacketSizeEditShoulder}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">소매(좌)</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchLeftSleeve" name="jacketSizeRealInchLeftSleeve" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchLeftSleeve == 0 ? '' : jacket.jacketSizeRealInchLeftSleeve}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiLeftSleeve" name="jacketSizeRealCentiLeftSleeve" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiLeftSleeve == 0 ? '' : jacket.jacketSizeRealCentiLeftSleeve}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditLeftSleeve" name="jacketSizeEditLeftSleeve" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditLeftSleeve == 0 ? '' : jacket.jacketSizeEditLeftSleeve}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">소매(우)</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchRightSleeve" name="jacketSizeRealInchRightSleeve" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchRightSleeve == 0 ? '' : jacket.jacketSizeRealInchRightSleeve}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiRightSleeve" name="jacketSizeRealCentiRightSleeve" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiRightSleeve == 0 ? '' : jacket.jacketSizeRealCentiRightSleeve}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditRightSleeve" name="jacketSizeEditRightSleeve" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditRightSleeve == 0 ? '' : jacket.jacketSizeEditRightSleeve}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchBackLength" name="jacketSizeRealInchBackLength" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchBackLength == 0 ? '' : jacket.jacketSizeRealInchBackLength}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiBackLength" name="jacketSizeRealCentiBackLength" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiBackLength == 0 ? '' : jacket.jacketSizeRealCentiBackLength}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditBackLength" name="jacketSizeEditBackLength" autocomplete="off" maxlength="5" th:value="${jacket.jacketSizeEditBackLength == 0 ? '' : jacket.jacketSizeEditBackLength}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">앞기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="jacketSizeRealInchFrontLength" name="jacketSizeRealInchFrontLength" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealInchFrontLength == 0 ? '' : jacket.jacketSizeRealInchFrontLength}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="jacketSizeRealCentiFrontLength" name="jacketSizeRealCentiFrontLength" maxlength="5" autocomplete="off" th:value="${jacket.jacketSizeRealCentiFrontLength == 0 ? '' : jacket.jacketSizeRealCentiFrontLength}" tabindex="2">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="jacketSizeEditInput" id="jacketSizeEditFrontLength" name="jacketSizeEditFrontLength" autocomplete="off" th:value="${jacket.jacketSizeEditFrontLength == 0 ? '' : jacket.jacketSizeEditFrontLength}" tabindex="3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex column size_inputImg_wrap" style="display: none;">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Body Shape</span>
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name">굴신</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeFrontRound" id="jacketSizeFrontRound">
+                                                    <option value="0" th:selected="${jacket.jacketSizeFrontRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeFrontRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeFrontRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeFrontRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeFrontRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">반신</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeBackRound" id="jacketSizeBackRound">
+                                                    <option value="0" th:selected="${jacket.jacketSizeBackRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeBackRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeBackRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeBackRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeBackRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">견도</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeShoulderSlope" id="jacketSizeShoulderSlope">
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeShoulderSlope == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeShoulderSlope == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeShoulderSlope == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeShoulderSlope == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeShoulderSlope == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeShoulderSlope == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeShoulderSlope == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeShoulderSlope == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">뒷고대</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeBackNeckline" id="jacketSizeBackNeckline">
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeBackNeckline == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeBackNeckline == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeBackNeckline == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeBackNeckline == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeBackNeckline == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeBackNeckline == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeBackNeckline == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷목점 이동</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeBackNeckPointMove" id="jacketSizeBackNeckPointMove">
+                                                    <option value="0" th:selected="${jacket.jacketSizeBackNeckPointMove == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeBackNeckPointMove == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeBackNeckPointMove == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeBackNeckPointMove == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeBackNeckPointMove == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">목둘레</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeNeckRound" id="jacketSizeNeckRound">
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeNeckRound == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeNeckRound == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeNeckRound == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeNeckRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeNeckRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeNeckRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeNeckRound == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상박</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeUpperArm" id="jacketSizeUpperArm">
+                                                    <option value="-2" th:selected="${jacket.jacketSizeUpperArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeUpperArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeUpperArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeUpperArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeUpperArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeUpperArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeUpperArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeUpperArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeUpperArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">중박</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeMiddleArm" id="jacketSizeMiddleArm">
+                                                    <option value="-2" th:selected="${jacket.jacketSizeMiddleArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeMiddleArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeMiddleArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeMiddleArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeMiddleArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeMiddleArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeMiddleArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeMiddleArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeMiddleArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">하박</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeLowerArm" id="jacketSizeLowerArm">
+                                                    <option value="-2" th:selected="${jacket.jacketSizeLowerArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeLowerArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeLowerArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeLowerArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeLowerArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeLowerArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeLowerArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeLowerArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeLowerArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">앞기장 추가</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeFrontLength" id="jacketSizeFrontLength">
+                                                    <option value="-3" th:selected="${jacket.jacketSizeFrontLength == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeFrontLength == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeFrontLength == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeFrontLength == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeFrontLength == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeFrontLength == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeFrontLength == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeFrontLength == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeFrontLength == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeFrontLength == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeFrontLength == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${jacket.jacketSizeFrontLength == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${jacket.jacketSizeFrontLength == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">첫단추</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeFirstButton" id="jacketSizeFirstButton">
+                                                    <option value="-3" th:selected="${jacket.jacketSizeFirstButton == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeFirstButton == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeFirstButton == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeFirstButton == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeFirstButton == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeFirstButton == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeFirstButton == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeFirstButton == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeFirstButton == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeFirstButton == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeFirstButton == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${jacket.jacketSizeFirstButton == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${jacket.jacketSizeFirstButton == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">도련선</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeHemLine" id="jacketSizeHemLine">
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeHemLine == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeHemLine == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeHemLine == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeHemLine == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeHemLine == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeHemLine == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeHemLine == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeHemLine == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeHemLine == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeHemLine == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${jacket.jacketSizeHemLine == 2.5}">2.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷중심 이동</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeBackCenterMove" id="jacketSizeBackCenterMove">
+                                                    <option value="0" th:selected="${jacket.jacketSizeBackCenterMove == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeBackCenterMove == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeBackCenterMove == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeBackCenterMove == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeBackCenterMove == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${jacket.jacketSizeBackCenterMove == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${jacket.jacketSizeBackCenterMove == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">뒷중심 줄임</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeBackCenterShorten" id="jacketSizeBackCenterShorten">
+                                                    <option value="-3" th:selected="${jacket.jacketSizeBackCenterShorten == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeBackCenterShorten == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeBackCenterShorten == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeBackCenterShorten == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeBackCenterShorten == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeBackCenterShorten == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeBackCenterShorten == 0}">0cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">암홀수정</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeArmHole" id="jacketSizeArmHole" tabindex="51">
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeArmHole == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeArmHole == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeArmHole == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeArmHole == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeArmHole == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeArmHole == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeArmHole == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeArmHole == 1}">1cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">우찌</span>
+                                            <div>
+                                                <select class="jacketSizeEditSelect" name="jacketSizeChestLine" id="jacketSizeChestLine" tabindex="52">
+                                                    <option value="-2.5" th:selected="${jacket.jacketSizeChestLine == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${jacket.jacketSizeChestLine == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${jacket.jacketSizeChestLine == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${jacket.jacketSizeChestLine == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${jacket.jacketSizeChestLine == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${jacket.jacketSizeChestLine == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${jacket.jacketSizeChestLine == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${jacket.jacketSizeChestLine == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${jacket.jacketSizeChestLine == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${jacket.jacketSizeChestLine == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${jacket.jacketSizeChestLine == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${jacket.jacketSizeChestLine == 3}">3cm</option>
+                                                    <option value="3.5" th:selected="${jacket.jacketSizeChestLine == 3.5}">3.5cm</option>
+                                                    <option value="4" th:selected="${jacket.jacketSizeChestLine == 4}">4cm</option>
+                                                    <option value="4.5" th:selected="${jacket.jacketSizeChestLine == 4.5}">4.5cm</option>
+                                                    <option value="5" th:selected="${jacket.jacketSizeChestLine == 5}">5cm</option>
+                                                    <option value="5.5" th:selected="${jacket.jacketSizeChestLine == 5.5}">5.5cm</option>
+                                                    <option value="6" th:selected="${jacket.jacketSizeChestLine == 6}">6cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-pants" class="size-tab-content sizeTab">
+                        <div class="flex size_article_wrap warp_center">
+                            <div class="flex between sizeOuter-wrap">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Size</span>
+                                        <input type="hidden" name="pantsGauge" th:value="${pants.pantsGauge}">
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name"></span>
+                                            <div class="value title">실측 Size</div>
+                                            <div class="value" style="background-color: #1e6ceb !important; color: #ffffff !important;">
+                                                <div class="value_1" style="width: 100% !important;">완성</div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">허리</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchWaist" name="pantsSizeRealInchWaist" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchWaist == 0 ? '' : pants.pantsSizeRealInchWaist}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiWaist" name="pantsSizeRealCentiWaist" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiWaist == 0 ? '' : pants.pantsSizeRealCentiWaist}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditWaist" name="pantsSizeEditWaist" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditWaist == 0 ? '' : pants.pantsSizeEditWaist}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeEditDetailFrontWaist" th:value="${pants.pantsSizeEditDetailFrontWaist}">
+                                                <input type="hidden" name="pantsSizeEditDetailBackWaist" th:value="${pants.pantsSizeEditDetailBackWaist}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">힙</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchHip" name="pantsSizeRealInchHip" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchHip == 0 ? '' : pants.pantsSizeRealInchHip}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiHip" name="pantsSizeRealCentiHip" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiHip == 0 ? '' : pants.pantsSizeRealCentiHip}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditHip" name="pantsSizeEditHip" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditHip == 0 ? '' : pants.pantsSizeEditHip}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeEditDetailFrontHip" th:value="${pants.pantsSizeEditDetailFrontHip}">
+                                                <input type="hidden" name="pantsSizeEditDetailBackHip" th:value="${pants.pantsSizeEditDetailBackHip}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">허벅</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchThigh" name="pantsSizeRealInchThigh" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchThigh == 0 ? '' : pants.pantsSizeRealInchThigh}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiThigh" name="pantsSizeRealCentiThigh" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiThigh == 0 ? '' : pants.pantsSizeRealCentiThigh}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditThigh" name="pantsSizeEditThigh" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditThigh == 0 ? '' : pants.pantsSizeEditThigh}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeEditDetailFrontThigh" th:value="${pants.pantsSizeEditDetailFrontThigh}">
+                                                <input type="hidden" name="pantsSizeEditDetailBackThigh" th:value="${pants.pantsSizeEditDetailBackThigh}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">앞상</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchRise" name="pantsSizeRealInchRise" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchRise == 0 ? '' : pants.pantsSizeRealInchRise}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiRise" name="pantsSizeRealCentiRise" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiRise == 0 ? '' : pants.pantsSizeRealCentiRise}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditRise" name="pantsSizeEditRise" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditRise == 0 ? '' : pants.pantsSizeEditRise}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeDetailFrontRise" th:value="${pants.pantsSizeDetailFrontRise}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷상</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchInseam" name="pantsSizeRealInchInseam" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchInseam == 0 ? '' : pants.pantsSizeRealInchInseam}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiInseam" name="pantsSizeRealCentiInseam" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiInseam == 0 ? '' : pants.pantsSizeRealCentiInseam}">&nbsp;cm
+                                                </div>
+                                                <input type="hidden" name="pantsSizeDetailFrontInseam" th:value="${pants.pantsSizeDetailFrontInseam}">
+                                                <input type="hidden" name="pantsSizeDetailBackInseam" th:value="${pants.pantsSizeDetailBackInseam}">
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditInseam" name="pantsSizeEditInseam" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditInseam == 0 ? '' : pants.pantsSizeEditInseam}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">무릎</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchNee" name="pantsSizeRealInchNee" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchNee == 0 ? '' : pants.pantsSizeRealInchNee}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiNee" name="pantsSizeRealCentiNee" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiNee == 0 ? '' : pants.pantsSizeRealCentiNee}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditNee" name="pantsSizeEditNee" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeEditNee == 0 ? '' : pants.pantsSizeEditNee}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeEditDetailFrontNee" th:value="${pants.pantsSizeEditDetailFrontNee}">
+                                                <input type="hidden" name="pantsSizeEditDetailBackNee" th:value="${pants.pantsSizeEditDetailBackNee}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">부리</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchOpening" name="pantsSizeRealInchOpening" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchOpening == 0 ? '' : pants.pantsSizeRealInchOpening}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiOpening" name="pantsSizeRealCentiOpening" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiOpening == 0 ? '' : pants.pantsSizeRealCentiOpening}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditOpening" name="pantsSizeEditOpening" autocomplete="off" th:value="${pants.pantsSizeEditOpening == 0 ? '' : pants.pantsSizeEditOpening}">
+                                                </div>
+                                                <input type="hidden" name="pantsSizeEditDetailFrontOpening" th:value="${pants.pantsSizeEditDetailFrontOpening}">
+                                                <input type="hidden" name="pantsSizeEditDetailBackOpening" th:value="${pants.pantsSizeEditDetailBackOpening}">
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">총기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="pantsSizeRealInchGarmentLength" name="pantsSizeRealInchGarmentLength" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealInchGarmentLength == 0 ? '' : pants.pantsSizeRealInchGarmentLength}">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="pantsSizeRealCentiGarmentLength" name="pantsSizeRealCentiGarmentLength" maxlength="5" autocomplete="off" th:value="${pants.pantsSizeRealCentiGarmentLength == 0 ? '' : pants.pantsSizeRealCentiGarmentLength}">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="pantsSizeEditInput" id="pantsSizeEditGarmentLength" name="pantsSizeEditGarmentLength" autocomplete="off" th:value="${pants.pantsSizeEditGarmentLength == 0 ? '' : pants.pantsSizeEditGarmentLength}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex column size_inputImg_wrap1" style="display: none;">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Body Shape</span>
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name">굴신</span>
+                                            <div>
+                                                <select class="pantsSizeEditSelect" name="pantsFrontRound" id="pantsFrontRound">
+                                                    <option value="0" th:selected="${pants.pantsFrontRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${pants.pantsFrontRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${pants.pantsFrontRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${pants.pantsFrontRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${pants.pantsFrontRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">반신</span>
+                                            <div>
+                                                <select class="pantsSizeEditSelect" name="pantsBackRound" id="pantsBackRound">
+                                                    <option value="0" th:selected="${pants.pantsBackRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${pants.pantsBackRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${pants.pantsBackRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${pants.pantsBackRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${pants.pantsBackRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">O자</span>
+                                            <div>
+                                                <select class="pantsSizeEditSelect" name="pantsO" id="pantsO">
+                                                    <option value="0" th:selected="${pants.pantsO == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${pants.pantsO == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${pants.pantsO == 1}">1cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-vest" class="size-tab-content sizeTab">
+                        <div class="flex size_article_wrap warp_center">
+                            <div class="flex between sizeOuter-wrap">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Size</span>
+                                        <input type="hidden" name="vestGauge" th:value="${vest.vestGauge}">
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name"></span>
+                                            <div class="value title">실측 Size</div>
+                                            <div class="value" style="background-color: #1e6ceb !important; color: #ffffff !important;">
+                                                <div class="value_1">완성</div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="vestSizeRealInchBackLength" name="vestSizeRealInchBackLength" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealInchBackLength() == 0 ? '' : vest.getVestSizeRealInchBackLength}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="vestSizeRealCentiBackLength" name="vestSizeRealCentiBackLength" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealCentiBackLength() == 0 ? '' : vest.getVestSizeRealCentiBackLength}" tabindex="4">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="vestSizeEditInput" id="vestSizeEditBackLength" name="vestSizeEditBackLength" autocomplete="off" maxlength="5" th:value="${vest.vestSizeEditBackLength == 0 ? '' : vest.vestSizeEditBackLength}" tabindex="7">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="vestSizeRealInchChest" name="vestSizeRealInchChest" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealInchChest() == 0 ? '' : vest.getVestSizeRealInchChest}" tabindex="2">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="vestSizeRealCentiChest" name="vestSizeRealCentiChest" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealCentiChest() == 0 ? '' : vest.getVestSizeRealCentiChest}" tabindex="5">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="vestSizeEditInput" id="vestSizeEditChest" name="vestSizeEditChest" autocomplete="off" maxlength="5" th:value="${vest.vestSizeEditChest == 0 ? '' : vest.vestSizeEditChest}" tabindex="8">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="vestSizeRealInchWaist" name="vestSizeRealInchWaist" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealInchWaist() == 0 ? '' : vest.getVestSizeRealInchWaist}" tabindex="3">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="vestSizeRealCentiWaist" name="vestSizeRealCentiWaist" maxlength="5" autocomplete="off" th:value="${vest.getVestSizeRealCentiWaist() == 0 ? '' : vest.getVestSizeRealCentiWaist}" tabindex="6">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="vestSizeEditInput" id="vestSizeEditWaist" name="vestSizeEditWaist" autocomplete="off" maxlength="5" th:value="${vest.vestSizeEditWaist == 0 ? '' : vest.vestSizeEditWaist}" tabindex="9">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex column size_inputImg_wrap" style="display: none;">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Body Shape</span>
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name">굴신</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeFrontRound" id="vestSizeFrontRound" tabindex="10">
+                                                    <option value="0" th:selected="${vest.vestSizeFrontRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeFrontRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeFrontRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeFrontRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeFrontRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">반신</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeBackRound" id="vestSizeBackRound" tabindex="11">
+                                                    <option value="0" th:selected="${vest.vestSizeBackRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeBackRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeBackRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeBackRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeBackRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">견도</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeShoulderSlope" id="vestSizeShoulderSlope" tabindex="12">
+                                                    <option value="-1.5" th:selected="${vest.vestSizeShoulderSlope == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeShoulderSlope == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeShoulderSlope == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeShoulderSlope == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeShoulderSlope == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeShoulderSlope == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeShoulderSlope == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeShoulderSlope == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">뒷고대</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeBackNeckline" id="vestSizeBackNeckline" tabindex="13">
+                                                    <option value="-1.5" th:selected="${vest.vestSizeBackNeckline == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeBackNeckline == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeBackNeckline == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeBackNeckline == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeBackNeckline == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeBackNeckline == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeBackNeckline == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷목점 이동</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeBackNeckPointMove" id="vestSizeBackNeckPointMove" tabindex="14">
+                                                    <option value="0" th:selected="${vest.vestSizeBackNeckPointMove == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeBackNeckPointMove == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeBackNeckPointMove == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeBackNeckPointMove == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeBackNeckPointMove == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">목둘레</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeNeckRound" id="vestSizeNeckRound" tabindex="15">
+                                                    <option value="-1.5" th:selected="${vest.vestSizeNeckRound == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeNeckRound == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeNeckRound == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeNeckRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeNeckRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeNeckRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeNeckRound == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">우찌</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeChestLine" id="vestSizeChestLine" tabindex="16">
+                                                    <option value="-2.5" th:selected="${vest.vestSizeChestLine == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${vest.vestSizeChestLine == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${vest.vestSizeChestLine == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeChestLine == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeChestLine == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeChestLine == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeChestLine == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeChestLine == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeChestLine == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeChestLine == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${vest.vestSizeChestLine == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${vest.vestSizeChestLine == 3}">3cm</option>
+                                                    <option value="3.5" th:selected="${vest.vestSizeChestLine == 3.5}">3.5cm</option>
+                                                    <option value="4" th:selected="${vest.vestSizeChestLine == 4}">4cm</option>
+                                                    <option value="4.5" th:selected="${vest.vestSizeChestLine == 4.5}">4.5cm</option>
+                                                    <option value="5" th:selected="${vest.vestSizeChestLine == 5}">5cm</option>
+                                                    <option value="5.5" th:selected="${vest.vestSizeChestLine == 5.5}">5.5cm</option>
+                                                    <option value="6" th:selected="${vest.vestSizeChestLine == 6}">6cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">역V존</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeReverseZone" id="vestSizeReverseZone" tabindex="17">
+                                                    <option value="-3" th:selected="${vest.vestSizeReverseZone == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${vest.vestSizeReverseZone == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${vest.vestSizeReverseZone == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${vest.vestSizeReverseZone == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeReverseZone == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeReverseZone == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeReverseZone == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeReverseZone == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeReverseZone == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeReverseZone == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeReverseZone == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${vest.vestSizeReverseZone == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${vest.vestSizeReverseZone == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">앞기장 추가</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeFrontLength" id="vestSizeFrontLength" tabindex="18">
+                                                    <option value="-3" th:selected="${vest.vestSizeFrontLength == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${vest.vestSizeFrontLength == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${vest.vestSizeFrontLength == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${vest.vestSizeFrontLength == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeFrontLength == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeFrontLength == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeFrontLength == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeFrontLength == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeFrontLength == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeFrontLength == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeFrontLength == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${vest.vestSizeFrontLength == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${vest.vestSizeFrontLength == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">첫단추</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeFirstButton" id="vestSizeFirstButton" tabindex="19">
+                                                    <option value="-3" th:selected="${vest.vestSizeFirstButton == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${vest.vestSizeFirstButton == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${vest.vestSizeFirstButton == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${vest.vestSizeFirstButton == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeFirstButton == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeFirstButton == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeFirstButton == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeFirstButton == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeFirstButton == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${vest.vestSizeFirstButton == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${vest.vestSizeFirstButton == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">암홀수정</span>
+                                            <div>
+                                                <select class="vestSizeEditSelect" name="vestSizeArmHole" id="vestSizeArmHole" tabindex="20">
+                                                    <option value="-2.5" th:selected="${vest.vestSizeArmHole == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${vest.vestSizeArmHole == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${vest.vestSizeArmHole == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${vest.vestSizeArmHole == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${vest.vestSizeArmHole == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${vest.vestSizeArmHole == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${vest.vestSizeArmHole == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${vest.vestSizeArmHole == 1}">1cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name"> </span>
+                                            <div style="width: 100px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-coat" class="size-tab-content sizeTab">
+                        <div class="flex size_article_wrap warp_center">
+                            <div class="flex between sizeOuter-wrap">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Size</span>
+                                        <input type="hidden" name="coatPattern" th:value="${coat.coatPattern}">
+                                        <input type="hidden" name="coatGauge" th:value="${coat.coatGauge}">
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name"></span>
+                                            <div class="value title">실측 Size</div>
+                                            <div class="value" style="background-color: #1e6ceb !important; color: #ffffff !important;">
+                                                <div class="value_1">완성</div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchChest" name="coatSizeRealInchChest" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchChest == 0 ? '' : coat.coatSizeRealInchChest}" tabindex="1">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiChest" name="coatSizeRealCentiChest" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiChest == 0 ? '' : coat.coatSizeRealCentiChest}" tabindex="14">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditChest" name="coatSizeEditChest" autocomplete="off" th:value="${coat.coatSizeEditChest == 0 ? '' : coat.coatSizeEditChest}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상앞품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchChestWidth" name="coatSizeRealInchChestWidth" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchChestWidth == 0 ? '' : coat.coatSizeRealInchChestWidth}" tabindex="2">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiChestWidth" name="coatSizeRealCentiChestWidth" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiChestWidth == 0 ? '' : coat.coatSizeRealCentiChestWidth}" tabindex="15">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditChestWidth" name="coatSizeEditChestWidth" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditChestWidth == 0 ? '' : coat.coatSizeEditChestWidth}" tabindex="27">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상사이바</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchUpperSideBody" name="coatSizeRealInchUpperSideBody" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchUpperSideBody == 0 ? '' : coat.coatSizeRealInchUpperSideBody}" tabindex="3">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiUpperSideBody" name="coatSizeRealCentiUpperSideBody" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiUpperSideBody == 0 ? '' : coat.coatSizeRealCentiUpperSideBody}" tabindex="16">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditUpperSideBody" name="coatSizeEditUpperSideBody" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditUpperSideBody == 0 ? '' : coat.coatSizeEditUpperSideBody}" tabindex="28">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상뒷품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchBackWidth" name="coatSizeRealInchBackWidth" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchBackWidth == 0 ? '' : coat.coatSizeRealInchBackWidth}" tabindex="4">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiBackWidth" name="coatSizeRealCentiBackWidth" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiBackWidth == 0 ? '' : coat.coatSizeRealCentiBackWidth}" tabindex="17">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditBackWidth" name="coatSizeEditBackWidth" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditBackWidth == 0 ? '' : coat.coatSizeEditBackWidth}" tabindex="29">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중동</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchWaist" name="coatSizeRealInchWaist" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchWaist == 0 ? '' : coat.coatSizeRealInchWaist}" tabindex="5">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiWaist" name="coatSizeRealCentiWaist" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiWaist == 0 ? '' : coat.coatSizeRealCentiWaist}" tabindex="18">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditWaist" name="coatSizeEditWaist" autocomplete="off" th:value="${coat.coatSizeEditWaist == 0 ? '' : coat.coatSizeEditWaist}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중앞품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchWaistFront" name="coatSizeRealInchWaistFront" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchWaistFront == 0 ? '' : coat.coatSizeRealInchWaistFront}" tabindex="6">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiWaistFront" name="coatSizeRealCentiWaistFront" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiWaistFront == 0 ? '' : coat.coatSizeRealCentiWaistFront}" tabindex="19">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditWaistFront" name="coatSizeEditWaistFront" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditWaistFront == 0 ? '' : coat.coatSizeEditWaistFront}" tabindex="30">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중사이바</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchMiddleSideBody" name="coatSizeRealInchMiddleSideBody" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchMiddleSideBody == 0 ? '' : coat.coatSizeRealInchMiddleSideBody}" tabindex="7">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiMiddleSideBody" name="coatSizeRealCentiMiddleSideBody" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiMiddleSideBody == 0 ? '' : coat.coatSizeRealCentiMiddleSideBody}" tabindex="20">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditMiddleSideBody" name="coatSizeEditMiddleSideBody" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditMiddleSideBody == 0 ? '' : coat.coatSizeEditMiddleSideBody}" tabindex="31">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">중뒷품</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchWaistBack" name="coatSizeRealInchWaistBack" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchWaistBack == 0 ? '' : coat.coatSizeRealInchWaistBack}" tabindex="8">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiWaistBack" name="coatSizeRealCentiWaistBack" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiWaistBack == 0 ? '' : coat.coatSizeRealCentiWaistBack}" tabindex="21">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditWaistBack" name="coatSizeEditWaistBack" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditWaistBack == 0 ? '' : coat.coatSizeEditWaistBack}" tabindex="32">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">어깨</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchShoulder" name="coatSizeRealInchShoulder" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchShoulder == 0 ? '' : coat.coatSizeRealInchShoulder}" tabindex="9">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiShoulder" name="coatSizeRealCentiShoulder" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiShoulder == 0 ? '' : coat.coatSizeRealCentiShoulder}" tabindex="22">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditShoulder" name="coatSizeEditShoulder" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditShoulder == 0 ? '' : coat.coatSizeEditShoulder}" tabindex="33">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">소매(좌)</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchLeftSleeve" name="coatSizeRealInchLeftSleeve" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchLeftSleeve == 0 ? '' : coat.coatSizeRealInchLeftSleeve}" tabindex="10">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiLeftSleeve" name="coatSizeRealCentiLeftSleeve" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiLeftSleeve == 0 ? '' : coat.coatSizeRealCentiLeftSleeve}" tabindex="23">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditLeftSleeve" name="coatSizeEditLeftSleeve" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditLeftSleeve == 0 ? '' : coat.coatSizeEditLeftSleeve}" tabindex="34">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">소매(우)</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchRightSleeve" name="coatSizeRealInchRightSleeve" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchRightSleeve == 0 ? '' : coat.coatSizeRealInchRightSleeve}" tabindex="11">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiRightSleeve" name="coatSizeRealCentiRightSleeve" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiRightSleeve == 0 ? '' : coat.coatSizeRealCentiRightSleeve}" tabindex="24">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditRightSleeve" name="coatSizeEditRightSleeve" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditRightSleeve == 0 ? '' : coat.coatSizeEditRightSleeve}" tabindex="35">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchBackLength" name="coatSizeRealInchBackLength" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchBackLength == 0 ? '' : coat.coatSizeRealInchBackLength}" tabindex="12">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiBackLength" name="coatSizeRealCentiBackLength" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiBackLength == 0 ? '' : coat.coatSizeRealCentiBackLength}" tabindex="25">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditBackLength" name="coatSizeEditBackLength" autocomplete="off" maxlength="5" th:value="${coat.coatSizeEditBackLength == 0 ? '' : coat.coatSizeEditBackLength}" tabindex="36">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">앞기장</span>
+                                            <div class="value">
+                                                <div class="value_">
+                                                    <input type="text" class="realInch" id="coatSizeRealInchFrontLength" name="coatSizeRealInchFrontLength" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealInchFrontLength == 0 ? '' : coat.coatSizeRealInchFrontLength}" tabindex="13">&nbsp;inch
+                                                </div>
+                                                <div class="value_">
+                                                    <input type="text" class="realCenti" id="coatSizeRealCentiFrontLength" name="coatSizeRealCentiFrontLength" maxlength="5" autocomplete="off" th:value="${coat.coatSizeRealCentiFrontLength == 0 ? '' : coat.coatSizeRealCentiFrontLength}" tabindex="26">&nbsp;cm
+                                                </div>
+                                            </div>
+                                            <div class="value">
+                                                <div class="value_1">
+                                                    <input type="text" class="coatSizeEditInput" id="coatSizeEditFrontLength" name="coatSizeEditFrontLength" autocomplete="off" th:value="${coat.coatSizeEditFrontLength == 0 ? '' : coat.coatSizeEditFrontLength}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex column size_inputImg_wrap" style="display: none;">
+                                <div class="size_inputNumber_wrap">
+                                    <div class="size-title">
+                                        <span>Body Shape</span>
+                                    </div>
+                                    <div class="inner_inputNumber_wrap">
+                                        <div class="line">
+                                            <span class="name">굴신</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeFrontRound" id="coatSizeFrontRound" tabindex="37">
+                                                    <option value="0" th:selected="${coat.coatSizeFrontRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeFrontRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeFrontRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeFrontRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeFrontRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">반신</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeBackRound" id="coatSizeBackRound" tabindex="38">
+                                                    <option value="0" th:selected="${coat.coatSizeBackRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeBackRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeBackRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeBackRound == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeBackRound == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">견도</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeShoulderSlope" id="coatSizeShoulderSlope" tabindex="39">
+                                                    <option value="-1.5" th:selected="${coat.coatSizeShoulderSlope == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeShoulderSlope == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeShoulderSlope == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeShoulderSlope == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeShoulderSlope == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeShoulderSlope == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeShoulderSlope == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeShoulderSlope == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">뒷고대</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeBackNeckline" id="coatSizeBackNeckline" tabindex="40">
+                                                    <option value="-1.5" th:selected="${coat.coatSizeBackNeckline == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeBackNeckline == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeBackNeckline == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeBackNeckline == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeBackNeckline == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeBackNeckline == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeBackNeckline == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷목점 이동</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeBackNeckPointMove" id="coatSizeBackNeckPointMove" tabindex="41">
+                                                    <option value="0" th:selected="${coat.coatSizeBackNeckPointMove == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeBackNeckPointMove == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeBackNeckPointMove == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeBackNeckPointMove == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeBackNeckPointMove == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">목둘레</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeNeckRound" id="coatSizeNeckRound" tabindex="42">
+                                                    <option value="-1.5" th:selected="${coat.coatSizeNeckRound == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeNeckRound == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeNeckRound == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeNeckRound == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeNeckRound == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeNeckRound == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeNeckRound == 1.5}">1.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">상박</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeUpperArm" id="coatSizeUpperArm" tabindex="43">
+                                                    <option value="-2" th:selected="${coat.coatSizeUpperArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeUpperArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeUpperArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeUpperArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeUpperArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeUpperArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeUpperArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeUpperArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeUpperArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">중박</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeMiddleArm" id="coatSizeMiddleArm" tabindex="44">
+                                                    <option value="-2" th:selected="${coat.coatSizeMiddleArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeMiddleArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeMiddleArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeMiddleArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeMiddleArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeMiddleArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeMiddleArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeMiddleArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeMiddleArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">하박</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeLowerArm" id="coatSizeLowerArm" tabindex="45">
+                                                    <option value="-2" th:selected="${coat.coatSizeLowerArm == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeLowerArm == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeLowerArm == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeLowerArm == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeLowerArm == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeLowerArm == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeLowerArm == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeLowerArm == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeLowerArm == 2}">2cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">앞기장 추가</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeFrontLength" id="coatSizeFrontLength" tabindex="46">
+                                                    <option value="-3" th:selected="${coat.coatSizeFrontLength == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${coat.coatSizeFrontLength == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeFrontLength == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeFrontLength == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeFrontLength == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeFrontLength == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeFrontLength == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeFrontLength == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeFrontLength == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeFrontLength == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeFrontLength == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${coat.coatSizeFrontLength == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${coat.coatSizeFrontLength == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">첫단추</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeFirstButton" id="coatSizeFirstButton" tabindex="47">
+                                                    <option value="-3" th:selected="${coat.coatSizeFirstButton == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${coat.coatSizeFirstButton == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeFirstButton == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeFirstButton == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeFirstButton == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeFirstButton == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeFirstButton == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeFirstButton == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeFirstButton == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeFirstButton == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeFirstButton == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${coat.coatSizeFirstButton == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${coat.coatSizeFirstButton == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">도련선</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeHemLine" id="coatSizeHemLine" tabindex="48">
+                                                    <option value="-2.5" th:selected="${coat.coatSizeHemLine == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeHemLine == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeHemLine == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeHemLine == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeHemLine == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeHemLine == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeHemLine == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeHemLine == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeHemLine == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeHemLine == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${coat.coatSizeHemLine == 2.5}">2.5cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">뒷중심 이동</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeBackCenterMove" id="coatSizeBackCenterMove" tabindex="49">
+                                                    <option value="0" th:selected="${coat.coatSizeBackCenterMove == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeBackCenterMove == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeBackCenterMove == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeBackCenterMove == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeBackCenterMove == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${coat.coatSizeBackCenterMove == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${coat.coatSizeBackCenterMove == 3}">3cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">뒷중심 줄임</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeBackCenterShorten" id="coatSizeBackCenterShorten" tabindex="50">
+                                                    <option value="-3" th:selected="${coat.coatSizeBackCenterShorten == -3}">-3cm</option>
+                                                    <option value="-2.5" th:selected="${coat.coatSizeBackCenterShorten == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeBackCenterShorten == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeBackCenterShorten == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeBackCenterShorten == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeBackCenterShorten == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeBackCenterShorten == 0}">0cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="line">
+                                            <span class="name">암홀수정</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeArmHole" id="coatSizeArmHole" tabindex="51">
+                                                    <option value="-2.5" th:selected="${coat.coatSizeArmHole == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeArmHole == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeArmHole == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeArmHole == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeArmHole == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeArmHole == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeArmHole == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeArmHole == 1}">1cm</option>
+                                                </select>
+                                            </div>
+                                            <span class="name">우찌</span>
+                                            <div>
+                                                <select class="coatSizeEditSelect" name="coatSizeChestLine" id="coatSizeChestLine" tabindex="52">
+                                                    <option value="-2.5" th:selected="${coat.coatSizeChestLine == -2.5}">-2.5cm</option>
+                                                    <option value="-2" th:selected="${coat.coatSizeChestLine == -2}">-2cm</option>
+                                                    <option value="-1.5" th:selected="${coat.coatSizeChestLine == -1.5}">-1.5cm</option>
+                                                    <option value="-1" th:selected="${coat.coatSizeChestLine == -1}">-1cm</option>
+                                                    <option value="-0.5" th:selected="${coat.coatSizeChestLine == -0.5}">-0.5cm</option>
+                                                    <option value="0" th:selected="${coat.coatSizeChestLine == 0}">0cm</option>
+                                                    <option value="0.5" th:selected="${coat.coatSizeChestLine == 0.5}">0.5cm</option>
+                                                    <option value="1" th:selected="${coat.coatSizeChestLine == 1}">1cm</option>
+                                                    <option value="1.5" th:selected="${coat.coatSizeChestLine == 1.5}">1.5cm</option>
+                                                    <option value="2" th:selected="${coat.coatSizeChestLine == 2}">2cm</option>
+                                                    <option value="2.5" th:selected="${coat.coatSizeChestLine == 2.5}">2.5cm</option>
+                                                    <option value="3" th:selected="${coat.coatSizeChestLine == 3}">3cm</option>
+                                                    <option value="3.5" th:selected="${coat.coatSizeChestLine == 3.5}">3.5cm</option>
+                                                    <option value="4" th:selected="${coat.coatSizeChestLine == 4}">4cm</option>
+                                                    <option value="4.5" th:selected="${coat.coatSizeChestLine == 4.5}">4.5cm</option>
+                                                    <option value="5" th:selected="${coat.coatSizeChestLine == 5}">5cm</option>
+                                                    <option value="5.5" th:selected="${coat.coatSizeChestLine == 5.5}">5.5cm</option>
+                                                    <option value="6" th:selected="${coat.coatSizeChestLine == 6}">6cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </th:block>
+</th:block>
+
+<script th:inline="javascript">
+    nowParts = 'size';
+    $(document).ready(function(){
+        initTab();
+    });
+
+    // 부위 탭 클릭 이벤트
+    $(document).on('click', '.partsTab', function() {
+        $('.partsTab').removeClass('current');
+        $(this).addClass('current');
+
+        // 사이즈 입력 공간 hide
+        $('.sizeTab').removeClass('current');
+        // 해당 사이즈 입력 공간 show
+        const selectedPartsId = $(this).data('parts');
+        $(`#${selectedPartsId}`).addClass('current');
+    });
+
+    function initTab() {
+        // 부위탭 select
+        const visiblePartsTab = $('.partsTab:visible').first();
+        visiblePartsTab.addClass('current');
+
+        // 사이즈 입력 공간 show
+        const sizeTabId = visiblePartsTab.data('parts');
+        $(`#${sizeTabId}`).addClass('current');
+    }
+
+    window.addEventListener("beforeunload", function (e) {
+        if (nextUrl != '/counseling/fabric-item'
+            && nextUrl != '/counseling/design'
+            && nextUrl != '/counseling/size'
+            && nextUrl != '/counseling/complete'
+        ) {
+            callLazyService(
+                "POST"
+                , `/counseling/size/save`
+                , JSON.stringify(convertFormToJSON($('#dataForm')))
+                , function (response) {
+
+                }
+            );
+        }
+    });
+</script>
+
+<script th:if="${!counseling.jacket && !counseling.pants && !counseling.vest && !counseling.coat}">
+    nextUrl != '/counseling/fabric-item';
+    alert('품목 선택 후 사이즈를 입력할 수 있습니다.\nFabricItem 페이지로 이동합니다.');
+    location.replace(`/counseling/fabric-item?reservationId=${getParamValue('reservationId')}`);
+</script>
+</html>

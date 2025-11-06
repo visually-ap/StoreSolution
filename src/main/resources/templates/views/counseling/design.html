@@ -6,6 +6,8 @@
         <!-- 개별 css -->
         <link rel="stylesheet" th:href="@{/css/design.css}">
 
+        <script th:src="@{/js/design/limit.js}"></script>
+
         <form id="dataForm">
             <input type="hidden" name="reservationId" th:value="${counseling.reservationId}">
             <div class="section_wrap mb-20px">
@@ -54,7 +56,7 @@
                             <div id="design-jacket-style" class="sub-tab-content designListWrap" th:with="jacketStyle = ${jacket.jacketStyle == null ? suitCodeList.get('1201').get(0).id : jacket.jacketStyle}">
                                 <input type="hidden" class="codeIdInput" name="jacketStyle" id="jacketStyle" th:value="${jacketStyle}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1201')}">
+                                    <div class="article-img-frame jacketStyleDiv" th:each="commonCode : ${suitCodeList.get('1201')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketStyle == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -66,7 +68,7 @@
                             <div id="design-jacket-button-count" class="sub-tab-content designListWrap" th:with="jacketButtonCount = ${jacket.jacketButtonCount == null ? suitCodeList.get('1202').get(0).id : jacket.jacketButtonCount}">
                                 <input type="hidden" class="codeIdInput" name="jacketButtonCount" id="jacketButtonCount" th:value="${jacketButtonCount}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1202')}">
+                                    <div class="article-img-frame jacketButtonCountDiv" th:each="commonCode : ${suitCodeList.get('1202')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketButtonCount == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -102,7 +104,7 @@
                             <div id="design-jacket-front-pocket" class="sub-tab-content designListWrap" th:with="jacketFrontPocket = ${jacket.jacketFrontPocket == null ? suitCodeList.get('1205').get(0).id : jacket.jacketFrontPocket}">
                                 <input type="hidden" class="codeIdInput" name="jacketFrontPocket" id="jacketFrontPocket" th:value="${jacketFrontPocket}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1205')}">
+                                    <div class="article-img-frame jacketFrontPocketDiv" th:each="commonCode : ${suitCodeList.get('1205')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketFrontPocket == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -150,7 +152,7 @@
                             <div id="design-jacket-sleeve-button" class="sub-tab-content designListWrap" th:with="jacketSleeveButton = ${jacket.jacketSleeveButton == null ? suitCodeList.get('1209').get(0).id : jacket.jacketSleeveButton}">
                                 <input type="hidden" class="codeIdInput" name="jacketSleeveButton" id="jacketSleeveButton" th:value="${jacketSleeveButton}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1209')}">
+                                    <div class="article-img-frame jacketSleeveButtonDiv" th:each="commonCode : ${suitCodeList.get('1209')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketSleeveButton == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -162,7 +164,7 @@
                             <div id="design-jacket-lapel" class="sub-tab-content designListWrap" th:with="jacketLapel = ${jacket.jacketLapel == null ? suitCodeList.get('1210').get(0).id : jacket.jacketLapel}">
                                 <input type="hidden" class="codeIdInput" name="jacketLapel" id="jacketLapel" th:value="${jacketLapel}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1210')}">
+                                    <div class="article-img-frame jacketLapelDiv" th:each="commonCode : ${suitCodeList.get('1210')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketLapel == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -174,7 +176,7 @@
                             <div id="design-jacket-sleeve" class="sub-tab-content designListWrap" th:with="jacketSleeve = ${jacket.jacketSleeve == null ? suitCodeList.get('1211').get(0).id : jacket.jacketSleeve}">
                                 <input type="hidden" class="codeIdInput" name="jacketSleeve" id="jacketSleeve" th:value="${jacketSleeve}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1211')}">
+                                    <div class="article-img-frame jacketSleeveDiv" th:each="commonCode : ${suitCodeList.get('1211')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketSleeve == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -198,7 +200,7 @@
                             <div id="design-jacket-amf" class="sub-tab-content designListWrap" th:with="jacketAmf = ${jacket.jacketAmf == null ? suitCodeList.get('1213').get(0).id : jacket.jacketAmf}">
                                 <input type="hidden" class="codeIdInput" name="jacketAmf" id="jacketAmf" th:value="${jacketAmf}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1213')}">
+                                    <div class="article-img-frame jacketAmfDiv" th:each="commonCode : ${suitCodeList.get('1213')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketAmf == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -210,13 +212,14 @@
                             <div id="design-jacket-lapel-q" class="sub-tab-content designListWrap" th:with="jacketLapelQ = ${jacket.jacketLapelQ == null ? suitCodeList.get('1214').get(0).id : jacket.jacketLapelQ}">
                                 <input type="hidden" class="codeIdInput" name="jacketLapelQ" id="jacketLapelQ" th:value="${jacketLapelQ}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1214')}">
+                                    <div class="article-img-frame jacketLapelQDiv" th:each="commonCode : ${suitCodeList.get('1214')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${jacketLapelQ == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
                                             <img th:unless="${commonCode.fileId == null}" th:src="@{/design/image/download/{id}(id=${commonCode.fileId})}">
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             <div id="design-jacket-lining" class="sub-tab-content designListWrap" th:with="jacketLining = ${jacket.jacketLining == null ? suitCodeList.get('1215').get(0).id : jacket.jacketLining}">
@@ -313,7 +316,7 @@
                             <div id="design-pants-belt-loop" class="sub-tab-content designListWrap" th:with="pantsBeltLoop = ${pants.pantsBeltLoop == null ? suitCodeList.get('1301').get(0).id : pants.pantsBeltLoop}">
                                 <input type="hidden" class="codeIdInput" name="pantsBeltLoop" id="pantsBeltLoop" th:value="${pantsBeltLoop}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1301')}">
+                                    <div class="article-img-frame pantsBeltLoopDiv" th:each="commonCode : ${suitCodeList.get('1301')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${pantsBeltLoop == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -325,7 +328,7 @@
                             <div id="design-pants-flap" class="sub-tab-content designListWrap" th:with="pantsFlap = ${pants.pantsFlap == null ? suitCodeList.get('1305').get(0).id : pants.pantsFlap}">
                                 <input type="hidden" class="codeIdInput" name="pantsFlap" id="pantsFlap" th:value="${pantsFlap}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1305')}">
+                                    <div class="article-img-frame pantsFlapDiv" th:each="commonCode : ${suitCodeList.get('1305')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${pantsFlap == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -337,7 +340,7 @@
                             <div id="design-pants-flap-length" class="sub-tab-content designListWrap" th:with="pantsFlapLength = ${pants.pantsFlapLength == null ? suitCodeList.get('1306').get(0).id : pants.pantsFlapLength}">
                                 <input type="hidden" class="codeIdInput" name="pantsFlapLength" id="pantsFlapLength" th:value="${pantsFlapLength}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1306')}">
+                                    <div class="article-img-frame pantsFlapLengthDiv" th:each="commonCode : ${suitCodeList.get('1306')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${pantsFlapLength == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -349,7 +352,7 @@
                             <div id="design-pants-hem-shape" class="sub-tab-content designListWrap" th:with="pantsHemShape = ${pants.pantsHemShape == null ? suitCodeList.get('1303').get(0).id : pants.pantsHemShape}">
                                 <input type="hidden" class="codeIdInput" name="pantsHemShape" id="pantsHemShape" th:value="${pantsHemShape}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1303')}">
+                                    <div class="article-img-frame pantsHemShapeDiv" th:each="commonCode : ${suitCodeList.get('1303')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${pantsHemShape == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -361,7 +364,7 @@
                             <div id="design-pants-hem-thickness" class="sub-tab-content designListWrap" th:with="pantsHemThickness = ${pants.pantsHemThickness == null ? suitCodeList.get('1304').get(0).id : pants.pantsHemThickness}">
                                 <input type="hidden" class="codeIdInput" name="pantsHemThickness" id="pantsHemThickness" th:value="${pantsHemThickness}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${suitCodeList.get('1304')}">
+                                    <div class="article-img-frame pantsHemThicknessDiv" th:each="commonCode : ${suitCodeList.get('1304')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${pantsHemThickness == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -530,7 +533,7 @@
                             <div id="design-coat-style" class="sub-tab-content designListWrap" th:with="coatStyle = ${coat.coatStyle == null ? coatCodeList.get('2501').get(0).id : coat.coatStyle}">
                                 <input type="hidden" class="codeIdInput" name="coatStyle" id="coatStyle" th:value="${coatStyle}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2501')}">
+                                    <div class="article-img-frame coatStyleDiv" th:each="commonCode : ${coatCodeList.get('2501')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatStyle == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -542,7 +545,7 @@
                             <div id="design-coat-button-count" class="sub-tab-content designListWrap" th:with="coatButtonCount = ${coat.coatButtonCount == null ? coatCodeList.get('2502').get(0).id : coat.coatButtonCount}">
                                 <input type="hidden" class="codeIdInput" name="coatButtonCount" id="coatButtonCount" th:value="${coatButtonCount}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2502')}">
+                                    <div class="article-img-frame coatButtonCountDiv" th:each="commonCode : ${coatCodeList.get('2502')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatButtonCount == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -554,7 +557,7 @@
                             <div id="design-coat-chest-pocket" class="sub-tab-content designListWrap" th:with="coatChestPocket = ${coat.coatChestPocket == null ? coatCodeList.get('2503').get(0).id : coat.coatChestPocket}">
                                 <input type="hidden" class="codeIdInput" name="coatChestPocket" id="coatChestPocket" th:value="${coatChestPocket}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2503')}">
+                                    <div class="article-img-frame coatChestPocketDiv" th:each="commonCode : ${coatCodeList.get('2503')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatChestPocket == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -566,7 +569,7 @@
                             <div id="design-coat-shoulder" class="sub-tab-content designListWrap" th:with="coatShoulder = ${coat.coatShoulder == null ? coatCodeList.get('2504').get(0).id : coat.coatShoulder}">
                                 <input type="hidden" class="codeIdInput" name="coatShoulder" id="coatShoulder" th:value="${coatShoulder}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2504')}">
+                                    <div class="article-img-frame coatShoulderDiv" th:each="commonCode : ${coatCodeList.get('2504')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatShoulder == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -578,7 +581,7 @@
                             <div id="design-coat-front-pocket" class="sub-tab-content designListWrap" th:with="coatFrontPocket = ${coat.coatFrontPocket == null ? coatCodeList.get('2505').get(0).id : coat.coatFrontPocket}">
                                 <input type="hidden" class="codeIdInput" name="coatFrontPocket" id="coatFrontPocket" th:value="${coatFrontPocket}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2505')}">
+                                    <div class="article-img-frame coatFrontPocketDiv" th:each="commonCode : ${coatCodeList.get('2505')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatFrontPocket == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -614,7 +617,7 @@
                             <div id="design-coat-back-slit" class="sub-tab-content designListWrap" th:with="coatBackSlit = ${coat.coatBackSlit == null ? coatCodeList.get('2507').get(0).id : coat.coatBackSlit}">
                                 <input type="hidden" class="codeIdInput" name="coatBackSlit" id="coatBackSlit" th:value="${coatBackSlit}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2507')}">
+                                    <div class="article-img-frame coatBackSlitDiv" th:each="commonCode : ${coatCodeList.get('2507')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatBackSlit == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -626,7 +629,7 @@
                             <div id="design-coat-sleeve-button" class="sub-tab-content designListWrap" th:with="coatSleeveButton = ${coat.coatSleeveButton == null ? coatCodeList.get('2509').get(0).id : coat.coatSleeveButton}">
                                 <input type="hidden" class="codeIdInput" name="coatSleeveButton" id="coatSleeveButton" th:value="${coatSleeveButton}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2509')}">
+                                    <div class="article-img-frame coatSleeveButtonDiv" th:each="commonCode : ${coatCodeList.get('2509')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatSleeveButton == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -638,7 +641,7 @@
                             <div id="design-coat-lapel" class="sub-tab-content designListWrap" th:with="coatLapel = ${coat.coatLapel == null ? coatCodeList.get('2510').get(0).id : coat.coatLapel}">
                                 <input type="hidden" class="codeIdInput" name="coatLapel" id="coatLapel" th:value="${coatLapel}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2510')}">
+                                    <div class="article-img-frame coatLapelDiv" th:each="commonCode : ${coatCodeList.get('2510')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatLapel == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -650,7 +653,7 @@
                             <div id="design-coat-sleeve" class="sub-tab-content designListWrap" th:with="coatSleeve = ${coat.coatSleeve == null ? coatCodeList.get('2511').get(0).id : coat.coatSleeve}">
                                 <input type="hidden" class="codeIdInput" name="coatSleeve" id="coatSleeve" th:value="${coatSleeve}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2511')}">
+                                    <div class="article-img-frame coatSleeveDiv" th:each="commonCode : ${coatCodeList.get('2511')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatSleeve == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -662,7 +665,7 @@
                             <div id="design-coat-amf" class="sub-tab-content designListWrap" th:with="coatAmf = ${coat.coatAmf == null ? coatCodeList.get('2513').get(0).id : coat.coatAmf}">
                                 <input type="hidden" class="codeIdInput" name="coatAmf" id="coatAmf" th:value="${coatAmf}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2513')}">
+                                    <div class="article-img-frame coatAmfDiv" th:each="commonCode : ${coatCodeList.get('2513')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatAmf == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -674,7 +677,7 @@
                             <div id="design-coat-lapel-q" class="sub-tab-content designListWrap" th:with="coatLapelQ = ${coat.coatLapelQ == null ? coatCodeList.get('2512').get(0).id : coat.coatLapelQ}">
                                 <input type="hidden" class="codeIdInput" name="coatLapelQ" id="coatLapelQ" th:value="${coatLapelQ}">
                                 <div class="flex img-frame-wrap">
-                                    <div class="article-img-frame" th:each="commonCode : ${coatCodeList.get('2512')}">
+                                    <div class="article-img-frame coatLapelQDiv" th:each="commonCode : ${coatCodeList.get('2512')}">
                                         <span class="img-title" th:text="${commonCode.codeName}"></span>
                                         <div class="img-frame" th:classappend="${coatLapelQ == commonCode.id ? 'selectedImage' : ''}" th:data-codeid="${commonCode.id }">
                                             <img th:if="${commonCode.fileId == null}" th:src="@{/images/no_image.png}">
@@ -815,6 +818,13 @@
             );
         }
     });
+</script>
+
+<script th:inline="javascript">
+    const jacket = [[${jacket}]];
+    const pants = [[${pants}]];
+    const vest = [[${vest}]];
+    const coat = [[${coat}]];
 </script>
 
 <script th:if="${!counseling.jacket && !counseling.pants && !counseling.vest && !counseling.coat}">

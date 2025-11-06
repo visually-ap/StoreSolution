@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ResDesignJacketDTO {
     private Long id;
     private Long counselingCommon;
+    private Long jacketPattern;
 
     // 디자인
     private Long jacketStyle;

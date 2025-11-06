@@ -234,7 +234,7 @@
                         <td th:text="${@stringParser.addCommaToNumber(purchase.price) + ' 원'}"></td>
                         <td class="purchaseCharge" th:text="${purchase.charge + '%'}"></td>
                         <td th:text="${@stringParser.addCommaToNumber(purchase.chargeFee) + ' 원'}"></td>
-                        <td class="purchaseDeleteButton delete_btn">삭제</td>
+                        <td class="delete_btn" th:classappend="${#authentication.principal.authority == 'ROLE_USER'} ? 'purchaseDeleteButton'" th:text="${#authentication.principal.authority == 'ROLE_USER'} ? '삭제'"></td>
                     </tr>
                 </th:block>
                 <th:block th:unless="${purchaseList.size() > 0}">
@@ -285,7 +285,7 @@
                         <td th:text="${@stringParser.addCommaToNumber(payment.amount)}"></td>
                         <td th:text="${@stringParser.addCommaToNumber(payment.outstanding)}"></td>
                         <td th:text="${payment.paymentMemo}"></td>
-                        <td class="paymentDeleteButton delete_btn">삭제</td>
+                        <td class="delete_btn" th:classappend="${#authentication.principal.authority == 'ROLE_USER'} ? 'paymentDeleteButton'" th:text="${#authentication.principal.authority == 'ROLE_USER'} ? '삭제'"></td>
                     </tr>
                 </th:block>
                 <th:block th:unless="${paymentList.size() > 0}">
@@ -499,7 +499,7 @@
             </div>
             <div class="btn_wrap">
                 <button type="button" id="purchaseModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
-                <button type="button" id="purchaseModalUpdateButton" class="btn-style-4">수정</button>
+                <button type="button" id="purchaseModalUpdateButton" class="btn-style-4" th:if="${#authentication.principal.authority == 'ROLE_USER'}">수정</button>
                 <button type="button" data-label="#purchaseModal"
                         onclick="closeModal($(this).data('label'), initCustomerPurchaseInfo)" class="btn-style-4">닫기
                 </button>
@@ -563,7 +563,7 @@
             </div>
             <div class="btn_wrap">
                 <button type="button" id="paymentModalRegisterButton" class="btnColor_1 btn-style-4">등록</button>
-                <button type="button" id="paymentModalUpdateButton" class="btn-style-4">수정</button>
+                <button type="button" id="paymentModalUpdateButton" class="btn-style-4" th:if="${#authentication.principal.authority == 'ROLE_USER'}">수정</button>
                 <button type="button" data-label="#paymentModal"
                         onclick="closeModal($(this).data('label'), initCustomerPaymentInfo)" class="btn-style-4">닫기
                 </button>

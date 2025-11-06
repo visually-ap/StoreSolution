@@ -11,8 +11,13 @@ import kr.co.apfactory.storesolution.domain.repository.*;
 import kr.co.apfactory.storesolution.global.security.utility.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
+
+import static kr.co.apfactory.storesolution.domain.entity.CounselingCoat.DOUBLE_RAGLAN;
+import static kr.co.apfactory.storesolution.domain.entity.CounselingCoat.SINGLE_RAGLAN;
+import static kr.co.apfactory.storesolution.domain.entity.CounselingJacket.CAVAN_JACKET;
 
 @Service
 @RequiredArgsConstructor
@@ -171,21 +176,50 @@ public class CounselingService {
                     .build();
         }
 
+        // 상의
         CounselingJacket jacket = counselingJacketRepository.findByCounselingCommonId(counselingCommon.getId());
+        Long beforeJacketPatternId = -1L;
+        if (jacket.getJacketPattern() != null) {
+            beforeJacketPatternId = jacket.getJacketPattern().getId();
+        }
+
         jacket.updateSizeData(reqSizeSaveDTO);
+        if (jacket.getJacketPattern() != null && jacket.getJacketPattern().getId().equals(CAVAN_JACKET)) {
+            jacket.setCavanDesignOption();
+        } else {
+            if (beforeJacketPatternId.equals(CAVAN_JACKET)) {
+                jacket.initDesignOptionFromCavan();
+            }
+        }
         counselingJacketRepository.save(jacket);
 
+        // 하의
         CounselingPants pants = counselingPantsRepository.findByCounselingCommonId(counselingCommon.getId());
         pants.updateSizeData(reqSizeSaveDTO);
         counselingPantsRepository.save(pants);
 
+        // 조끼
         CounselingVest vest = counselingVestRepository.findByCounselingCommonId(counselingCommon.getId());
         vest.updateSizeData(reqSizeSaveDTO);
         counselingVestRepository.save(vest);
 
+        // 코트
         CounselingCoat coat = counselingCoatRepository.findByCounselingCommonId(counselingCommon.getId());
+        Long beforeCoatPatternId = -1L;
+        if (coat.getCoatPattern() != null) {
+            beforeCoatPatternId = coat.getCoatPattern().getId();
+        }
 
         coat.updateSizeData(reqSizeSaveDTO);
+        if (jacket.getJacketPattern() != null && coat.getCoatPattern().getId().equals(SINGLE_RAGLAN)) {
+            coat.setSingleRaglanDesignOption();
+        } else if (jacket.getJacketPattern() != null && coat.getCoatPattern().getId().equals(DOUBLE_RAGLAN)) {
+            coat.setDoubleRaglanDesignOption();
+        } else {
+            if (beforeCoatPatternId.equals(SINGLE_RAGLAN) || beforeCoatPatternId.equals(DOUBLE_RAGLAN)) {
+                coat.initDesignOptionFromRaglan();
+            }
+        }
         counselingCoatRepository.save(coat);
 
         return ResponseDTO.builder()
@@ -206,6 +240,74 @@ public class CounselingService {
             return ResponseDTO.builder()
                     .message("완료 처리를 하려면 품목을 하나 이상 선택하여야 합니다.")
                     .build();
+        }
+
+        if (counselingCommon.getJacket()) {
+            CounselingJacket jacket = counselingJacketRepository.findByCounselingCommonId(counselingCommon.getId());
+            if (jacket.getJacketPattern() == null || jacket.getJacketGauge() == null) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 패턴과 게이지복을 모두 입력하여야 합니다.")
+                        .build();
+            }
+
+            if (StringUtils.isEmpty(counselingCommon.getFabricCompanyJacket())
+                    || StringUtils.isEmpty(counselingCommon.getFabricPatternJacket())
+                    || StringUtils.isEmpty(counselingCommon.getFabricColorJacket())) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 원단 정보를 모두 입력하여야 합니다.")
+                        .build();
+            }
+        }
+
+        if (counselingCommon.getPants()) {
+            CounselingPants pants = counselingPantsRepository.findByCounselingCommonId(counselingCommon.getId());
+            if (pants.getPantsPattern() == null || pants.getPantsGauge() == null) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 패턴과 게이지복을 모두 입력하여야 합니다.")
+                        .build();
+            }
+
+            if (StringUtils.isEmpty(counselingCommon.getFabricCompanyPants())
+                    || StringUtils.isEmpty(counselingCommon.getFabricPatternPants())
+                    || StringUtils.isEmpty(counselingCommon.getFabricColorPants())) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 원단 정보를 모두 입력하여야 합니다.")
+                        .build();
+            }
+        }
+
+        if (counselingCommon.getVest()) {
+            CounselingVest vest = counselingVestRepository.findByCounselingCommonId(counselingCommon.getId());
+            if (vest.getVestPattern() == null || vest.getVestGauge() == null) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 패턴과 게이지복을 모두 입력하여야 합니다.")
+                        .build();
+            }
+
+            if (StringUtils.isEmpty(counselingCommon.getFabricCompanyVest())
+                    || StringUtils.isEmpty(counselingCommon.getFabricPatternVest())
+                    || StringUtils.isEmpty(counselingCommon.getFabricColorVest())) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 원단 정보를 모두 입력하여야 합니다.")
+                        .build();
+            }
+        }
+
+        if (counselingCommon.getCoat()) {
+            CounselingCoat coat = counselingCoatRepository.findByCounselingCommonId(counselingCommon.getId());
+            if (coat.getCoatPattern() == null || coat.getCoatGauge() == null) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 패턴과 게이지복을 모두 입력하여야 합니다.")
+                        .build();
+            }
+
+            if (StringUtils.isEmpty(counselingCommon.getFabricCompanyCoat())
+                    || StringUtils.isEmpty(counselingCommon.getFabricPatternCoat())
+                    || StringUtils.isEmpty(counselingCommon.getFabricColorCoat())) {
+                return ResponseDTO.builder()
+                        .message("완료 처리를 하려면 선택한 품목의 원단 정보를 모두 입력하여야 합니다.")
+                        .build();
+            }
         }
 
         Reservation reservation = counselingCommon.getReservation();

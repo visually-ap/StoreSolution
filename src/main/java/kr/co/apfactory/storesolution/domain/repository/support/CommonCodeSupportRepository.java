@@ -10,6 +10,7 @@ import java.util.List;
 public interface CommonCodeSupportRepository {
     List<ResPatternListDTO> selectPatternList(Long patternType);
 
+    List<ResCodeListDTO> selectCodeList(Long part, List<Long> exceptionCodeIdList);
     List<ResCodeListDTO> selectCodeList(Long part);
 
     List<ResCodeValueListDTO> selectAllCodeList();

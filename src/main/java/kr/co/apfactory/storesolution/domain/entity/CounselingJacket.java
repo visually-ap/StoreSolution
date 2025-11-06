@@ -23,6 +23,14 @@ import java.math.BigDecimal;
 @DynamicInsert
 @Getter
 public class CounselingJacket {
+    public static Long CAVAN_JACKET = 33L;
+    public static Long CAVAN_STYLE = 29L;
+    public static Long CAVAN_BUTTON_COUNT = 191L;
+    public static Long CAVAN_FRONT_POCKET = 177L;
+    public static Long CAVAN_LAPEL = 139L;
+    public static Long CAVAN_AMF = 105L;
+    public static Long CAVAN_LAPELQ = 97L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("카운셀링 자켓 디자인 시퀀스")
@@ -472,5 +480,23 @@ public class CounselingJacket {
         this.jacketSizeRealInchFrontLength = BigDecimal.ZERO;
         this.jacketSizeRealCentiFrontLength = BigDecimal.ZERO;
         this.jacketSizeEditFrontLength = BigDecimal.ZERO;
+    }
+
+    public void setCavanDesignOption() {
+        this.jacketStyle =  CommonCodeChild.builder().id(CAVAN_STYLE).build();
+        this.jacketButtonCount = CommonCodeChild.builder().id(CAVAN_BUTTON_COUNT).build();
+        this.jacketFrontPocket = CommonCodeChild.builder().id(CAVAN_FRONT_POCKET).build();
+        this.jacketLapel = CommonCodeChild.builder().id(CAVAN_LAPEL).build();
+        this.jacketAmf = CommonCodeChild.builder().id(CAVAN_AMF).build();
+        this.jacketLapelQ = CommonCodeChild.builder().id(CAVAN_LAPELQ).build();
+    }
+
+    public void initDesignOptionFromCavan() {
+        this.jacketStyle =  CommonCodeChild.builder().id(27L).build();
+        this.jacketButtonCount = CommonCodeChild.builder().id(30L).build();
+        this.jacketFrontPocket = CommonCodeChild.builder().id(166L).build();
+        this.jacketLapel = CommonCodeChild.builder().id(472L).build();
+        this.jacketAmf = CommonCodeChild.builder().id(39L).build();
+        this.jacketLapelQ = CommonCodeChild.builder().id(37L).build();
     }
 }

@@ -1,3 +1,6 @@
+const SINGLE_COAT = '18';
+const DOUBLE_COAT = '22';
+
 function initCoatGaugeResultSize() {
     $('#coatSizeGaugeChest').val('');
     $('#coatSizeGaugeChestWidth').val('');
@@ -196,6 +199,12 @@ $(document).on('change', '#coatPattern', function () {
     if (!isEmpty(beforeCoatSize) && !confirm('코트 패턴 변경 시 게이지복이 초기화됩니다.\n변경 하시겠습니까?')) {
         $('#coatPattern').val(beforeCoatSize);
         return;
+    }
+
+    if ($("#coatPattern").val() == SINGLE_COAT) {
+        alert('싱글 레글런 선택 시 좌우패드, 원단무늬, 안감, 추가옵션을 제외한 다른 디자인은 수정할 수 없습니다.');
+    } else if ($("#coatPattern").val() == DOUBLE_COAT) {
+        alert('더블 레글런 선택 시 좌우패드, 원단무늬, 안감, 추가옵션을 제외한 다른 디자인은 수정할 수 없습니다.');
     }
 
     // 게이지복 초기화

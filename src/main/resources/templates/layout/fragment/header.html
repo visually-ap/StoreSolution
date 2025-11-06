@@ -22,7 +22,7 @@
             <li>
                 <a th:href="@{/reservation/main}" class="navMain" th:classappend="${pathname.startsWith('/reservation')} ? 'on'">reservation</a>
             </li>
-            <li sec:authorize="hasRole('ROLE_USER')">
+            <li>
                 <a th:href="@{/setting/store/info}" class="navMain" th:classappend="${pathname.startsWith('/setting')} ? 'on'">Store Management</a>
                 <ul class="subNav">
                     <li><a th:href="@{/setting/store/info}">매장정보</a></li>
@@ -30,6 +30,9 @@
                     <li><a th:href="@{/setting/environment}">환경설정</a></li>
                     <li><a th:href="@{/setting/images}">이미지설정</a></li>
                 </ul>
+            </li>
+            <li>
+                <a href="javascript: window.open('http://www.apfactory.co.kr', '', '')" class="navMain">ORDER</a>
             </li>
         </ul>
         <div class="right_area">

@@ -22,6 +22,24 @@ import java.math.BigDecimal;
 @DynamicInsert
 @Getter
 public class CounselingCoat {
+    public static Long SINGLE_RAGLAN = 18L;
+    public static Long DOUBLE_RAGLAN = 22L;
+
+    public static Long SINGLE_RAGLAN_STYLE = 330L;
+    public static Long SINGLE_RAGLAN_BUTTON_COUNT = 337L;
+
+    public static Long DOUBLE_RAGLAN_STYLE = 331L;
+    public static Long DOUBLE_RAGLAN_BUTTON_COUNT = 340L;
+
+    public static Long RAGLAN_CHEST_POCKET = 347L;
+    public static Long RAGLAN_SHOULDER = 351L;
+    public static Long RAGLAN_FRONT_POCKET = 363L;
+    public static Long RAGLAN_BACK_SLIT = 372L;
+    public static Long RAGLAN_SLEEVE = 403L;
+    public static Long RAGLAN_LAPEL = 397L;
+    public static Long RAGLAN_SLEEVE_BUTTON = 439L;
+    public static Long RAGLAN_LAPELQ = 412L;
+    public static Long RAGLAN_AMF = 420L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("카운셀링 하의 디자인 시퀀스")
@@ -415,5 +433,50 @@ public class CounselingCoat {
         this.coatSizeBackCenterShorten = dto.getCoatSizeBackCenterShorten() == null ? BigDecimal.ZERO : dto.getCoatSizeBackCenterShorten();
         this.coatSizeArmHole = dto.getCoatSizeArmHole() == null ? BigDecimal.ZERO : dto.getCoatSizeArmHole();
         this.coatSizeChestLine = dto.getCoatSizeChestLine() == null ? BigDecimal.ZERO : dto.getCoatSizeChestLine();
+    }
+
+    public void setSingleRaglanDesignOption() {
+        this.coatStyle =  CommonCodeChild.builder().id(SINGLE_RAGLAN_STYLE).build();
+        this.coatButtonCount = CommonCodeChild.builder().id(SINGLE_RAGLAN_BUTTON_COUNT).build();
+
+        this.coatChestPocket = CommonCodeChild.builder().id(RAGLAN_CHEST_POCKET).build();
+        this.coatShoulder = CommonCodeChild.builder().id(RAGLAN_SHOULDER).build();
+        this.coatFrontPocket = CommonCodeChild.builder().id(RAGLAN_FRONT_POCKET).build();
+        this.coatBackSlit = CommonCodeChild.builder().id(RAGLAN_BACK_SLIT).build();
+        this.coatSleeve = CommonCodeChild.builder().id(RAGLAN_SLEEVE).build();
+        this.coatLapel = CommonCodeChild.builder().id(RAGLAN_LAPEL).build();
+        this.coatSleeveButton = CommonCodeChild.builder().id(RAGLAN_SLEEVE_BUTTON).build();
+        this.coatLapelQ = CommonCodeChild.builder().id(RAGLAN_LAPELQ).build();
+        this.coatAmf = CommonCodeChild.builder().id(RAGLAN_AMF).build();
+    }
+
+    public void setDoubleRaglanDesignOption() {
+        this.coatStyle =  CommonCodeChild.builder().id(DOUBLE_RAGLAN_STYLE).build();
+        this.coatButtonCount = CommonCodeChild.builder().id(DOUBLE_RAGLAN_BUTTON_COUNT).build();
+
+        this.coatChestPocket = CommonCodeChild.builder().id(RAGLAN_CHEST_POCKET).build();
+        this.coatShoulder = CommonCodeChild.builder().id(RAGLAN_SHOULDER).build();
+        this.coatFrontPocket = CommonCodeChild.builder().id(RAGLAN_FRONT_POCKET).build();
+        this.coatBackSlit = CommonCodeChild.builder().id(RAGLAN_BACK_SLIT).build();
+        this.coatSleeve = CommonCodeChild.builder().id(RAGLAN_SLEEVE).build();
+        this.coatLapel = CommonCodeChild.builder().id(RAGLAN_LAPEL).build();
+        this.coatSleeveButton = CommonCodeChild.builder().id(RAGLAN_SLEEVE_BUTTON).build();
+        this.coatLapelQ = CommonCodeChild.builder().id(RAGLAN_LAPELQ).build();
+        this.coatAmf = CommonCodeChild.builder().id(RAGLAN_AMF).build();
+    }
+
+    public void initDesignOptionFromRaglan() {
+        this.coatStyle =  CommonCodeChild.builder().id(328L).build();
+        this.coatButtonCount = CommonCodeChild.builder().id(333L).build();
+
+        this.coatChestPocket = CommonCodeChild.builder().id(342L).build();
+        this.coatShoulder = CommonCodeChild.builder().id(348L).build();
+        this.coatFrontPocket = CommonCodeChild.builder().id(352L).build();
+        this.coatBackSlit = CommonCodeChild.builder().id(369L).build();
+        this.coatSleeve = CommonCodeChild.builder().id(404L).build();
+        this.coatLapel = CommonCodeChild.builder().id(391L).build();
+        this.coatSleeveButton = CommonCodeChild.builder().id(380L).build();
+        this.coatLapelQ = CommonCodeChild.builder().id(412L).build();
+        this.coatAmf = CommonCodeChild.builder().id(421L).build();
     }
 }

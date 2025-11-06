@@ -31,4 +31,6 @@ public class ResDesignCoatDTO {
     private Long coatCheckFabric;
     private Long coatAddOption1;
     private Long coatAddOption2;
+
+    private Long coatPattern;
 }

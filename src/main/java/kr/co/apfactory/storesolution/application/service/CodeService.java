@@ -62,6 +62,13 @@ public class CodeService {
         return commonCodeChildRepository.selectAllCodeList();
     }
 
+    public HashMap<String, List<ResCodeValueListDTO>> getCodeList(Long part, List<Long> exceptionCodeIdList) {
+        // 공통코드 목록 조회
+        List<ResCodeListDTO> codeListList = commonCodeChildRepository.selectCodeList(part, exceptionCodeIdList);
+        // 공통코드 목록을 맵으로 변환
+        return getCodeList(codeListList);
+    }
+
     public HashMap<String, List<ResCodeValueListDTO>> getCodeList(Long part) {
         // 공통코드 목록 조회
         List<ResCodeListDTO> codeListList = commonCodeChildRepository.selectCodeList(part);

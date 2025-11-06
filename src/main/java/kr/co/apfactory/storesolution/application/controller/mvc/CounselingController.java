@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static kr.co.apfactory.storesolution.global.enums.CodePartEnum.COAT;
 import static kr.co.apfactory.storesolution.global.enums.CodePartEnum.SUIT;
 import static kr.co.apfactory.storesolution.global.enums.CodeTypeEnum.*;
@@ -102,7 +106,9 @@ public class CounselingController {
         model.addAttribute("vestPatternList", codeService.getPatternList(CODE_TYPE_VEST.getValue()));
 
         // 정장 공통 코드 조회
-        model.addAttribute("suitCodeList", codeService.getCodeList(SUIT.getValue()));
+        // 제외 코드
+        List<Long> exceptionCodeIdList = new ArrayList<>(List.of(276L, 280L, 481L, 510L, 554L, 562L, 563L, 564L, 565L, 566L, 567L, 575L, 576L));
+        model.addAttribute("suitCodeList", codeService.getCodeList(SUIT.getValue(), exceptionCodeIdList));
         // 코트 공통 코드 조회
         model.addAttribute("coatCodeList", codeService.getCodeList(COAT.getValue()));
 

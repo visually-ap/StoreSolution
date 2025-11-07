@@ -92,7 +92,7 @@ const JACKET_SINGLE_P_LAPELQ_SET = [
     91, 92, 38, 93, 97, 95, 310, 504
 ];
 const JACKET_DOUBLE_P_LAPELQ_SET = [
-    307, 308, 309, 93, 97, 95, 310, 504, 309
+    37, 307, 308, 309, 93, 95, 310, 504, 509
 ];
 
 $(document).on('click', '.jacketStyleDiv .img-frame', function () {
@@ -132,7 +132,7 @@ function setDisableJacketStyleLimit(style, isInit) {
         hideOptionImage('.jacketButtonCountDiv', JACKET_DOUBLE_BUTTON_COUNT_SET);
 
         // 라펠 디자인 초기화
-        hideOptionImage('.jacketLapelQDiv', JACKET_DOUBLE_P_LAPELQ_SET);
+        hideOptionImageNot('.jacketLapelQDiv', JACKET_DOUBLE_P_LAPELQ_SET);
         if (!isInit && (jacketButtonCount != 187 || jacketLapelQ != 37)) {
             alert('상의 스타일 변경 시 단추갯수와 라펠디자인이 초기화됩니다.\n단추갯수 및 라펠디자인 옵션을 확인하시기 바랍니다.');
             selectDesignOption('#jacketButtonCount', 187);
@@ -187,14 +187,14 @@ function setDisablePantsFlapLimit(flap, isInit) {
     const pantsBeltLoop = $('#pantsBeltLoop').val();
 
     if (flap == 209) {    // 비죠없음이면
-        hideOptionImage('.pantsFlapLengthDiv', PANTS_FLAP_LENGTH_SET);
+        hideOptionImageNot('.pantsFlapLengthDiv', PANTS_FLAP_LENGTH_SET);
         if (!isInit && (pantsFlapLength != 211 || pantsBeltLoop != 192)) {
             alert('하의 비죠 변경 시 밸트고리와 길이가 초기화됩니다.\n벨트고리 및 길이 옵션을 확인하시기 바랍니다.');
             selectDesignOption('#pantsFlapLength', 211);
             selectDesignOption('#pantsBeltLoop', 192);
         }
     } else {    // AP 삼각이면
-        hideOptionImageNot('.pantsFlapLengthDiv', PANTS_FLAP_LENGTH_SET);
+        hideOptionImage('.pantsFlapLengthDiv', PANTS_FLAP_LENGTH_SET);
         if (!isInit && (pantsFlapLength == 211 || pantsBeltLoop != 192)) {
             alert('하의 비죠 변경 시 밸트고리와 길이가 초기화됩니다.\n벨트고리 및 길이 옵션을 확인하시기 바랍니다.');
             selectDesignOption('#pantsFlapLength', 212);

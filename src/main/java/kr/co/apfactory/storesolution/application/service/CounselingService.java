@@ -211,9 +211,9 @@ public class CounselingService {
         }
 
         coat.updateSizeData(reqSizeSaveDTO);
-        if (jacket.getJacketPattern() != null && coat.getCoatPattern().getId().equals(SINGLE_RAGLAN)) {
+        if (coat.getCoatPattern() != null && coat.getCoatPattern().getId().equals(SINGLE_RAGLAN)) {
             coat.setSingleRaglanDesignOption();
-        } else if (jacket.getJacketPattern() != null && coat.getCoatPattern().getId().equals(DOUBLE_RAGLAN)) {
+        } else if (coat.getCoatPattern() != null && coat.getCoatPattern().getId().equals(DOUBLE_RAGLAN)) {
             coat.setDoubleRaglanDesignOption();
         } else {
             if (beforeCoatPatternId.equals(SINGLE_RAGLAN) || beforeCoatPatternId.equals(DOUBLE_RAGLAN)) {
